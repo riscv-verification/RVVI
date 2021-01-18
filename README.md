@@ -7,7 +7,7 @@ About
 -----
 When verifying RISC-V CPU RTL in a Verilog simulator interfaces are needed between the core RTL and the test bench.
 
-Each RISC-V core being designed so far has implemented its own specific bespoke interface for the specific core and a specific bespoke test bench. This means with each design and testbench having its own custom interface very little re-use can be made and the process is in-efficient and time consuming. More effort goes into testing than design and so it is essential going forward to make the hardware design verification (HW DV) process as efficient as possible.
+Each RISC-V core being designed so far has implemented its own specific bespoke interface for the specific core and a specific bespoke test bench. This means with each design and testbench having its own custom interface very little re-use can be made and the process is inefficient and time consuming. More effort goes into testing than design and so it is essential going forward to make the hardware design verification (HW DV) process as efficient as possible.
 
 The RISC-V Verification Interface (RVVI) is a definition of a series of SystemVerilog interfaces that when implemented enable testbench re-use over different cores.
 

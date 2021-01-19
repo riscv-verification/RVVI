@@ -62,14 +62,14 @@ This signal indicates the operating mode (Machine, Supervisor, User)
 This signal indicates the current XLEN for the given privilege mode of operation
 
 **decode:**  
-This is a string containing the disassembled instruction of the pc at the time either the trap or 
-valid notify event occured.
+This is a string containing the disassembled instruction of the pc at the time that either the trap
+or valid notify event occured.
 
 **pc:**  
-This is the address of the retired instruction at a valid notify event
+This is the address of the instruction at the trap or valid notify event
 
 **pcnext:**  
-This is the address of the next instruction to be executed at a valid notify event
+This is the address of the next instruction to be executed after a trap or valid notify event
 
 **x, f, csr:**  
 These arrays contain the values of the registers for the INTEGER, FLOATING-POINT, and CONTROL/STATE

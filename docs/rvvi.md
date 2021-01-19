@@ -62,8 +62,8 @@ This signal indicates the operating mode (Machine, Supervisor, User)
 This signal indicates the current XLEN for the given privilege mode of operation
 
 **decode:**  
-This is a string containing the disassembled instruction at the time either the trap or valid notify
-event occured.
+This is a string containing the disassembled instruction of the pc at the time either the trap or 
+valid notify event occured.
 
 **pc:**  
 This is the address of the retired instruction at a valid notify event
@@ -74,6 +74,36 @@ This is the address of the next instruction to be executed at a valid notify eve
 **x, f, csr:**  
 These arrays contain the values of the registers for the INTEGER, FLOATING-POINT, and CONTROL/STATE
 The state values are updated at the notify events for trap and valid.
+
+    interface RVVI_state #(
+        parameter int ILEN = 32,
+        parameter int XLEN = 32
+    );
+    
+        event            notify;
+        
+        bit              valid; // Retired instruction
+        bit              trap;  // Trapped instruction
+        bit              halt;  // Halted  instruction
+        
+        bit              intr;  // Flag first instruction of trap handler
+        bit [(XLEN-1):0] order;
+        bit [(ILEN-1):0] insn;
+        bit [2:0]        isize;
+        bit [1:0]        mode;
+        bit [1:0]        ixl;
+        
+        string           decode;
+    
+        bit [(XLEN-1):0] pc;
+        bit [(XLEN-1):0] pcnext;
+    
+        // Registers
+        bit [(XLEN-1):0] x[32];
+        bit [(XLEN-1):0] f[32];
+        bit [(XLEN-1):0] csr[string];
+        
+    endinterface
 
 
 RVVI_control Interface
@@ -95,6 +125,47 @@ additionally the control interface contains methods to step and run the device, 
 stepi():
 Run the device until either an instruction provides a notify event of a trap or is valid, internally
 the interface will set the cmd state back to IDLE when either trap or valid occurs.
+
+    typedef enum { IDLE, STEPI, STOP, CONT } rvvi_c_e;
+    interface RVVI_control;
+    
+        event     notify;
+        
+        rvvi_c_e  cmd;
+        bit       ssmode;
+        
+        bit       state_idle;
+        bit       state_stepi;
+        bit       state_stop;
+        bit       state_cont;
+        
+        initial ssmode = 1;
+        
+        assign state_idle  = (cmd == IDLE);
+        assign state_stepi = (cmd == STEPI);
+        assign state_stop  = (cmd == STOP);
+        assign state_cont  = (cmd == CONT);
+        
+        function automatic void idle();
+            cmd = IDLE;
+            ->notify;
+        endfunction 
+        function automatic void stepi();
+            cmd = STEPI;
+            ->notify;
+        endfunction    
+        function automatic void stop();
+            ssmode = 1;
+            cmd = STOP;
+            ->notify;
+        endfunction    
+        function automatic void cont();
+            ssmode = 0;
+            cmd = CONT;
+            ->notify;
+        endfunction
+        
+    endinterface
 
 
 In order to control the interface the following flow would be a simple use model

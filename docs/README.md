@@ -1,3 +1,3 @@
-# RVVI RISC-V Verification Interface
+# RISC-V Verification Interface (RVVI)
 
-please refer to this link [rvvi.md](rvvi.md)
+Please refer to this document: [rvvi.md](rvvi.md)

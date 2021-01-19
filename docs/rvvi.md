@@ -122,9 +122,17 @@ one of
 IDLE, STEPI, STOP, CONT  
 additionally the control interface contains methods to step and run the device, for example
 
-stepi():
+stepi():  
 Run the device until either an instruction provides a notify event of a trap or is valid, internally
 the interface will set the cmd state back to IDLE when either trap or valid occurs.
+
+cont():  
+Run until some breakpoint condition, or unexpected exception occurs, or until the stop() method is
+called (unimplmented)
+
+stop():  
+Stop the running target executing instructions at the next opportunity, notify due to either valid
+or trap (unimplmented)
 
     typedef enum { IDLE, STEPI, STOP, CONT } rvvi_c_e;
     interface RVVI_control;

@@ -119,7 +119,7 @@ notify
 
 The control state variable is called cmd, indicating the current command in operation, this can be
 one of  
-IDLE, STEPI, CONT, STOP
+IDLE, STEPI, CONT, STOP  
 additionally the control interface contains methods to control the device, for example
 
 stepi():  

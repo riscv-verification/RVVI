@@ -119,8 +119,8 @@ notify
 
 The control state variable is called cmd, indicating the current command in operation, this can be
 one of  
-IDLE, STEPI, STOP, CONT  
-additionally the control interface contains methods to step and run the device, for example
+IDLE, STEPI, CONT, STOP
+additionally the control interface contains methods to control the device, for example
 
 stepi():  
 Run the device until either an instruction provides a notify event of a trap or is valid, internally

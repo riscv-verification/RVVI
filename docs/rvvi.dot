@@ -1,26 +1,22 @@
 digraph finite_state_machine {
+
+    labelloc = "t";
+    label = "Single Instance Target";
+    
     node [shape = point]; INIT;
     
     node [shape = doublecircle];
 
-    INIT      -> IDLE;
-    IDLE      -> RTL_STEP;
+    INIT  -> IDLE;
+    IDLE  -> STEP;
     
-    RTL_STEP  -> RTL_VALID [label = "@valid"];
-    RTL_STEP  -> RTL_TRAP  [label = "@trap"];
-    RTL_STEP  -> RTL_HALT  [label = "@halt"];
+    STEP  -> VALID [label = "@valid"];
+    STEP  -> TRAP  [label = "@trap"];
+    STEP  -> HALT  [label = "@halt"];
 
-    RTL_VALID -> RM_STEP   [label = "exp<=valid"];
-    RTL_TRAP  -> RM_STEP   [label = "exp<=trap"];
-    RTL_HALT  -> RTL_STEP;
-
-    RM_STEP   -> RM_VALID  [label = "@valid"];
-    RM_STEP   -> RM_TRAP   [label = "@trap"];
-    RM_STEP   -> RM_HALT   [label = "@halt"];
+    VALID -> DONE   [label = "exp=valid"];
+    TRAP  -> DONE   [label = "exp=trap"];
+    HALT  -> STEP;
     
-    RM_VALID  -> CMP       [label = "assert(exp==valid)"];
-    RM_TRAP   -> CMP       [label = "assert(exp==trap)"];
-    RM_HALT   -> RM_STEP;
-    
-    CMP -> IDLE;
+    DONE -> IDLE;
 }

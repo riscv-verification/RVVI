@@ -1,5 +1,4 @@
 # RVVI RISC-V Verification Interface
-====================================
 
 
 RVVI Specification
@@ -8,9 +7,9 @@ The following specification defines a method of controlling and observing a RISC
 order to be observe internal state values, control the execution of instructions and apply input
 events such as interrupts and debug requests.
 
-The RVVI implements 2 interfaces 
-RVVI_state   - RISC-V Verification Interface - State
-RVVI_control - RISC-V Verification Interface - Control
+**The RVVI implements 2 interfaces**  
+**RVVI_state**   - RISC-V Verification Interface - State  
+**RVVI_control** - RISC-V Verification Interface - Control  
 
 
 RVVI_state Interface
@@ -21,58 +20,58 @@ provided on the RVVI_control interface.
 All signals on the RVVI_state Interface are outputs from the device, for observing state transitions
 and state values
 
-notify:
+**notify:**  
 This is an event to indicate some change of state following the completion of a command on the
 control interface. When the notify event is asserted the signals nret, valid, trap and halt indicate
 the current state at this notification event point.
 Following a notify event, the testbench can decide the next control command to be applied
 
-valid:
+**valid:**  
 When this signal is true at a notify event, an instruction has been successfully retired by the
 device, and all internal state values will have been updated accordingly, this includes the 
 Integer/GPR, Float/FPR, CSR and any other supported registers. 
 The instruction address retired is indicated by the pc variable
 
-trap:
+**trap:**  
 When this signal is true at a notify event, an instruction execution has undergone an exception for
 some reason, this could include synchronous/asynchronous exception, or a debug request.
 This event allows the reading of internal state, but also gives the opportunity to change the values
 on input signals, prior to continuing to an instruction retirement.
 The instruction address trapped  is indicated by the pc variable
 
-halt:
+**halt:**  
 When this signal is true at a notify event, it indicates that the hart has gone into a halted state
 
-intr:
+**intr:**  
 When this signal is true at a notify event, it indicates that this retired instruction is the first
 instruction which is part of a trap handler.
 
-order:
+**order:**  
 This signal contains the instruction count for the instruction being retired at the valid event
 
-insn:
+**insn:**  
 This signal contains the instruction word which is at the trap or valid event
 
-isize:
+**isize:**  
 The size of the instruction held in insn, this should be either 2(compressed) or 4(uncompressed) 
 
-mode:
+**mode:**  
 This signal indicates the operating mode (Machine, Supervisor, User)
 
-ixl:
+**ixl:**  
 This signal indicates the current XLEN for the given privilege mode of operation
 
-decode:
+**decode:**  
 This is a string containing the disassembled instruction at the time either the trap or valid notify
 event occured.
 
-pc:
+**pc:**  
 This is the address of the retired instruction at a valid notify event
 
-pcnext:
+**pcnext:**  
 This is the address of the next instruction to be executed at a valid notify event
 
-x, f, csr:
+**x, f, csr:**  
 These arrays contain the values of the registers for the INTEGER, FLOATING-POINT, and CONTROL/STATE
 The state values are updated at the notify events for trap and valid.
 
@@ -81,15 +80,16 @@ RVVI_control Interface
 ----------------------
 This interface provides the testbench with a set of commands and status to indicate the progress
 The interface contains functions similar to a debugger control for 
-- stepi
-- cont
-- stop
+- stepi  
+- cont  
+- stop  
+
 the run control status is indicated by a state veriable, state changes are notified by an event 
 notify
 
 The control state variable is called cmd, indicating the current command in operation, this can be
-one of 
-IDLE, STEPI, STOP, CONT
+one of  
+IDLE, STEPI, STOP, CONT  
 additionally the control interface contains methods to step and run the device, for example
 
 stepi():
@@ -149,6 +149,8 @@ In order to control the interface the following flow would be a simple use model
         end
     end
 
+This can be represented as a simple state machine diagram  
+![alt text](rvvi.png "State Machine")
 
 RVVI within a testbench
 -----------------------
@@ -262,5 +264,7 @@ trap result
        endcase // case (state)
     end
  
+This can be represented as a more complicated state machine diagram  
+![alt text](rvvi-tb.png "State Machine")
 
 

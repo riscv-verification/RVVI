@@ -15,12 +15,12 @@ This is of benefit for not just test bench re-use but also for test generators a
 
 History
 -------
-This work has evolved from the experience by Imperas working with several RISC-V verification projects including its collaboration in OpenHW Group (https://github.com/openhwgroup/core-v-verif) on the Core-V range of RISC-V cores.
+This work has evolved from the experience by Imperas, EMMicro, SiLabs working with several RISC-V verification projects including its collaboration in OpenHW Group (https://github.com/openhwgroup/core-v-verif) on the Core-V range of RISC-V cores.
 
 There is the RISC-V Formal Interface (RVFI) (https://github.com/SymbioticEDA/riscv-formal) from SymbioticEDA which is a very good interface for providing observation into a running core by streaming what is executing on the core  - but for HW DV more is needed. Hence the need for RVVI. The RVVI_status interface is very similar to the RVFI interface.
 
 Specification
 -------------
-Please see the documents in the doc directory for details.
+Please see the documents in the [docs](docs) directory for details.
 
 ##

@@ -21,6 +21,6 @@ There is the RISC-V Formal Interface (RVFI) (https://github.com/SymbioticEDA/ris
 
 Specification
 -------------
-Please see the documents in the [doc](/doc) directory for details.
+Please see the documents in the [docs](docs) directory for details.
 
 ##

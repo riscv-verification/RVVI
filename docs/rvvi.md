@@ -150,7 +150,7 @@ In order to control the interface the following flow would be a simple use model
     end
 
 This can be represented as a simple state machine diagram  
-![alt text](rvvi.png "State Machine")
+![alt text](images/rvvi.png "State Machine")
 
 RVVI within a testbench
 -----------------------
@@ -265,6 +265,6 @@ trap result
     end
  
 This can be represented as a more complicated state machine diagram  
-![alt text](rvvi-tb.png "State Machine")
+![alt text](images/rvvi-tb.png "State Machine")
 
 

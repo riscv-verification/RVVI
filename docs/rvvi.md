@@ -1,5 +1,6 @@
 # RVVI RISC-V Verification Interface
 
+This is a work in progress
 
 RVVI Specification
 ------------------

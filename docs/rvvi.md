@@ -245,7 +245,7 @@ The content of this interface is further dependant upon the number of harts in t
 RVVI_bus Interface
 ------------------
 This interface allows conection of an external memory for read/write of fetch and load/store.
-This implements a simple transactor for the accesses and also includes a singla to indicat that the access is a DMI(Direct Memory Interface) access, 
+This implements a simple transactor for the accesses and also includes a signal to indicate that the access is a DMI(Direct Memory Interface) access, 
 rather than an access that executes over a bus connection
 
 

@@ -8,9 +8,11 @@ The following specification defines a method of controlling and observing a RISC
 order to be observe internal state values, control the execution of instructions and apply input
 events such as interrupts and debug requests.
 
-**The RVVI implements 2 interfaces**  
+**The RVVI implements 4 interfaces**  
 **RVVI_state**   - RISC-V Verification Interface - State  
 **RVVI_control** - RISC-V Verification Interface - Control  
+**RVVI_io**      - RISC-V Verification Interface - IO (Interrupts, Debug)  
+**RVVI_bus**     - RISC-V Verification Interface - (Data, Instruction Bus)  
 
 
 RVVI_state Interface
@@ -231,6 +233,21 @@ In order to control the interface the following flow would be a simple use model
 
 This can be represented as a simple state machine diagram  
 ![alt text](images/rvvi.png "State Machine")
+
+
+RVVI_io Interface
+-----------------
+This interface allows the testbench to send asynchronous (to the program execution) events into the core for evaluation at the next instruction boundary
+This will include a set of signals which are bespoke to a specific core, dependant upon whether the core supports a Debug, or Interrupt capabaility
+The content of this interface is further dependant upon the number of harts in the core, and the type and number of interrupts supported
+
+
+RVVI_bus Interface
+------------------
+This interface allows conection of an external memory for read/write of fetch and load/store.
+This implements a simple transactor for the accesses and also includes a singla to indicat that the access is a DMI(Direct Memory Interface) access, 
+rather than an access that executes over a bus connection
+
 
 RVVI within a testbench
 -----------------------

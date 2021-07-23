@@ -1,0 +1,64 @@
+digraph finite_state_machine {
+    graph [ rankdir = "LR" ];
+    
+    labelloc = "t";
+    label = "Imperas/SystemVerilog Transactions";
+    
+    node [shape=plain]; initial;
+    node [shape=plain]; final;
+
+    // Imported functions to SV
+    node [shape=doublecircle, color=skyblue, style=filled]; // indicate imports
+    SV_IMPORT;
+    svimp_entry;
+    svimp_pull;
+    svimp_push;
+    svimp_exit;
+    
+    // Exported functions from SV
+    node [shape=circle, color=palegreen, style=filled];
+    SV_EXPORT;
+    svexp_busFetch;
+    svexp_busLoad;
+    svexp_busStore;
+    svexp_busWait;
+    svexp_setGPR;
+    svexp_getGPR;
+    svexp_setCSR;
+    svexp_pull;
+    svexp_setRESULT;
+    svexp_setDECODE;
+
+
+    initial -> svimp_entry;
+    
+    svimp_entry -> svexp_busFetch;
+    
+    svexp_busFetch -> svexp_setDECODE;
+    
+    svexp_setDECODE -> svexp_busLoad  [label = "ld"];
+    svexp_setDECODE -> svexp_busStore [label = "st"];
+    svexp_setDECODE -> svexp_getGPR   [label = "csr write (unpredictable)"];
+    svexp_setDECODE -> svexp_busWait  [label = "reg-reg wait(1)"];
+    svexp_busLoad   -> svexp_busWait  [label = "wait(1)"];
+    svexp_busStore  -> svexp_busWait  [label = "wait(1)"];
+    svexp_getGPR    -> svexp_busWait  [label = "wait(1)"];
+    
+    // PutState
+    svexp_busWait   -> svexp_setGPR [label = "put wait(1)"];
+    svexp_setGPR    -> svexp_setCSR [label = "put wait(1)"];
+    
+    svexp_setCSR    -> svexp_setRESULT [label = "put (exception)"];
+    svexp_setCSR    -> svexp_setRESULT [label = "put (retire)"];
+    svexp_setRESULT -> svimp_pull;
+    svimp_pull      -> svexp_busWait   [label = "wait(1)"];
+    
+    // GetState
+    svexp_busWait   -> svexp_pull [label = "get (wait(2)"];
+    svexp_pull      -> svimp_push [label = "get (wait(2)"];
+    
+    svimp_push      -> svexp_busFetch;
+    
+    final           -> svimp_exit;
+    
+}

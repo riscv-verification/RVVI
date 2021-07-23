@@ -364,4 +364,6 @@ trap result
 This can be represented as a more complicated state machine diagram  
 ![alt text](images/rvvi-tb.png "State Machine")
 
+![alt text](images/imperas-dpi.png "Calling Sequence")
+
 

@@ -4,53 +4,52 @@ This is a work in progress
 
 RVVI Specification
 ------------------
-The following specification defines a method of controlling and observing a RISCV implementation, in
-order to be observe internal state values, control the execution of instructions and apply input
-events such as interrupts and debug requests.
-
-**The RVVI implements 4 interfaces**  
-**RVVI_state**   - RISC-V Verification Interface - State  
-**RVVI_control** - RISC-V Verification Interface - Control  
-**RVVI_io**      - RISC-V Verification Interface - IO (Interrupts, Debug)  
-**RVVI_bus**     - RISC-V Verification Interface - (Data, Instruction Bus)  
+The following specification defines a method of observing a RISCV implementation.
+Observation is required for the internal state, in addition to asynchronous event changes
+on items such as Interrupts and Debug
 
 
-RVVI_state Interface
---------------------
+RVVI_VLG Interface
+-------------------
 This interface provides internal visibility of the state of the RISC-V device.
-It also provides a notifier event to indicate a change of state, following a control command
-provided on the RVVI_control interface.
+It also provides a notifier event to indicate a change of state, following a data change.
 All signals on the RVVI_state Interface are outputs from the device, for observing state transitions
 and state values
 
 **notify:**  
-This is an event to indicate some change of state following the completion of a command on the
-control interface. When the notify event is asserted the signals nret, valid, trap and halt indicate
+This is an event to indicate some change of state following the completion of an event
+An event can either be an instruction (or many instructions) retiring, or
+an instruction (or many instructions) causing an exception
+When the notify event is asserted the signals, valid, trap and halt indicate
 the current state at this notification event point.
-Following a notify event, the testbench can decide the next control command to be applied
+
+Dependant upon how many instructions can retire (NRET) in a single cycle, each of the following variables
+are sized (in width) by that NRET value, so if the architecture is able to retire 4 instructions 
+within a single cycle, then the width of these variable is [4]
+In addition the variables are also sized by the number of harts being handled through the interface
 
 **valid:**  
 When this signal is true at a notify event, an instruction has been successfully retired by the
-device, and all internal state values will have been updated accordingly, this includes the 
-Integer/GPR, Float/FPR, CSR and any other supported registers. 
-The instruction address retired is indicated by the pc variable
+device, subsequent internal state values will have been updated accordingly, this includes the 
+Integer/GPR, Float/FPR, Vector/VR CSR and any other supported registers. 
+The instruction address retired is indicated by the pc_rdata variable
 
 **trap:**  
 When this signal is true at a notify event, an instruction execution has undergone an exception for
 some reason, this could include synchronous/asynchronous exception, or a debug request.
-This event allows the reading of internal state, but also gives the opportunity to change the values
-on input signals, prior to continuing to an instruction retirement.
-The instruction address trapped  is indicated by the pc variable
+This event allows the reading of internal state.
+The instruction address trapped is indicated by the pc_rdata variable
 
 **halt:**  
 When this signal is true at a notify event, it indicates that the hart has gone into a halted state
+at this instruction
 
 **intr:**  
 When this signal is true at a notify event, it indicates that this retired instruction is the first
 instruction which is part of a trap handler.
 
 **order:**  
-This signal contains the instruction count for the instruction being retired at the valid event
+This signal contains the instruction count for the instruction being reported at the notifier event
 
 **insn:**  
 This signal contains the instruction word which is at the trap or valid event
@@ -64,303 +63,76 @@ This signal indicates the operating mode (Machine, Supervisor, User)
 **ixl:**  
 This signal indicates the current XLEN for the given privilege mode of operation
 
-**decode:**  
-This is a string containing the disassembled instruction of the pc at the time that either the trap
-or valid notify event occured.
-
-**pc:**  
+**pc_rdata:**  
 This is the address of the instruction at the trap or valid notify event
 
-**pcnext:**  
+**pc_wdata:**  
 This is the address of the next instruction to be executed after a trap or valid notify event
 
-**x, f, csr:**  
-These arrays contain the values of the registers for the INTEGER, FLOATING-POINT, and CONTROL/STATE
-The state values are updated at the notify events for trap and valid.
+**x_addr, x_wdata, x_wb**
+if x_wb is true, then an X register writeback has occured , the index is indicated by the x_addr
+the value is indicated by x_wdata
 
-    interface RVVI_state #(
-        parameter int ILEN = 32,
-        parameter int XLEN = 32
-    );
-    
-        event            notify;
-        
-        bit              valid; // Retired instruction
-        bit              trap;  // Trapped instruction
-        bit              halt;  // Halted  instruction
-        
-        bit              intr;  // Flag first instruction of trap handler
-        bit [(XLEN-1):0] order;
-        bit [(ILEN-1):0] insn;
-        bit [2:0]        isize;
-        bit [1:0]        mode;
-        bit [1:0]        ixl;
-        
-        string           decode;
-    
-        bit [(XLEN-1):0] pc;
-        bit [(XLEN-1):0] pcnext;
-    
-        // Registers
-        bit [(XLEN-1):0] x[32];
-        bit [(XLEN-1):0] f[32];
-        bit [(XLEN-1):0] csr[string];
-        
-    endinterface
+**f_addr, f_wdata, f_wb**
+if f_wb is true, then an F/D register writeback has occured , the index is indicated by the f_addr
+the value is indicated by f_wdata
 
+**v_addr, v_wdata, v_wb**
+if v_wb is true, then a V register writeback has occured , the index is indicated by the v_addr
+the value is indicated by v_wdata
 
-RVVI_control Interface
-----------------------
-This interface provides the testbench with a set of commands and status to indicate the progress
-The interface contains functions similar to a debugger control for 
-- stepi  
-- cont  
-- stop  
+**csr, csr_wb**
+if the bit position within csr_wb is true, then a the position indicates a write into csr, eg if
+csr_wb=0x1, then the ustatus register (address 0x000) has been written
+if csr_wb=(1<<4 | 1<<0) then address 0x004 and 0x001 have been written concurrently
+csr_wb=0x0 indicates no written csr.
 
-the run control status is indicated by a state veriable, state changes are notified by an event 
-notify
+interface RVVI_VLG #(
+    parameter int ILEN  = 32,
+    parameter int XLEN  = 32,
+    parameter int FLEN  = 32,
+    parameter int VLEN  = 256,
+    parameter int NHART = 1,
+    parameter int NRET  = 1
+);
 
-The control state variable is called cmd, indicating the current command in operation, this can be
-one of  
-IDLE, STEPI, CONT, STOP  
-additionally the control interface contains methods to control the device, for example
+    //
+    // RISCV output signals
+    //
+    event             notify;                                       // event notification for interrogation
 
-stepi():  
-Run the device until either an instruction provides a notify event of a trap or is valid, internally
-the interface will set the cmd state back to IDLE when either trap or valid occurs.
+    wire              valid            [(NHART-1):0][(NRET-1):0];   // Retired instruction
+    wire [(XLEN-1):0] order            [(NHART-1):0][(NRET-1):0];   // Unique instruction order count (no gaps or reuse)
+    wire [(ILEN-1):0] insn             [(NHART-1):0][(NRET-1):0];   // Instruction bit pattern
+    wire              trap             [(NHART-1):0][(NRET-1):0];   // Trapped instruction
+    wire              halt             [(NHART-1):0][(NRET-1):0];   // Halted  instruction
+    wire              intr             [(NHART-1):0][(NRET-1):0];   // (RVFI Legacy) Flag first instruction of trap handler
+    wire [1:0]        mode             [(NHART-1):0][(NRET-1):0];   // Privilege mode of operation
+    wire [1:0]        ixl              [(NHART-1):0][(NRET-1):0];   // XLEN mode 32/64 bit
 
-cont():  
-Run until some breakpoint condition, or unexpected exception occurs, or until the stop() method is
-called (unimplmented)
+    wire [(XLEN-1):0] pc_rdata         [(NHART-1):0][(NRET-1):0];   // PC of insn
+    wire [(XLEN-1):0] pc_wdata         [(NHART-1):0][(NRET-1):0];   // PC of next instruction
 
-stop():  
-Stop the running target executing instructions at the next opportunity, notify due to either valid
-or trap (unimplmented)
+    // X Registers
+    wire [4:0]        x_addr           [(NHART-1):0][(NRET-1):0];   // X register index
+    wire [(XLEN-1):0] x_wdata          [(NHART-1):0][(NRET-1):0];   // X data value
+    wire              x_wb             [(NHART-1):0][(NRET-1):0];   // X data writeback enable
 
-    typedef enum { IDLE, STEPI, STOP, CONT } rvvi_c_e;
-    interface RVVI_control;
-    
-        event     notify;
-        
-        rvvi_c_e  cmd;
-        bit       ssmode;
-        
-        bit       state_idle;
-        bit       state_stepi;
-        bit       state_stop;
-        bit       state_cont;
-        
-        initial ssmode = 1;
-        
-        assign state_idle  = (cmd == IDLE);
-        assign state_stepi = (cmd == STEPI);
-        assign state_stop  = (cmd == STOP);
-        assign state_cont  = (cmd == CONT);
-        
-        function automatic void idle();
-            cmd = IDLE;
-            ->notify;
-        endfunction 
-        function automatic void stepi();
-            cmd = STEPI;
-            ->notify;
-        endfunction    
-        function automatic void stop();
-            ssmode = 1;
-            cmd = STOP;
-            ->notify;
-        endfunction    
-        function automatic void cont();
-            ssmode = 0;
-            cmd = CONT;
-            ->notify;
-        endfunction
-        
-    endinterface
+    // F Registers                    
+    wire [4:0]        f_addr           [(NHART-1):0][(NRET-1):0];   // F register index
+    wire [(FLEN-1):0] f_wdata          [(NHART-1):0][(NRET-1):0];   // F data value
+    wire              f_wb             [(NHART-1):0][(NRET-1):0];   // F data writeback enable
 
+    // V Registers                    
+    wire [4:0]        v_addr           [(NHART-1):0][(NRET-1):0];   // V register index
+    wire [(VLEN-1):0] v_wdata          [(NHART-1):0][(NRET-1):0];   // V data value
+    wire              v_wb             [(NHART-1):0][(NRET-1):0];   // V data writeback enable
 
-In order to control the interface the following flow would be a simple use model
+    // Control & State Registers
+    wire [4095:0][(XLEN-1):0]  csr     [(NHART-1):0][(NRET-1):0];   // Full CSR Address range
+    wire [4095:0]              csr_wb  [(NHART-1):0][(NRET-1):0];   // CSR writeback (change) flag
 
-    typedef enum {INIT, IDLE, STEP, VALID, TRAP, HALT, DONE} state_e; 
-    state_e state = INIT;
-    initial state <= IDLE; // force an event on state to sensitize always @(*)
-    always @(*) begin
-      case (state)
-        IDLE: begin
-          state <= STEP;
-        end
-        
-        STEP: begin                 // wait on retire, trap or halt
-          cpu.control.stepi();      // call the method to step the device
-          fork
-            begin
-              @cpu.state.valid;
-              state <= VALID;
-            end
-            begin
-              @cpu.state.trap;
-              state <= TRAP;
-            end
-            begin
-              @cpu.state.halt;
-              state <= HALT;
-            end
-          join_any
-          disable fork;
-        end
-        
-        VALID: begin
-          $display("Instruction has retired");
-          state <= DONE;
-        end
-        
-        TRAP: begin
-          $display("Instruction has trapped");
-          state <= STEP;
-        end
-        
-        HALT: begin
-          $display("Device has halted");
-          state <= STEP;
-        end
-        
-        DONE: begin
-          $display("Report state");
-          // cpu.state.x[] - Integer Registers
-          state <= IDLE;
-        end
-    end
+    // Signals Reset & Interrupts 
+    wire [63:0]       pin_mip          [(NHART-1):0][(NRET-1):0];   // Interrupts
 
-This can be represented as a simple state machine diagram  
-![alt text](images/rvvi.png "State Machine")
-
-
-RVVI_io Interface
------------------
-This interface allows the testbench to send asynchronous (to the program execution) events into the core for evaluation at the next instruction boundary
-This will include a set of signals which are bespoke to a specific core, dependant upon whether the core supports a Debug, or Interrupt capabaility
-The content of this interface is further dependant upon the number of harts in the core, and the type and number of interrupts supported
-
-
-RVVI_bus Interface
-------------------
-This interface allows conection of an external memory for read/write of fetch and load/store.
-This implements a simple transactor for the accesses and also includes a signal to indicate that the access is a DMI(Direct Memory Interface) access, 
-rather than an access that executes over a bus connection
-
-
-RVVI within a testbench
------------------------
-When using a testbench to run/compare 2 targets the state/control can be used to carefully control
-the execution to ensure the state compares match for all instructions producing either a valid or
-trap result
-
-    typedef enum {
-        INIT,
-        IDLE,  // Needed to get an event on state so always block 
-               // is initially entered
-        
-        RTL_STEP,
-        RTL_VALID,
-        RTL_TRAP,
-        RTL_HALT,
-        
-        RM_STEP,
-        RM_VALID,
-        RM_TRAP,
-        RM_HALT,
-        
-        CMP
-    } state_e; 
-    
-    state_e state = INIT;
-    initial state <= IDLE; // cause an event for always @*
-    
-    always @(*) begin
-       case (state)
-         IDLE: begin
-             state <= RTL_STEP;
-         end
-         
-         RTL_STEP: begin
-             clknrst_if.start_clk();
-             fork
-                 begin
-                     @step_compare_if.riscv_retire;
-                     clknrst_if.stop_clk();
-                     step_rtl <= 0;
-                     state <= RTL_VALID;
-                 end
-                 begin
-                     @step_compare_if.riscv_trap;
-                     state <= RTL_TRAP;
-                 end
-                 begin
-                     @step_compare_if.riscv_halt;
-                     state <= RTL_HALT;
-                 end
-             join_any
-             disable fork;
-         end
-    
-         RTL_VALID: begin
-             state <= RM_STEP;
-         end
-         
-         RTL_TRAP: begin
-             //state <= RM_STEP; // TODO: RTL/RVVI needs additional work
-             state <= RTL_STEP;
-         end
-         
-         RTL_HALT: begin
-             state <= RTL_STEP;
-         end
-    
-         RM_STEP: begin
-             pushRTL2RM("ret_rtl");
-             `CV32E40P_OVP_RVCTL.stepi();
-             fork
-                 begin
-                     @step_compare_if.ovp_cpu_valid;
-                     ->`CV32E40P_TRACER.ovp_retire;
-                     state <= RM_VALID;
-                 end
-                 begin
-                     @step_compare_if.ovp_cpu_trap;
-                     state <= RM_TRAP;
-                 end
-                 begin
-                     @step_compare_if.ovp_cpu_halt;
-                     state <= RM_HALT;
-                 end
-             join_any
-             disable fork;
-         end
-    
-         RM_VALID: begin
-             state <= CMP;
-         end
-         
-         RM_TRAP: begin
-             //state <= CMP; // TODO: needs enabling after RTL/RVVI fix
-             state <= RM_STEP;
-         end
-         
-         RM_HALT: begin
-             state <= RM_STEP;
-         end
-    
-         CMP: begin 
-              compare();
-              step_rtl <= 1;
-              ->ev_compare;
-              instruction_count += 1;           
-              //state <= RTL_STEP;
-              state <= IDLE;
-         end
-       endcase // case (state)
-    end
- 
-This can be represented as a more complicated state machine diagram  
-![alt text](images/rvvi-tb.png "State Machine")
-
+endinterface

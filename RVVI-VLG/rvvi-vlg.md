@@ -9,7 +9,7 @@ Observation is required for the internal state, in addition to asynchronous even
 on items such as Interrupts and Debug
 
 
-RVVI_VLG Interface
+RVVI-VLG Interface
 -------------------
 This interface provides internal visibility of the state of the RISC-V device.
 It also provides a notifier event to indicate a change of state, following a data change.

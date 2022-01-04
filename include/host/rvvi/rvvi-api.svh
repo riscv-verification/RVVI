@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2005-2021 Imperas Software Ltd., www.imperas.com
+ * Copyright (c) 2005-2022 Imperas Software Ltd., www.imperas.com
  *
  * The contents of this file are provided under the Software License Agreement
  * that you accepted before downloading this file.
@@ -11,29 +11,14 @@
  * For more information, please visit www.OVPworld.org or www.imperas.com
  */
 
-#pragma once
 
-/*! \file rvvi.h
- *  \brief RVVI interface, C API header.
-**/
+`ifndef INCLUDE_RVVI_SVH
+`define INCLUDE_RVVI_SVH
 
-#include <stdint.h>
-
-typedef uint32_t bool_t;
-
-#define RVVI_FALSE          0
-#define RVVI_TRUE           1
-#define RVVI_INVALID_INDEX -1
-
-/*! \brief RVVI API version.
- *
- *  \note This should be passed into the rvviCheckVersion() function.
- */
-#define RVVI_API_VERSION 5
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+`define RVVI_FALSE          0
+`define RVVI_TRUE           1
+`define RVVI_INVALID_INDEX -1
+`define RVVI_API_VERSION    5
 
 /*! \brief Check the compiled RVVI API version.
  *
@@ -44,8 +29,8 @@ extern "C" {
  *
  *  \return returns RVVI_TRUE if versions matches otherwise RVVI_FALSE.
 **/
-extern bool_t rvviVersionCheck(
-    uint32_t version);
+import "DPI-C" function int rvviVersionCheck(
+    input int version);
 
 /*! \brief Initialize reference.
  *
@@ -61,10 +46,10 @@ extern bool_t rvviVersionCheck(
  *        provided ELF file by the programPath parameter. This can however be
  *        overridden by the rvviRefPcSet() function.
 **/
-extern bool_t rvviRefInit(
-    const char *programPath,
-    const char *vendor,
-    const char *variant);
+import "DPI-C" function int rvviRefInit(
+    input string programPath,
+    input string vendor,
+    input string variant);
 
 /*! \brief Force the reference PC to be particular value.
  *
@@ -73,15 +58,15 @@ extern bool_t rvviRefInit(
  *
  *  \return Returns RVVI_TRUE if the operation was successful else RVVI_FALSE.
 **/
-extern bool_t rvviRefPcSet(
-    uint32_t hartId,
-    uint64_t address);
+import "DPI-C" function int rvviRefPcSet(
+    input int     hartId,
+    input longint address);
 
 /*! \brief Shutdown the reference module releasing any used resources.
  *
  *  \return Returns RVVI_TRUE if shutdown was successful else RVVI_FALSE.
 **/
-extern bool_t rvviRefShutdown(void);
+import "DPI-C" function int rvviRefShutdown();
 
 /*! \brief Notify the reference that a CSR is considered volatile.
  *
@@ -91,9 +76,9 @@ extern bool_t rvviRefShutdown(void);
  *
  *  \return Returns RVVI_TRUE if operation was successful else RVVI_FALSE.
 **/
-extern bool_t rvviRefCsrSetVolatile(
-    uint32_t hartId,
-    uint32_t index);
+import "DPI-C" function int rvviRefCsrSetVolatile(
+    input int hartId,
+    input int index);
 
 /*! \brief Lookup a net on the reference model and return its index.
  *
@@ -105,8 +90,8 @@ extern bool_t rvviRefCsrSetVolatile(
  *
  *  \sa rvviRefNetSet()
 **/
-extern uint64_t rvviRefNetIndexGet(
-    const char *name);
+import "DPI-C" function longint rvviRefNetIndexGet(
+    input string name);
 
 /*! \brief Notify RVVI that a DUT RVV Vector register has been written to.
  *
@@ -115,11 +100,13 @@ extern uint64_t rvviRefNetIndexGet(
  *  \param data   Memory to copy the vector register from.
  *  \param size   Size of the memory buffer data parameter in bytes.
 **/
-extern void rvviDutVrSet(
-    uint32_t  hartId,
-    uint32_t  index,
-    void     *data,
-    uint32_t  size);
+/**
+import "DPI-C" function void rvviDutVrSet(
+    input int  hartId,
+    input int  index,
+    void      *data,
+    input int  size);
+**/
 
 /*! \brief Notify RVVI that a DUT floating point register has been written to.
  *
@@ -127,10 +114,10 @@ extern void rvviDutVrSet(
  *  \param index  The FPR index within the register file (0 to 31).
  *  \param value  The value that has been written.
 **/
-extern void rvviDutFprSet(
-    uint32_t hartId,
-    uint32_t index,
-    uint64_t value);
+import "DPI-C" function void rvviDutFprSet(
+    input int     hartId,
+    input int     index,
+    input longint value);
 
 /*! \brief Notify RVVI that a DUT GPR has been written to.
  *
@@ -138,10 +125,10 @@ extern void rvviDutFprSet(
  *  \param index  The GPR index within the register file.
  *  \param value  The value that has been written.
 **/
-extern void rvviDutGprSet(
-    uint32_t hartId,
-    uint32_t index,
-    uint64_t value);
+import "DPI-C" function void rvviDutGprSet(
+    input int     hartId,
+    input int     index,
+    input longint value);
 
 /*! \brief Notify RVVI that a DUT CSR has been written to.
  *
@@ -149,10 +136,10 @@ extern void rvviDutGprSet(
  *  \param index  The CSR index (0x0 to 0xfff).
  *  \param value  The value that has been written.
 **/
-extern void rvviDutCsrSet(
-    uint32_t hartId,
-    uint32_t index,
-    uint64_t value);
+import "DPI-C" function void rvviDutCsrSet(
+    input int     hartId,
+    input int     index,
+    input longint value);
 
 /*! \brief Propagate a net change to the reference model.
  *
@@ -161,9 +148,9 @@ extern void rvviDutCsrSet(
  *
  *  \sa rvviRefNetIndexGet()
 **/
-extern void rvviRefNetSet(
-    uint64_t index,
-    uint64_t value);
+import "DPI-C" function void rvviRefNetSet(
+    input longint index,
+    input longint value);
 
 /*! \brief Notify the reference that a DUT instruction has retired.
  *
@@ -179,10 +166,10 @@ extern void rvviRefNetSet(
  *
  *  \sa rvviDutException()
 **/
-extern void rvviDutRetire(
-    uint32_t hartId,
-    uint64_t dutPc,
-    uint64_t dutInsBin);
+import "DPI-C" function void rvviDutRetire(
+    input int     hartId,
+    input longint dutPc,
+    input longint dutInsBin);
 
 /*! \brief Notify the reference that the DUT raised an exception.
  *
@@ -191,9 +178,9 @@ extern void rvviDutRetire(
  *
  *  \sa rvviRefOnRetire()
 **/
-extern void rvviDutException(
-    uint32_t hartId,
-    uint64_t dutPc);
+import "DPI-C" function void rvviDutException(
+    input int     hartId,
+    input longint dutPc);
 
 /*! \brief Step the reference model until the next event.
  *
@@ -201,7 +188,8 @@ extern void rvviDutException(
  *
  *  \return Returns RVVI_TRUE if the step was successful else RVVI_FALSE.
 **/
-extern bool_t rvviRefEventStep(uint32_t hartId);
+import "DPI-C" function int rvviRefEventStep(
+	input int hartId);
 
 /*! \brief Compare all GPR register values between reference and DUT.
  *
@@ -209,7 +197,8 @@ extern bool_t rvviRefEventStep(uint32_t hartId);
  *
  *  \return RVVI_FALSE if there are any mismatches, otherwise RVVI_TRUE.
 **/
-extern bool_t rvviRefGprsCompare(uint32_t hartId);
+import "DPI-C" function int rvviRefGprsCompare(
+	input int hartId);
 
 /*! \brief Compare GPR registers that have been written to between the reference
  *         and DUT. This can be seen as a super set of the rvviRefGprsCompare
@@ -222,9 +211,9 @@ extern bool_t rvviRefGprsCompare(uint32_t hartId);
  *
  *  \return RVVI_FALSE if there are any mismatches, otherwise RVVI_TRUE.
 **/
-extern bool_t rvviRefGprsCompareWritten(
-    uint32_t hartId,
-    bool_t   ignoreX0);
+import "DPI-C" function int rvviRefGprsCompareWritten(
+    input int hartId,
+    input int    ignoreX0);
 
 /*! \brief Compare retired instruction bytes between reference and DUT.
  *
@@ -232,7 +221,8 @@ extern bool_t rvviRefGprsCompareWritten(
  *
  *  \return RVVI_FALSE if there are any mismatches, otherwise RVVI_TRUE.
 **/
-extern bool_t rvviRefInsBinCompare(uint32_t hartId);
+import "DPI-C" function int rvviRefInsBinCompare(
+	input int hartId);
 
 /*! \brief Compare program counter for the retired instructions between DUT and
  *         the the reference model.
@@ -241,7 +231,8 @@ extern bool_t rvviRefInsBinCompare(uint32_t hartId);
  *
  *  \return RVVI_FALSE if there are any mismatches, otherwise RVVI_TRUE.
 **/
-extern bool_t rvviRefPcCompare(uint32_t hartId);
+import "DPI-C" function int rvviRefPcCompare(
+	input int hartId);
 
 /*! \brief Compare CSRs values between DUT and the the reference model.
  *
@@ -249,7 +240,8 @@ extern bool_t rvviRefPcCompare(uint32_t hartId);
  *
  *  \return RVVI_FALSE if there are any mismatches, otherwise RVVI_TRUE.
 **/
-extern bool_t rvviRefCsrsCompare(uint32_t hartId);
+import "DPI-C" function int rvviRefCsrsCompare(
+	input int hartId);
 
 /*! \brief Compare all RVV vector register values between reference and DUT.
  *
@@ -257,7 +249,8 @@ extern bool_t rvviRefCsrsCompare(uint32_t hartId);
  *
  *  \return RVVI_FALSE if there are any mismatches, otherwise RVVI_TRUE.
 **/
-extern bool_t rvviRefVrsCompare(uint32_t hartId);
+import "DPI-C" function int rvviRefVrsCompare(
+	input int hartId);
 
 /*! \brief Compare all floating point register values between reference and DUT.
  *
@@ -265,7 +258,8 @@ extern bool_t rvviRefVrsCompare(uint32_t hartId);
  *
  *  \return RVVI_FALSE if there are any mismatches, otherwise RVVI_TRUE.
 **/
-extern bool_t rvviRefFprsCompare(uint32_t hartId);
+import "DPI-C" function int rvviRefFprsCompare(
+	input int hartId);
 
 /*! \brief Read a GPR value from a hart in the reference model.
  *
@@ -274,9 +268,9 @@ extern bool_t rvviRefFprsCompare(uint32_t hartId);
  *
  *  \return The GPR register value read from the specified hart.
 **/
-extern uint64_t rvviRefGprGet(
-    uint32_t hartId,
-    uint32_t index);
+import "DPI-C" function longint rvviRefGprGet(
+    input int hartId,
+    input int index);
 
 /*! \brief Return the program counter of a hart in the reference model.
  *
@@ -284,7 +278,8 @@ extern uint64_t rvviRefGprGet(
  *
  *  \return The program counter of the specified hart.
 **/
-extern uint64_t rvviRefPcGet(uint32_t hartId);
+import "DPI-C" function longint rvviRefPcGet(
+	input int hartId);
 
 /*! \brief Read a CSR value from a hart in the reference model.
  *
@@ -293,9 +288,9 @@ extern uint64_t rvviRefPcGet(uint32_t hartId);
  *
  *  \return The CSR register value read from the specified hart.
 **/
-extern uint64_t rvviRefCsrGet(
-    uint32_t hartId,
-    uint32_t index);
+import "DPI-C" function longint rvviRefCsrGet(
+    input int hartId,
+    input int index);
 
 /*! \brief Return the binary representation of the previously retired
  *         instruction.
@@ -304,7 +299,8 @@ extern uint64_t rvviRefCsrGet(
  *
  *  \return The instruction bytes.
 **/
-extern uint64_t rvviRefInsBinGet(uint32_t hartId);
+import "DPI-C" function longint rvviRefInsBinGet(
+	input int hartId);
 
 /*! \brief Read a floating point register value from a hart in the reference
  *         model.
@@ -314,9 +310,9 @@ extern uint64_t rvviRefInsBinGet(uint32_t hartId);
  *
  *  \return The GPR register value read from the specified hart.
 **/
-extern uint64_t rvviRefFprGet(
-    uint32_t hartId,
-    uint32_t index);
+import "DPI-C" function longint rvviRefFprGet(
+    input int hartId,
+    input int index);
 
 /*! \brief Read a RVV vector register value from a hart in the reference model.
  *
@@ -325,11 +321,13 @@ extern uint64_t rvviRefFprGet(
  *  \param data   Pointer to memory that the vector regsiter will be written to.
  *  \param size   Size of the memory region pointed to by data.
 **/
-extern void rvviRefVrGet(
-    uint32_t  hartId,
-    uint32_t  index,
-    void     *data,
-    uint32_t  size);
+/**
+import "DPI-C" function void rvviRefVrGet(
+    input int  hartId,
+    input int  index,
+    void      *data,
+    input int  size);
+**/
 
 /*! \brief Notify RVVI that the DUT has been written to memory.
  *
@@ -343,11 +341,11 @@ extern void rvviRefVrGet(
  *  \note byteEnableMask bit 0 corresponds to address+0, bEnMask bit 1
  *        corresponds to address+1, etc.
 **/
-extern void rvviDutBusWrite(
-    uint32_t hartId,
-    uint64_t address,
-    uint64_t value,
-    uint32_t byteEnableMask);
+import "DPI-C" function void rvviDutBusWrite(
+    input int     hartId,
+    input longint address,
+    input longint value,
+    input int     byteEnableMask);
 
 /*! \brief Write data to the reference models physical memory space.
  *
@@ -356,11 +354,11 @@ extern void rvviDutBusWrite(
  *  \param data    The data byte being written into memory.
  *  \param size    Size of the data being written in bytes (1 to 8).
 **/
-extern void rvviRefMemoryWrite(
-    uint32_t hartId,
-    uint64_t address,
-    uint64_t data,
-    uint32_t size);
+import "DPI-C" function void rvviRefMemoryWrite(
+    input int     hartId,
+    input longint address,
+    input longint data,
+    input int     size);
 
 /*! \brief Read data from the reference models physical memory space.
  *
@@ -368,11 +366,9 @@ extern void rvviRefMemoryWrite(
  *  \param address The address being read from.
  *  \param size    Size of the data being written in bytes (1 to 8).
 **/
-extern uint64_t rvviRefMemoryRead(
-    uint32_t hartId,
-    uint64_t address,
-    uint32_t size);
+import "DPI-C" function longint rvviRefMemoryRead(
+    input int     hartId,
+    input longint address,
+    input int     size);
 
-#ifdef __cplusplus
-}  // extern "C"
-#endif
+`endif  // INCLUDE_RVVI_SVH

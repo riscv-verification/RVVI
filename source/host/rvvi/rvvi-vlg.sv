@@ -33,6 +33,7 @@ interface RVVI_VLG #(
     wire              valid            [(NHART-1):0][(NRET-1):0];   // Retired instruction
     wire [(XLEN-1):0] order            [(NHART-1):0][(NRET-1):0];   // Unique instruction order count (no gaps or reuse)
     wire [(ILEN-1):0] insn             [(NHART-1):0][(NRET-1):0];   // Instruction bit pattern
+    wire [2:0]        isize            [(NHART-1):0][(NRET-1):0];   // Size of retired instruction (bytes)
     wire              trap             [(NHART-1):0][(NRET-1):0];   // Trapped instruction
     wire              halt             [(NHART-1):0][(NRET-1):0];   // Halted  instruction
     wire              intr             [(NHART-1):0][(NRET-1):0];   // (RVFI Legacy) Flag first instruction of trap handler
@@ -43,25 +44,24 @@ interface RVVI_VLG #(
     wire [(XLEN-1):0] pc_wdata         [(NHART-1):0][(NRET-1):0];   // PC of next instruction
 
     // X Registers
-    wire [4:0]        x_addr           [(NHART-1):0][(NRET-1):0];   // X register index
     wire [(XLEN-1):0] x_wdata          [(NHART-1):0][(NRET-1):0];   // X data value
-    wire              x_wb             [(NHART-1):0][(NRET-1):0];   // X data writeback enable
+    wire [31:0]       x_wb             [(NHART-1):0][(NRET-1):0];   // X data writeback (change) flag
 
     // F Registers                    
-    wire [4:0]        f_addr           [(NHART-1):0][(NRET-1):0];   // F register index
     wire [(FLEN-1):0] f_wdata          [(NHART-1):0][(NRET-1):0];   // F data value
-    wire              f_wb             [(NHART-1):0][(NRET-1):0];   // F data writeback enable
+    wire [31:0]       f_wb             [(NHART-1):0][(NRET-1):0];   // F data writeback (change) flag
 
     // V Registers                    
-    wire [4:0]        v_addr           [(NHART-1):0][(NRET-1):0];   // V register index
     wire [(VLEN-1):0] v_wdata          [(NHART-1):0][(NRET-1):0];   // V data value
-    wire              v_wb             [(NHART-1):0][(NRET-1):0];   // V data writeback enable
+    wire [31:0]       v_wb             [(NHART-1):0][(NRET-1):0];   // V data writeback (change) flag
 
     // Control & State Registers
     wire [4095:0][(XLEN-1):0]  csr     [(NHART-1):0][(NRET-1):0];   // Full CSR Address range
     wire [4095:0]              csr_wb  [(NHART-1):0][(NRET-1):0];   // CSR writeback (change) flag
 
     // Signals Reset & Interrupts - TBD
+    
+    wire [63:0]       pin_mip          [(NHART-1):0];               // Interrupts
 
 endinterface
 

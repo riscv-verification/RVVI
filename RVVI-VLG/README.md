@@ -79,17 +79,23 @@ device, for observing state transitions and state values.
 - This is the address of the next instruction to be executed after a trap or
   valid notify event.
 
-### x_addr, x_wdata, x_wb
-- If `x_wb` is true, then an X register writeback has occured, the index is
-  indicated by `x_addr` the value is indicated by `x_wdata`.
+### x_wdata, x_wb
+- If the bit position within `x_wb` is true, then the position indicates a
+  write into X, eg if `x_wb=0x4`, then the  register X2 has been written. 
+  If `x_wb=(1<<4 | 1<<1)` then register X4 and X1 have been written concurrently 
+  x_wb=0x0 indicates no written X register.
 
-### f_addr, f_wdata, f_wb
-- If `f_wb` is true, then an F/D register writeback has occured, the index is
-  indicated by `f_addr` and value is indicated by `f_wdata`.
+### f_wb, f_wdata
+- If the bit position within `f_wb` is true, then the position indicates a
+  write into F, eg if `f_wb=0x4`, then the  register F2 has been written. 
+  If `f_wb=(1<<4 | 1<<1)` then register F4 and F1 have been written concurrently 
+  f_wb=0x0 indicates no written F register.
 
-### v_addr, v_wdata, v_wb
-- If `v_wb` is true, then a V register writeback has occured, the index is
-  indicated by `v_addr` and value is indicated by `v_wdata`.
+### v_wb, v_wdata
+- If the bit position within `v_wb` is true, then the position indicates a
+  write into V, eg if `v_wb=0x4`, then the  register V2 has been written. 
+  If `v_wb=(1<<4 | 1<<1)` then register V4 and V1 have been written concurrently 
+  v_wb=0x0 indicates no written V register.
 
 ### csr, csr_wb
 - If the bit position within `csr_wb` is true, then a the position indicates a

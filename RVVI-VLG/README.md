@@ -97,7 +97,7 @@ device, for observing state transitions and state values.
   If `v_wb=(1<<4 | 1<<1)` then register V4 and V1 have been written concurrently 
   v_wb=0x0 indicates no written V register.
 
-### csr, csr_wb
+### csr_wb, csr
 - If the bit position within `csr_wb` is true, then a the position indicates a
   write into csr, eg if `csr_wb=0x1`, then the ustatus register (address 0x000)
   has been written. If `csr_wb=(1<<4 | 1<<0)` then address 0x004 and 0x001 have

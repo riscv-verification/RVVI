@@ -97,7 +97,7 @@ of open-source RISC-V cores.
 There is the RISC-V Formal Interface (RVFI)
 (https://github.com/SymbioticEDA/riscv-formal) from SymbioticEDA which is a very
 good interface for providing observation into a running core by streaming what
-is executing on the core (i.e. the basic tracer funtionality) - but for quality
+is executing on the core (i.e. the basic tracer functionality) - but for quality
 RISC-V processor DV more is needed. Hence the need for RVVI. The RVVI-VLG
 interface has some parts very similar to the RVFI formal interface and RVVI can
 be thought of as a superset of RVFI.

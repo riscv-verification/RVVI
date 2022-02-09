@@ -1,4 +1,4 @@
-# RISC-V Verification Interface (RVVI) Version 0.5
+# RISC-V Verification Interface (RVVI) Version 0.6
 ==============================================================
 
 This is a work in progress.
@@ -109,11 +109,11 @@ be thought of as a superset of RVFI.
 The specification of the interfaces can be found in different directories of
 this repository.
 
-[RVVI-VLG Verilog](RVVI-VLG)
+[RVVI-VLG Verilog](RVVI-VLG/README.md)
 
-[RVVI-API referance model subsystem API](RVVI-API)
+[RVVI-API referance model subsystem API](RVVI-API/README.md)
 
-[RVVI-VPI Virtual Periheral Inrerface](RVVI-VPI)
+[RVVI-VPI Virtual Periheral Inrerface](RVVI-VPI/README.md)
 
 
 --------------

@@ -72,7 +72,7 @@ test benches.
 
 
 -----
-## The common Virtual Periherals used in the test bench - RVVI-VPI
+## The common Virtual Peripherals used in the test bench - RVVI-VPI
 
 When testing a processor there are components needed in the test bench to
 interact with the processor - for example a virtual UART to print information
@@ -113,7 +113,7 @@ this repository.
 
 [RVVI-API referance model subsystem API](RVVI-API/README.md)
 
-[RVVI-VPI Virtual Periheral Inrerface](RVVI-VPI/README.md)
+[RVVI-VPI Virtual Peripheral Interface](RVVI-VPI/README.md)
 
 
 --------------

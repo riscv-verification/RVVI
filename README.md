@@ -1,4 +1,4 @@
-# RISC-V Verification Interface (RVVI) Version 0.5
+# RISC-V Verification Interface (RVVI) Version 1.0
 ==============================================================
 
 This is a work in progress.
@@ -72,7 +72,7 @@ test benches.
 
 
 -----
-## The common Virtual Periherals used in the test bench - RVVI-VPI
+## The common Virtual Peripherals used in the test bench - RVVI-VPI
 
 When testing a processor there are components needed in the test bench to
 interact with the processor - for example a virtual UART to print information
@@ -109,11 +109,11 @@ be thought of as a superset of RVFI.
 The specification of the interfaces can be found in different directories of
 this repository.
 
-[RVVI-VLG Verilog](RVVI-VLG)
+[RVVI-VLG Verilog](RVVI-VLG/README.md)
 
-[RVVI-API referance model subsystem API](RVVI-API)
+[RVVI-API referance model subsystem API](RVVI-API/README.md)
 
-[RVVI-VPI Virtual Periheral Inrerface](RVVI-VPI)
+[RVVI-VPI Virtual Peripheral Interface](RVVI-VPI/README.md)
 
 
 --------------

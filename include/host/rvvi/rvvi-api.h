@@ -1,19 +1,25 @@
 /*
- *
  * Copyright (c) 2005-2022 Imperas Software Ltd., www.imperas.com
  *
- * The contents of this file are provided under the Software License Agreement
- * that you accepted before downloading this file.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This header forms part of the Software but may be included and used unaltered
- * in derivative works.
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * For more information, please visit www.OVPworld.org or www.imperas.com
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied.
+ *
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
  */
 
 #pragma once
 
-/*! \file rvvi.h
+/*! \file rvvi-api.h
  *  \brief RVVI interface, C API header.
 **/
 
@@ -29,7 +35,7 @@ typedef uint32_t bool_t;
  *
  *  \note This should be passed into the rvviCheckVersion() function.
  */
-#define RVVI_API_VERSION 5
+#define RVVI_API_VERSION 10
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,10 +55,10 @@ extern bool_t rvviVersionCheck(
 
 /*! \brief Initialize reference.
  *
- *  \param programPath Path to the ELF file the reference model will execute.
- *                     This parameter can be NULL.
- *  \param vendor      Vendor string that the reference model will use.
- *  \param variant     Variant string that the reference model will use.
+ *  \param programPath  Path to the ELF file the reference model will execute.
+ *                      This parameter can be NULL.
+ *  \param vendor       Vendor string that the reference model will use.
+ *  \param variant      Variant string that the reference model will use.
  *
  *  \return Returns RVVI_TRUE if the reference was initialized successfully else
  *          RVVI_FALSE.
@@ -85,15 +91,15 @@ extern bool_t rvviRefShutdown(void);
 
 /*! \brief Notify the reference that a CSR is considered volatile.
  *
- *  \param hartId The hart that has updated its GPR.
- *  \param index  Index of the CSR register to be considered volatile
- *                (0x0 to 0xfff).
+ *  \param hartId   The hart that has updated its GPR.
+ *  \param csrIndex Index of the CSR register to be considered volatile
+ *                  (0x0 to 0xfff).
  *
  *  \return Returns RVVI_TRUE if operation was successful else RVVI_FALSE.
 **/
 extern bool_t rvviRefCsrSetVolatile(
     uint32_t hartId,
-    uint32_t index);
+    uint32_t csrIndex);
 
 /*! \brief Lookup a net on the reference model and return its index.
  *
@@ -145,13 +151,13 @@ extern void rvviDutGprSet(
 
 /*! \brief Notify RVVI that a DUT CSR has been written to.
  *
- *  \param hartId The hart that has updated its CSR.
- *  \param index  The CSR index (0x0 to 0xfff).
- *  \param value  The value that has been written.
+ *  \param hartId   The hart that has updated its CSR.
+ *  \param csrIndex The CSR index (0x0 to 0xfff).
+ *  \param value    The value that has been written.
 **/
 extern void rvviDutCsrSet(
     uint32_t hartId,
-    uint32_t index,
+    uint32_t csrIndex,
     uint64_t value);
 
 /*! \brief Propagate a net change to the reference model.
@@ -167,33 +173,36 @@ extern void rvviRefNetSet(
 
 /*! \brief Notify the reference that a DUT instruction has retired.
  *
- * During execution of a rvviDutStep() an instruction has been retired from
- * the DUT pipeline.
+ * After clocking the DUT, notify RVVI that an instruction retired.
  *
- * If an instruction was unable to retire due to an exception rvviRefException()
- * may be issued instead.
+ * If an instruction was unable to retire due to a trap, rvviDutTrap() may be
+ * issued instead.
  *
  *  \param hartId    The hart that has retired an instruction.
  *  \param dutPc     The address of the instruction that has retired.
  *  \param dutInsBin The binary instruction representation.
  *
- *  \sa rvviDutException()
+ *  \sa rvviDutTrap()
 **/
 extern void rvviDutRetire(
     uint32_t hartId,
     uint64_t dutPc,
     uint64_t dutInsBin);
 
-/*! \brief Notify the reference that the DUT raised an exception.
+/*! \brief Notify the reference that the DUT received a trap.
  *
- *  \param hartId The hart that has received the exception.
- *  \param dutPc  The address of the faulting instruction.
+ * After clocking the DUT, notify RVVI that an instruction resulted in a trap.
+ *
+ *  \param hartId    The hart that has received the trap.
+ *  \param dutPc     The address of the faulting instruction.
+ *  \param dutInsBin The binary instruction representation.
  *
  *  \sa rvviRefOnRetire()
 **/
-extern void rvviDutException(
+extern void rvviDutTrap(
     uint32_t hartId,
-    uint64_t dutPc);
+    uint64_t dutPc,
+    uint64_t dutInsBin);
 
 /*! \brief Step the reference model until the next event.
  *
@@ -201,7 +210,8 @@ extern void rvviDutException(
  *
  *  \return Returns RVVI_TRUE if the step was successful else RVVI_FALSE.
 **/
-extern bool_t rvviRefEventStep(uint32_t hartId);
+extern bool_t rvviRefEventStep(
+    uint32_t hartId);
 
 /*! \brief Compare all GPR register values between reference and DUT.
  *
@@ -209,7 +219,8 @@ extern bool_t rvviRefEventStep(uint32_t hartId);
  *
  *  \return RVVI_FALSE if there are any mismatches, otherwise RVVI_TRUE.
 **/
-extern bool_t rvviRefGprsCompare(uint32_t hartId);
+extern bool_t rvviRefGprsCompare(
+    uint32_t hartId);
 
 /*! \brief Compare GPR registers that have been written to between the reference
  *         and DUT. This can be seen as a super set of the rvviRefGprsCompare
@@ -232,7 +243,8 @@ extern bool_t rvviRefGprsCompareWritten(
  *
  *  \return RVVI_FALSE if there are any mismatches, otherwise RVVI_TRUE.
 **/
-extern bool_t rvviRefInsBinCompare(uint32_t hartId);
+extern bool_t rvviRefInsBinCompare(
+    uint32_t hartId);
 
 /*! \brief Compare program counter for the retired instructions between DUT and
  *         the the reference model.
@@ -241,15 +253,28 @@ extern bool_t rvviRefInsBinCompare(uint32_t hartId);
  *
  *  \return RVVI_FALSE if there are any mismatches, otherwise RVVI_TRUE.
 **/
-extern bool_t rvviRefPcCompare(uint32_t hartId);
+extern bool_t rvviRefPcCompare(
+    uint32_t hartId);
 
-/*! \brief Compare CSRs values between DUT and the the reference model.
+/*! \brief Compare a CSR value between DUT and the the reference model.
+ *
+ *  \param hartId The ID of the hart that is being compared.
+ *  \param csrIndex The index of the CSR register being compared.
+ *
+ *  \return RVVI_FALSE if there is a mismatch, otherwise RVVI_TRUE.
+**/
+extern bool_t rvviRefCsrCompare(
+    uint32_t hartId,
+    uint32_t csrIndex);
+
+/*! \brief Compare all CSR values between DUT and the the reference model.
  *
  *  \param hartId The ID of the hart that is being compared.
  *
  *  \return RVVI_FALSE if there are any mismatches, otherwise RVVI_TRUE.
 **/
-extern bool_t rvviRefCsrsCompare(uint32_t hartId);
+extern bool_t rvviRefCsrsCompare(
+    uint32_t hartId);
 
 /*! \brief Compare all RVV vector register values between reference and DUT.
  *
@@ -257,7 +282,8 @@ extern bool_t rvviRefCsrsCompare(uint32_t hartId);
  *
  *  \return RVVI_FALSE if there are any mismatches, otherwise RVVI_TRUE.
 **/
-extern bool_t rvviRefVrsCompare(uint32_t hartId);
+extern bool_t rvviRefVrsCompare(
+    uint32_t hartId);
 
 /*! \brief Compare all floating point register values between reference and DUT.
  *
@@ -265,7 +291,8 @@ extern bool_t rvviRefVrsCompare(uint32_t hartId);
  *
  *  \return RVVI_FALSE if there are any mismatches, otherwise RVVI_TRUE.
 **/
-extern bool_t rvviRefFprsCompare(uint32_t hartId);
+extern bool_t rvviRefFprsCompare(
+    uint32_t hartId);
 
 /*! \brief Read a GPR value from a hart in the reference model.
  *
@@ -278,24 +305,38 @@ extern uint64_t rvviRefGprGet(
     uint32_t hartId,
     uint32_t index);
 
+/*! \brief Read a GPR written mask from the last rvviRefEventStep
+ *
+ *  Each bit index in the mask returned indicates if the corresponding GPR has
+ *  been written to by the reference model.  Ie, if bit 3 is set, then X3 was
+ *  written to.
+ *
+ *  \param hartId The hart to retrieve the GPR written mask from.
+ *
+ *  \return The GPR written mask.
+**/
+extern uint32_t rvviRefGprsWrittenGet(
+    uint32_t hartId);
+
 /*! \brief Return the program counter of a hart in the reference model.
  *
  *  \param hartId The hart to retrieve the PC of.
  *
  *  \return The program counter of the specified hart.
 **/
-extern uint64_t rvviRefPcGet(uint32_t hartId);
+extern uint64_t rvviRefPcGet(
+    uint32_t hartId);
 
 /*! \brief Read a CSR value from a hart in the reference model.
  *
- *  \param hartId The hart to retrieve the CSR of.
- *  \param index  Index of the CSR register to read (0x0 to 0xfff).
+ *  \param hartId   The hart to retrieve the CSR of.
+ *  \param csrIndex Index of the CSR register to read (0x0 to 0xfff).
  *
  *  \return The CSR register value read from the specified hart.
 **/
 extern uint64_t rvviRefCsrGet(
     uint32_t hartId,
-    uint32_t index);
+    uint32_t csrIndex);
 
 /*! \brief Return the binary representation of the previously retired
  *         instruction.
@@ -304,7 +345,8 @@ extern uint64_t rvviRefCsrGet(
  *
  *  \return The instruction bytes.
 **/
-extern uint64_t rvviRefInsBinGet(uint32_t hartId);
+extern uint64_t rvviRefInsBinGet(
+    uint32_t hartId);
 
 /*! \brief Read a floating point register value from a hart in the reference
  *         model.
@@ -367,11 +409,55 @@ extern void rvviRefMemoryWrite(
  *  \param hartId  The hart to read from the perspective of.
  *  \param address The address being read from.
  *  \param size    Size of the data being written in bytes (1 to 8).
+ * 
+ *  \return The data that has been read from reference memory.
 **/
 extern uint64_t rvviRefMemoryRead(
     uint32_t hartId,
     uint64_t address,
     uint32_t size);
+
+/*! \brief Disassemble an arbitrary instruction encoding.
+ *
+ *  \param hartId Hart with the ISA we are disassembling for.
+ *  \param insBin The raw instruction that should be disassembled.
+ * 
+ *  \return Null terminated string containing the disassembly.
+**/
+extern const char *rvviDasmInsBin(
+    uint32_t hartId,
+    uint64_t insBin);
+
+/*! \brief Return the name of a CSR present in the reference model.
+ *
+ *  \param hartId   Hart with the CSR we are looking up the name of.
+ *  \param csrIndex The index of the CSR we are looking up (0x0 to 0xfff).
+ * 
+ *  \return Null terminated string containing the CSR name.
+**/
+extern const char *rvviRefCsrName(
+    uint32_t hartId,
+    uint32_t csrIndex);
+
+/*! \brief Return RVVI_TRUE if a CSR is present in the reference model.
+ *
+ *  \param hartId   Hart with the CSR we are looking up the name of.
+ *  \param csrIndex The index of the CSR we are looking up (0x0 to 0xfff).
+ * 
+ *  \return RVVI_TRUE if the CSR is present in the reference model.
+**/
+extern bool_t rvviRefCsrPresent(
+    uint32_t hartId,
+    uint32_t csrIndex);
+
+/*! \brief Return RVVI_TRUE if FPR registers are present in the reference model.
+ *
+ *  \param hartId Hart which is being checked for an FPR register file.
+ * 
+ *  \return RVVI_TRUE if and FPR register file is present in the reference.
+**/
+extern bool_t rvviRefFprsPresent(
+    uint32_t hartId);
 
 #ifdef __cplusplus
 }  // extern "C"

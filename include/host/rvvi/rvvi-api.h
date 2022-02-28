@@ -91,15 +91,15 @@ extern bool_t rvviRefShutdown(void);
 
 /*! \brief Notify the reference that a CSR is considered volatile.
  *
- *  \param hartId The hart that has updated its GPR.
- *  \param index  Index of the CSR register to be considered volatile
- *                (0x0 to 0xfff).
+ *  \param hartId   The hart that has updated its GPR.
+ *  \param csrIndex Index of the CSR register to be considered volatile
+ *                  (0x0 to 0xfff).
  *
  *  \return Returns RVVI_TRUE if operation was successful else RVVI_FALSE.
 **/
 extern bool_t rvviRefCsrSetVolatile(
     uint32_t hartId,
-    uint32_t index);
+    uint32_t csrIndex);
 
 /*! \brief Lookup a net on the reference model and return its index.
  *
@@ -151,13 +151,13 @@ extern void rvviDutGprSet(
 
 /*! \brief Notify RVVI that a DUT CSR has been written to.
  *
- *  \param hartId The hart that has updated its CSR.
- *  \param index  The CSR index (0x0 to 0xfff).
- *  \param value  The value that has been written.
+ *  \param hartId   The hart that has updated its CSR.
+ *  \param csrIndex The CSR index (0x0 to 0xfff).
+ *  \param value    The value that has been written.
 **/
 extern void rvviDutCsrSet(
     uint32_t hartId,
-    uint32_t index,
+    uint32_t csrIndex,
     uint64_t value);
 
 /*! \brief Propagate a net change to the reference model.
@@ -175,32 +175,31 @@ extern void rvviRefNetSet(
  *
  * After clocking the DUT, notify RVVI that an instruction retired.
  *
- * If an instruction was unable to retire due to an exception rvviRefException()
- * may be issued instead.
+ * If an instruction was unable to retire due to a trap, rvviDutTrap() may be
+ * issued instead.
  *
  *  \param hartId    The hart that has retired an instruction.
  *  \param dutPc     The address of the instruction that has retired.
  *  \param dutInsBin The binary instruction representation.
  *
- *  \sa rvviDutException()
+ *  \sa rvviDutTrap()
 **/
 extern void rvviDutRetire(
     uint32_t hartId,
     uint64_t dutPc,
     uint64_t dutInsBin);
 
-/*! \brief Notify the reference that the DUT raised an exception.
+/*! \brief Notify the reference that the DUT received a trap.
  *
- * After clocking the DUT, notify RVVI that an instruction has raised an
- * exception.
+ * After clocking the DUT, notify RVVI that an instruction resulted in a trap.
  *
- *  \param hartId    The hart that has received the exception.
+ *  \param hartId    The hart that has received the trap.
  *  \param dutPc     The address of the faulting instruction.
  *  \param dutInsBin The binary instruction representation.
  *
  *  \sa rvviRefOnRetire()
 **/
-extern void rvviDutException(
+extern void rvviDutTrap(
     uint32_t hartId,
     uint64_t dutPc,
     uint64_t dutInsBin);
@@ -330,14 +329,14 @@ extern uint64_t rvviRefPcGet(
 
 /*! \brief Read a CSR value from a hart in the reference model.
  *
- *  \param hartId The hart to retrieve the CSR of.
- *  \param index  Index of the CSR register to read (0x0 to 0xfff).
+ *  \param hartId   The hart to retrieve the CSR of.
+ *  \param csrIndex Index of the CSR register to read (0x0 to 0xfff).
  *
  *  \return The CSR register value read from the specified hart.
 **/
 extern uint64_t rvviRefCsrGet(
     uint32_t hartId,
-    uint32_t index);
+    uint32_t csrIndex);
 
 /*! \brief Return the binary representation of the previously retired
  *         instruction.
@@ -431,14 +430,34 @@ extern const char *rvviDasmInsBin(
 
 /*! \brief Return the name of a CSR present in the reference model.
  *
- *  \param hartId Hart with the CSR we are looking up the name of.
- *  \param index  The index of the CSR we are looking up (0x0 to 0xfff).
+ *  \param hartId   Hart with the CSR we are looking up the name of.
+ *  \param csrIndex The index of the CSR we are looking up (0x0 to 0xfff).
  * 
  *  \return Null terminated string containing the CSR name.
 **/
 extern const char *rvviRefCsrName(
     uint32_t hartId,
-    uint32_t index);
+    uint32_t csrIndex);
+
+/*! \brief Return RVVI_TRUE if a CSR is present in the reference model.
+ *
+ *  \param hartId   Hart with the CSR we are looking up the name of.
+ *  \param csrIndex The index of the CSR we are looking up (0x0 to 0xfff).
+ * 
+ *  \return RVVI_TRUE if the CSR is present in the reference model.
+**/
+extern bool_t rvviRefCsrPresent(
+    uint32_t hartId,
+    uint32_t csrIndex);
+
+/*! \brief Return RVVI_TRUE if FPR registers are present in the reference model.
+ *
+ *  \param hartId Hart which is being checked for an FPR register file.
+ * 
+ *  \return RVVI_TRUE if and FPR register file is present in the reference.
+**/
+extern bool_t rvviRefFprsPresent(
+    uint32_t hartId);
 
 #ifdef __cplusplus
 }  // extern "C"

@@ -41,7 +41,7 @@ import "DPI-C" function int rvviRefShutdown();
 
 import "DPI-C" function int rvviRefCsrSetVolatile(
  input int hartId,
- input int index);
+ input int csrIndex);
 
 import "DPI-C" function longint rvviRefNetIndexGet(
  input string name);
@@ -58,7 +58,7 @@ import "DPI-C" function void rvviDutGprSet(
 
 import "DPI-C" function void rvviDutCsrSet(
  input int hartId,
- input int index,
+ input int csrIndex,
  input longint value);
 
 import "DPI-C" function void rvviRefNetSet(
@@ -70,7 +70,7 @@ import "DPI-C" function void rvviDutRetire(
  input longint dutPc,
  input longint dutInsBin);
 
-import "DPI-C" function void rvviDutException(
+import "DPI-C" function void rvviDutTrap(
  input int hartId,
  input longint dutPc,
  input longint dutInsBin);
@@ -116,7 +116,7 @@ import "DPI-C" function longint rvviRefPcGet(
 
 import "DPI-C" function longint rvviRefCsrGet(
  input int hartId,
- input int index);
+ input int csrIndex);
 
 import "DPI-C" function longint rvviRefInsBinGet(
  input int hartId);
@@ -148,6 +148,13 @@ import "DPI-C" function string rvviDasmInsBin(
 
 import "DPI-C" function string rvviRefCsrName(
  input int hartId,
- input int index);
+ input int csrIndex);
+
+import "DPI-C" function int rvviRefCsrPresent(
+ input int hartId,
+ input int csrIndex);
+
+import "DPI-C" function int rvviRefFprsPresent(
+ input int hartId);
 
 `endif  // INCLUDE_RVVI_SVH

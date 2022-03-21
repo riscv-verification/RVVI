@@ -75,7 +75,7 @@ The RVVI-API is a C/C++ API and can be used with C/C++ test benches. RVVI-API
 also is defined with a SystemVerilog DPI wrapper to be used in SystemVerilog
 test benches.
 
-Specification: [RVVI-API referance model subsystem API](RVVI-API/README.md)
+Specification: [RVVI-API reference model subsystem API](RVVI-API/README.md)
 
 
 -----

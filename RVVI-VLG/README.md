@@ -50,14 +50,15 @@ state transitions and state values.
 
 ### order
 - This signal contains the instruction count for the instruction being reported
-  during a valid or trap event.
+  during a retirement or trap event.
 
 ### insn
-- This signal contains the instruction word which is at the trap or valid event.
+- This signal contains the instruction word which is at the trap or retirement
+  event.
 
 ### isize
-- The size of the instruction held in insn, this should be either 2(compressed)
-  or 4(uncompressed).
+- The size of the instruction held in `insn`, this should be either
+  2(compressed) or 4(uncompressed).
 
 ### mode
 - This signal indicates the operating mode (Machine, Supervisor, User).
@@ -67,11 +68,12 @@ state transitions and state values.
   operation.
 
 ### pc_rdata
-- This is the address of the instruction at the point of a trap or valid event.
+- This is the address of the instruction at the point of a `valid` event (trap
+  or retirement).
 
 ### pc_wdata
 - This is the address of the next instruction to be executed after a trap or
-  valid notify event.
+  retirement event.
 
 ### x_wdata, x_wb
 - If the bit position within `x_wb` is true, then the position indicates a write
@@ -120,8 +122,8 @@ follows:
 - This is the number of harts that will be reported on this interface.
 
 ### ISSUE
-- This is the maximum number of instructions that can be retired during a valid
-  event.
+- This is the maximum number of instructions that can be retired during a
+  `valid` event.
 
 
 # RVVI-VLG Interface functions

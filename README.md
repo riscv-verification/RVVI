@@ -1,4 +1,4 @@
-# RISC-V Verification Interface (RVVI) Version 1.0
+# RISC-V Verification Interface (RVVI) Version 1.1
 ==============================================================
 
 This is a work in progress.
@@ -51,7 +51,12 @@ The RVVI-VLG interface includes capabilities for use with simple single hart
 in-order cores to multi-hart, multi-issue, Out-of-Order, cores with asynchronous
 interrupts, and debug modes etc.
 
+Another feature of the RVVI-VLG interface is to allow net changes observed by
+the RISC-V core to be propagated to consumers of the RVVI-VLG interface.
+
 The RVVI-VLG interface is defined in SystemVerilog.
+
+Specification: [RVVI-VLG Verilog](RVVI-VLG/README.md)
 
 
 -----
@@ -70,6 +75,8 @@ The RVVI-API is a C/C++ API and can be used with C/C++ test benches. RVVI-API
 also is defined with a SystemVerilog DPI wrapper to be used in SystemVerilog
 test benches.
 
+Specification: [RVVI-API referance model subsystem API](RVVI-API/README.md)
+
 
 -----
 ## The common Virtual Peripherals used in the test bench - RVVI-VPI
@@ -84,6 +91,8 @@ of test creation.
 
 This RVVI-VPI is currently a work in progress and is looking cover: timers,
 interrupts, debug, random event generators, and printer/log/UART capabilities.
+
+Specification: [RVVI-VPI Virtual Peripheral Interface](RVVI-VPI/README.md)
 
 
 -------
@@ -101,19 +110,6 @@ is executing on the core (i.e. the basic tracer functionality) - but for quality
 RISC-V processor DV more is needed. Hence the need for RVVI. The RVVI-VLG
 interface has some parts very similar to the RVFI formal interface and RVVI can
 be thought of as a superset of RVFI.
-
-
--------------
-## Specifications
-
-The specification of the interfaces can be found in different directories of
-this repository.
-
-[RVVI-VLG Verilog](RVVI-VLG/README.md)
-
-[RVVI-API referance model subsystem API](RVVI-API/README.md)
-
-[RVVI-VPI Virtual Peripheral Interface](RVVI-VPI/README.md)
 
 
 --------------

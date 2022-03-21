@@ -64,9 +64,8 @@ interface RVVI_VLG import rvvi_pkg::*;
     //
     // Synchronization of NETs and REGs
     //
-    wire                       clk1;                                  // SIG clock
-    wire                       clk2;                                  // SIG clock
-    wire                       clkREGData;                            // REG clock
+    wire                       clk1;                                  // clock+1
+    wire                       clk2;                                  // clock+2
     assign #1 clk1 = clk;
     assign #2 clk2 = clk;
 

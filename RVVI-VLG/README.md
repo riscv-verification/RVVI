@@ -34,11 +34,11 @@ state transitions and state values.
 
 ### trap
 - When this signal is true along with `valid`, an instruction execution has
-  undergone an exception for some reason, this could include synchronous or
-  asynchronous exception, or a debug request. This event allows the reading of
-  internal state. The instruction address trapped is indicated by the `pc_rdata`
-  variable. If this signal is false when `valid` is asserted, then an
-  instruction has retired.
+  undergone a synchronous exception (syscalls, etc). This event allows the
+  reading of internal state. The instruction address trapped is indicated by the
+  `pc_rdata` variable. If this signal is false when `valid` is asserted, then an
+  instruction has retired. This signal will not be asserted during an
+  asynchronous exception.
 
 ### halt
 - When this signal is true, it indicates that the hart has gone into a halted

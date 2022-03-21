@@ -17,8 +17,8 @@ The RVVI-VLG interface implementation is comprised of the following files:
 # RVVI-VLG Interface ports
 ----
 This interface provides internal visibility of the state of the RISC-V device.
-All signals on the RVVI_state interface are outputs from the device, for
-observing state transitions and state values.
+All signals on the RVVI interface are outputs from the device, for observing
+state transitions and state values.
 
 ### clk
 - The RVVI_VLG interface is synchronous to the positive edge of the clk signal.

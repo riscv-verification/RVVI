@@ -20,6 +20,9 @@ however for ease of integration, use and robustness.
 There are three main phases a test harness will be in charge of:
 - Initialization
 - The main loop
+  - Propagate internal state and nets
+  - Notify any retirements or traps
+  - Compare state to reference model
 - Shutdown
 
 The initialization phase is as follows:
@@ -27,16 +30,26 @@ The initialization phase is as follows:
   to use and a path to a test case ELF file.
 - Next, the DUT can be initialized, allowing it to make use of RVVI-API
   functions if required.
+- Any CSR registers which are micro architecture dependant can be marked as
+  volatile, not something the reference model can predict.
+- Any regions of memory that are volatile are also marked during the
+  initialization phase.
+- Volatile data will be extracted from the DUT and used by the reference model.
+- Any CSR values that are not reported by the reference model can be identified
+  at this stage so they can be excluded from comparison operations.
 
 The main loop then begins which will continue until a terminal state is
 encountered. The loop is generally constructed as follows:
 - The DUT model is stepped a variable number of cycles.
-- During these cycles the tracer interface will report an instruction retirement
-  or trap.
-- This retirement/trap will be handled by VLG2API which will drive the RVVI-API
-  interface appropriately.
-- When VLG2API is being driven it will handle stepping of the reference model as
-  well as triggering any comparisons between the reference model and DUT.
+- During these cycles the tracer interface will report any instruction
+  retirements or traps undergone by the processors harts.
+- Any changes to the processors nets (interrupt pins, etc) will also be fed to
+  the RVVI-API and by extension the reference model.
+- These retirements/traps will be handled by VLG2API which will drive the
+  RVVI-API interface appropriately.
+- When VLG2API is being driven it will automatically handle stepping of the
+  reference model in resonse to DUT retirements/traps as well as triggering
+  state comparisons between the reference model and DUT.
 - The test bench can exit when too many mismatched have occurred or a special
   halting condition has been detected.
 

@@ -61,18 +61,16 @@ interface RVVI_VLG import rvvi_pkg::*;
     // Control & State Registers
     wire [4095:0][(XLEN-1):0]  csr      [(NHART-1):0][(ISSUE-1):0];   // Full CSR Address range
     wire [4095:0]              csr_wb   [(NHART-1):0][(ISSUE-1):0];   // CSR writeback (change) flag
+    
     //
-    // Synchronization of NETs and REGs
+    // Synchronization of NETs
     //
-    wire                       clk1;                                  // clock+1
-    wire                       clk2;                                  // clock+2
-    assign #1 clk1 = clk;
-    assign #2 clk2 = clk;
-
-
-    // NET functions
+	wire      clkD;
+	assign #1 clkD = clk;
+	
     string name[$];
     int    value[$];
+    int    nets[string];
 
     function automatic void net_push(input string vname, input int vvalue);
         msgdebug($sformatf("%m @ %0t: net_push %0s %0d", $time, vname, vvalue));
@@ -86,6 +84,7 @@ interface RVVI_VLG import rvvi_pkg::*;
         if (name.size() > 0) begin
             vname  = name.pop_back();
             vvalue = value.pop_back();
+            nets[vname] = vvalue;
             msgdebug($sformatf("%m @ %0t: net_pop %0s %0d", $time, vname, vvalue));
             ok = 1;
         end else begin

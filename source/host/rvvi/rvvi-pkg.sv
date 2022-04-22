@@ -29,19 +29,24 @@ package rvvi_pkg;
   import uvm_pkg::*;
 `endif
 
-  int err_cnt     = 0;
-  int warn_cnt    = 0;
-  int cmpd_insn   = 0;
-  int tb_cycles   = 0;
-  int MAX_ERRS    = 0;
-  bit VERBOSE     = 0;
-  bit ENABLE      = 0;
-  bit FATAL       = 1;
-  bit debug_level = 0;
+  int err_cnt                   = 0;
+  int warn_cnt                  = 0;
+  int cmpd_insn                 = 0;
+  int tb_cycles                 = 0;
+  bit debug_level               = 0;
+  int MAX_ERRS                  = 0;
+  bit VERBOSE                   = 0;
+  bit ENABLE                    = 0;
+  bit FATAL                     = 1;
+  bit RAND_STALL_OBI_ENABLE     = 0;
+  bit SIGNATURE_WRITE_ENABLE    = 0;
+
+  string rvvi_pkg_sig_file;
 
   // Always write notes to stdout
   function automatic void msgnote (input string msg);
     `ifdef UVM
+       msg = {msg, "\n"};
       `uvm_info("", msg, UVM_NONE);
     `else
       $display("[NOTE] %s", msg);
@@ -69,7 +74,7 @@ package rvvi_pkg;
   // Always write warning and increment warning count
   function automatic void msgwarn (input string msg);
     `ifdef UVM
-      `uvm_warn("", msg);
+      `uvm_warning("", msg);
     `else
       $display("[WARNING] %s", msg);
       ++warn_cnt;

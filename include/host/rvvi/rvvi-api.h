@@ -27,7 +27,7 @@
 
 typedef uint32_t bool_t;
 
-#define RVVI_API_VERSION 12
+#define RVVI_API_VERSION 15
 #define RVVI_TRUE 1
 #define RVVI_FALSE 0
 #define RVVI_INVALID_INDEX -1
@@ -119,18 +119,31 @@ extern bool_t rvviRefMemorySetVolatile(
 extern uint64_t rvviRefNetIndexGet(
     const char *name);
 
-/*! \brief Notify RVVI that a DUT RVV Vector register has been written to.
+/*! \brief Extract a byte from the reference models vector register.
  *
- *  \param hartId The hart that has updated its FPR.
- *  \param vrIndex The FPR index within the register file (0 to 31).
- *  \param data Memory to copy the vector register from.
- *  \param size Size of the memory buffer data parameter in bytes.
+ *  \param hartId The hart to extract the vector register byte from.
+ *  \param vrIndex The vector register index (0 to 31).
+ *  \param byteIndex The byte offset into the vector register (note 0 is LSB).
+ *
+ *  \return Byte that has been extracted from the vector register.
+**/
+extern uint8_t rvviRefVrGet(
+    uint32_t hartId,
+    uint32_t vrIndex,
+    uint32_t byteIndex);
+
+/*! \brief Notify RVVI that a byte in the DUTs vector register has changed.
+ *
+ *  \param hartId The hart that has updated its vector register.
+ *  \param vrIndex The vector register index (0 to 31).
+ *  \param byteIndex The byte offset into the vector register (note 0 is LSB).
+ *  \param data New byte value in the DUTs vector register.
 **/
 extern void rvviDutVrSet(
     uint32_t hartId,
     uint32_t vrIndex,
-    void *data,
-    uint32_t size);
+    uint32_t byteIndex,
+    uint8_t data);
 
 /*! \brief Notify RVVI that a DUT floating point register has been written to.
  *
@@ -265,6 +278,17 @@ extern void rvviRefCsrCompareEnable(
     uint32_t csrIndex,
     bool_t enableState);
 
+/*! \brief Specify a bitmask to direct bit level CSR comparisons.
+ *
+ *  \param hartId The ID of the hart that this should apply to.
+ *  \param csrIndex The index of the CSR to control the comparison of.
+ *  \param mask Bitmask to enable or disable bits during CSR compare operations. Bits set to 1 will be compared and 0 bits are ignored.
+**/
+extern void rvviRefCsrCompareMask(
+    uint32_t hartId,
+    uint32_t csrIndex,
+    uint64_t mask);
+
 /*! \brief Compare all CSR values between DUT and the the reference model.
  *
  *  This function will compare the value of all CSRs between the reference and the DUT. Note that specific CSRs can be removed from this comparison by using the rvviRefCsrCompareEnable function.
@@ -297,13 +321,13 @@ extern bool_t rvviRefFprsCompare(
 /*! \brief Read a GPR value from a hart in the reference model.
  *
  *  \param hartId The hart to retrieve the GPR from.
- *  \param index Index of the GPR register to read.
+ *  \param gprIndex Index of the GPR register to read.
  *
  *  \return GPR value read from the reference model.
 **/
 extern uint64_t rvviRefGprGet(
     uint32_t hartId,
-    uint32_t index);
+    uint32_t gprIndex);
 
 /*! \brief Read a GPR written mask from the last rvviRefEventStep.
  *
@@ -356,19 +380,6 @@ extern uint64_t rvviRefFprGet(
     uint32_t hartId,
     uint32_t fprIndex);
 
-/*! \brief Read a RVV vector register value from a hart in the reference model.
- *
- *  \param hartId The hart to retrieve the vector register from.
- *  \param vrIndex Index of the vector register to read.
- *  \param data Pointer to memory that the vector regsiter will be written to.
- *  \param size Size of the memory region pointed to by data.
-**/
-extern void rvviRefVrGet(
-    uint32_t hartId,
-    uint32_t vrIndex,
-    void *data,
-    uint32_t size);
-
 /*! \brief Notify RVVI that the DUT has been written to memory.
  *
  *  \param hartId The hart that issued the data bus write.
@@ -414,12 +425,14 @@ extern uint64_t rvviRefMemoryRead(
 /*! \brief Disassemble an arbitrary instruction encoding.
  *
  *  \param hartId Hart with the ISA we are disassembling for.
+ *  \param address Address of the instruction in memory.
  *  \param insBin The raw instruction that should be disassembled.
  *
  *  \return Null terminated string containing the disassembly.
 **/
 extern const char *rvviDasmInsBin(
     uint32_t hartId,
+    uint64_t address,
     uint64_t insBin);
 
 /*! \brief Return the name of a CSR in the reference model.
@@ -463,6 +476,17 @@ extern bool_t rvviRefCsrPresent(
 **/
 extern bool_t rvviRefFprsPresent(
     uint32_t hartId);
+
+/*! \brief Return the ABI name of a FPR in the reference model.
+ *
+ *  \param hartId Hart with the FPR we are looking up the name of.
+ *  \param fprIndex The index of the FPR we are looking up (0 to 31 inclusive).
+ *
+ *  \return Null terminated string containing the FPR ABI name.
+**/
+extern const char *rvviRefFprName(
+    uint32_t hartId,
+    uint32_t fprIndex);
 
 #ifdef __cplusplus
 }  // extern "C"

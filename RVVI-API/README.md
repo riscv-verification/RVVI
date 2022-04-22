@@ -48,7 +48,7 @@ encountered. The loop is generally constructed as follows:
 - These retirements/traps will be handled by VLG2API which will drive the
   RVVI-API interface appropriately.
 - When VLG2API is being driven it will automatically handle stepping of the
-  reference model in resonse to DUT retirements/traps as well as triggering
+  reference model in response to DUT retirements/traps as well as triggering
   state comparisons between the reference model and DUT.
 - The test bench can exit when too many mismatched have occurred or a special
   halting condition has been detected.

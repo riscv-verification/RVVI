@@ -13,9 +13,10 @@ in the following location:
 - [/include/host/rvvi/rvvi-api.svh](../include/host/rvvi/rvvi-api.svh)
   SystemVerilog
 
-This RVVI API can be driven directly from a test-bench, or indirectly via
-instantiation of the VLG2API verilog module. It is recommended to use VLG2API
-however for ease of integration, use and robustness.
+There are two general approaches for driving the RVVI-API interface:
+- Directly from a test bench via DPI calls.
+- Indirectly by a verlog module which monitors the RVVI-VLG interface (such as
+  VLG2API provided as part of ImperasDV) and issues the appropriate calls.
 
 There are three main phases a test harness will be in charge of:
 - Initialization

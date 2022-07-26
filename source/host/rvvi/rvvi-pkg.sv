@@ -29,22 +29,30 @@ package rvvi_pkg;
   import uvm_pkg::*;
 `endif
 
-  int err_cnt                   = 0;
-  int warn_cnt                  = 0;
-  int cmpd_insn                 = 0;
-  int tb_cycles                 = 0;
-  bit debug_level               = 0;
-  int MAX_ERRS                  = 0;
-  bit VERBOSE                   = 0;
-  bit ENABLE                    = 0;
-  bit FATAL                     = 1;
-  bit RAND_STALL_OBI_ENABLE     = 0;
-  bit SIGNATURE_WRITE_ENABLE    = 0;
+  // current number of errors observed
+  int err_cnt                = 0;
+  // current number of warnings overved
+  int warn_cnt               = 0;
+  int cmpd_insn              = 0;
+  int tb_cycles              = 0;
+  bit debug_level            = 0;
+
+  // The number of permissable errors during a test run.  If set to 0 then
+  // the simulation will not halt due to any number of errors.
+  int MAX_ERRS               = 0;
+
+  // Enable verbose messages
+  bit VERBOSE                = 0;
+
+  // Enable the vlg2log module
+  bit VLG2LOG_ENABLE         = 0;
+
+  bit FATAL                  = 1;
 
   string rvvi_pkg_sig_file;
 
   // Always write notes to stdout
-  function automatic void msgnote (input string msg);
+  function automatic void msgnote(input string msg);
     `ifdef UVM
        msg = {msg, "\n"};
       `uvm_info("", msg, UVM_NONE);
@@ -54,7 +62,7 @@ package rvvi_pkg;
   endfunction: msgnote
 
   // Write debug messages if debug_level > 0
-  function automatic void msgdebug (input string msg);
+  function automatic void msgdebug(input string msg);
     `ifdef UVM
       `uvm_info("", msg, UVM_DEBUG);
     `else
@@ -63,7 +71,7 @@ package rvvi_pkg;
   endfunction: msgdebug
 
   // Write verbose messages if verbose > 0
-  function automatic void msgverbose (input string msg);
+  function automatic void msgverbose(input string msg);
     `ifdef UVM
       `uvm_info("", msg, UVM_NONE);
     `else
@@ -72,7 +80,7 @@ package rvvi_pkg;
   endfunction: msgverbose
 
   // Always write warning and increment warning count
-  function automatic void msgwarn (input string msg);
+  function automatic void msgwarn(input string msg);
     `ifdef UVM
       `uvm_warning("", msg);
     `else
@@ -82,13 +90,13 @@ package rvvi_pkg;
   endfunction: msgwarn
 
   // Always write errors and increment error count
-  function automatic void msgerror (input string msg);
+  function automatic void msgerror(input string msg);
     `ifdef UVM
       `uvm_error("", msg);
     `else
       $display("[ERROR] %s", msg);
       ++err_cnt;
-      if (err_cnt >= MAX_ERRS) begin
+      if (MAX_ERRS != 0 && err_cnt >= MAX_ERRS) begin
         msgfatal($sformatf("\n\n!!!\n!!! %m @ t=%0t: FATAL: too many errors!\n!!!", $time));
       end
     `endif
@@ -103,10 +111,10 @@ package rvvi_pkg;
       freason = reason;
     end
 
-    terminate_sim(freason, FATAL);
+    terminatesim(freason, FATAL);
   endfunction
 
-  function automatic void terminate_sim(input string reason = "", input bit fatal = 0);
+  function automatic void terminatesim(input string reason = "", input bit fatal = 0);
     automatic string tmsg, treason;
 
     if (reason == "") begin
@@ -115,10 +123,6 @@ package rvvi_pkg;
     else begin
       treason = reason;
     end
-
-    //if (cmpd_insn == 0) begin
-    //  msgerror($sformatf("%m @ %0t: No instructions compared!", $time));
-    //end
 
     tmsg = $sformatf("%m @ %0t:\n", $time);
     tmsg = {tmsg, $sformatf("       %0s: %s\n", (fatal ? "FATAL" : "Normal termination"), treason)};

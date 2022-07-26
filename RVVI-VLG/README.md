@@ -99,6 +99,14 @@ state transitions and state values.
   has been written. If `csr_wb=(1<<4 | 1<<0)` then address 0x004 and 0x001 have
   been written concurrently csr_wb=0x0 indicates no written csr.
 
+### lrsc_cancel
+- If this signal is true then this indicates that the reference model should
+  clear any current LR/SC reservation _after_ the retirement of the current
+  instruction.
+  This signal should _NOT_ be used to indicate reservation cancellations caused
+  by the normal operation of the `SC` instruction.  Use of this signal is only
+  to propagate _implementation defined_ cancellations to the reference model.
+
 
 # RVVI-VLG Interface parameters
 ----

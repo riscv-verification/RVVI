@@ -20,7 +20,7 @@
 `ifndef INCLUDE_RVVI_SVH
 `define INCLUDE_RVVI_SVH
 
-`define RVVI_API_VERSION 15
+`define RVVI_API_VERSION 18
 `define RVVI_TRUE 1
 `define RVVI_FALSE 0
 `define RVVI_INVALID_INDEX -1
@@ -32,8 +32,7 @@ import "DPI-C" function int rvviRefInit(
     input string programPath,
     input string vendor,
     input string variant,
-    input int addressBusWidth,
-    input int asyncDV);
+    input int addressBusWidth);
 
 import "DPI-C" function int rvviRefPcSet(
     input int hartId,
@@ -79,9 +78,16 @@ import "DPI-C" function void rvviDutCsrSet(
     input int csrIndex,
     input longint value);
 
+import "DPI-C" function void rvviRefNetGroupSet(
+    input longint netIndex,
+    input int group);
+
 import "DPI-C" function void rvviRefNetSet(
     input longint netIndex,
     input longint value);
+
+import "DPI-C" function longint rvviRefNetGet(
+    input longint netIndex);
 
 import "DPI-C" function void rvviDutRetire(
     input int hartId,
@@ -92,6 +98,9 @@ import "DPI-C" function void rvviDutTrap(
     input int hartId,
     input longint dutPc,
     input longint dutInsBin);
+
+import "DPI-C" function void rvviRefReservationInvalidate(
+    input int hartId);
 
 import "DPI-C" function int rvviRefEventStep(
     input int hartId);
@@ -132,6 +141,11 @@ import "DPI-C" function int rvviRefVrsCompare(
 import "DPI-C" function int rvviRefFprsCompare(
     input int hartId);
 
+import "DPI-C" function void rvviRefGprSet(
+    input int hartId,
+    input int gprIndex,
+    input longint gprValue);
+
 import "DPI-C" function longint rvviRefGprGet(
     input int hartId,
     input int gprIndex);
@@ -148,6 +162,11 @@ import "DPI-C" function longint rvviRefCsrGet(
 
 import "DPI-C" function longint rvviRefInsBinGet(
     input int hartId);
+
+import "DPI-C" function void rvviRefFprSet(
+    input int hartId,
+    input int fprIndex,
+    input longint fprValue);
 
 import "DPI-C" function longint rvviRefFprGet(
     input int hartId,
@@ -190,8 +209,18 @@ import "DPI-C" function int rvviRefCsrPresent(
 import "DPI-C" function int rvviRefFprsPresent(
     input int hartId);
 
+import "DPI-C" function int rvviRefVrsPresent(
+    input int hartId);
+
 import "DPI-C" function string rvviRefFprName(
     input int hartId,
     input int fprIndex);
+
+import "DPI-C" function string rvviRefVrName(
+    input int hartId,
+    input int vrIndex);
+
+import "DPI-C" function string rvviErrorGet(
+    );
 
 `endif  // INCLUDE_RVVI_SVH

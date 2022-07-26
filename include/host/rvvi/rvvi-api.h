@@ -27,7 +27,7 @@
 
 typedef uint32_t bool_t;
 
-#define RVVI_API_VERSION 15
+#define RVVI_API_VERSION 18
 #define RVVI_TRUE 1
 #define RVVI_FALSE 0
 #define RVVI_INVALID_INDEX -1
@@ -53,7 +53,6 @@ extern bool_t rvviVersionCheck(
  *  \param vendor Vendor string that the reference model will use.
  *  \param variant Variant string that the reference model will use.
  *  \param addressBusWidth The width in bits of the processors address bus. Set to 0 to use the maximum available width.
- *  \param asyncDV Set to RVVI_TRUE to enable asynchronous DV support.
  *
  *  \return RVVI_TRUE if the reference was initialized successfully else RVVI_FALSE.
  *
@@ -63,8 +62,7 @@ extern bool_t rvviRefInit(
     const char *programPath,
     const char *vendor,
     const char *variant,
-    uint32_t addressBusWidth,
-    bool_t asyncDV);
+    uint32_t addressBusWidth);
 
 /*! \brief Force the PC of the reference model to be particular value.
  *
@@ -178,6 +176,15 @@ extern void rvviDutCsrSet(
     uint32_t csrIndex,
     uint64_t value);
 
+/*! \brief Place a net in a specific net group.
+ *
+ *  \param netIndex The net index returned prior by rvviRefNetIndexGet().
+ *  \param group The group index to place this net into.
+**/
+extern void rvviRefNetGroupSet(
+    uint64_t netIndex,
+    uint32_t group);
+
 /*! \brief Propagate a net change to the reference model.
  *
  *  \param netIndex The net index returned prior by rvviRefNetIndexGet().
@@ -186,6 +193,15 @@ extern void rvviDutCsrSet(
 extern void rvviRefNetSet(
     uint64_t netIndex,
     uint64_t value);
+
+/*! \brief Read the state of a net on the reference model.
+ *
+ *  \param netIndex The net index returned prior by rvviRefNetIndexGet().
+ *
+ *  \return The value present on the specified net.
+**/
+extern uint64_t rvviRefNetGet(
+    uint64_t netIndex);
 
 /*! \brief Notify the reference that a DUT instruction has retired.
  *
@@ -208,6 +224,13 @@ extern void rvviDutTrap(
     uint32_t hartId,
     uint64_t dutPc,
     uint64_t dutInsBin);
+
+/*! \brief Invalidate the reference models LR/SC reservation.
+ *
+ *  \param hartId The hart of which the LR/SC reservation will be made invalid.
+**/
+extern void rvviRefReservationInvalidate(
+    uint32_t hartId);
 
 /*! \brief Step the reference model until the next event.
  *
@@ -318,6 +341,17 @@ extern bool_t rvviRefVrsCompare(
 extern bool_t rvviRefFprsCompare(
     uint32_t hartId);
 
+/*! \brief Write to the GPR of a hart in the reference model.
+ *
+ *  \param hartId The hart to write the GPR of.
+ *  \param gprIndex Index of the GPR register to write.
+ *  \param gprValue Value to write into the GPR register.
+**/
+extern void rvviRefGprSet(
+    uint32_t hartId,
+    uint32_t gprIndex,
+    uint64_t gprValue);
+
 /*! \brief Read a GPR value from a hart in the reference model.
  *
  *  \param hartId The hart to retrieve the GPR from.
@@ -368,6 +402,17 @@ extern uint64_t rvviRefCsrGet(
 **/
 extern uint64_t rvviRefInsBinGet(
     uint32_t hartId);
+
+/*! \brief Write the value of a floating point register for a hart in the reference model.
+ *
+ *  \param hartId The hart to retrieve the FPR register from.
+ *  \param fprIndex Index of the floating point register to read.
+ *  \param fprValue The bit pattern to be written into the floating point register.
+**/
+extern void rvviRefFprSet(
+    uint32_t hartId,
+    uint32_t fprIndex,
+    uint64_t fprValue);
 
 /*! \brief Read a floating point register value from a hart in the reference model.
  *
@@ -468,25 +513,53 @@ extern bool_t rvviRefCsrPresent(
     uint32_t hartId,
     uint32_t csrIndex);
 
-/*! \brief Check if FPR registers are present in the reference model.
+/*! \brief Check if floating point registers are present in the reference model.
  *
- *  \param hartId Hart with the FPR we are checking the presence of.
+ *  \param hartId Hart Id we are checking for the presence of floating point registers.
  *
- *  \return RVVI_TRUE if the FPR is present in the reference model else RVVI_FALSE.
+ *  \return RVVI_TRUE if the floating point registers are present in the reference model else RVVI_FALSE.
 **/
 extern bool_t rvviRefFprsPresent(
     uint32_t hartId);
 
-/*! \brief Return the ABI name of a FPR in the reference model.
+/*! \brief Check if vector registers are present in the reference model.
+ *
+ *  \param hartId Hart Id we are checking for the presence of vector registers.
+ *
+ *  \return RVVI_TRUE if the vector registers are present in the reference model else RVVI_FALSE.
+**/
+extern bool_t rvviRefVrsPresent(
+    uint32_t hartId);
+
+/*! \brief Return the name of a FPR in the reference model.
  *
  *  \param hartId Hart with the FPR we are looking up the name of.
  *  \param fprIndex The index of the FPR we are looking up (0 to 31 inclusive).
  *
- *  \return Null terminated string containing the FPR ABI name.
+ *  \return Null terminated string containing the FPR name.
 **/
 extern const char *rvviRefFprName(
     uint32_t hartId,
     uint32_t fprIndex);
+
+/*! \brief Return the name of a vector register in the reference model.
+ *
+ *  \param hartId Hart with the VR we are looking up the name of.
+ *  \param vrIndex The index of the VR we are looking up (0 to 31 inclusive).
+ *
+ *  \return Null terminated string containing the VR name.
+**/
+extern const char *rvviRefVrName(
+    uint32_t hartId,
+    uint32_t vrIndex);
+
+/*! \brief Return a string detailing the last RVVI-API error.
+ *
+ *
+ *  \return The error string or an empty string if no error has occurred.
+**/
+extern const char *rvviErrorGet(
+    void);
 
 #ifdef __cplusplus
 }  // extern "C"

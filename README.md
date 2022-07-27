@@ -1,4 +1,4 @@
-# RISC-V Verification Interface (RVVI) Version 1.3
+# RISC-V Verification Interface (RVVI) Version 1.4
 ==============================================================
 
 This is a work in progress.
@@ -12,7 +12,7 @@ between the core RTL, the test bench, and other verification components.
 Each RISC-V core being designed so far has implemented its own specific bespoke
 interfaces for the specific core and the various verification components, and
 has required a specific bespoke test bench. This means with each design, all
-components, and testbench having their own custom interfaces there is very
+components, and test bench having their own custom interfaces there is very
 little re-use that can be made and the process is inefficient and time
 consuming. More effort goes into testing than design and so it is essential
 going forward to make the hardware design verification (HW DV) process as
@@ -43,7 +43,7 @@ Currently there are 3 different areas that RVVI addresses:
 
 First is the interface to the internals of the RTL of the core's
 micro-architecture to provide values, state, and events related to the internal
-signals up to several of the testbench components. Traditionally this was done
+signals up to several of the test bench components. Traditionally this was done
 to provide tracing capabilities such as for log file writing. In the past, this
 interface or similar has been used to create a 'tracer'.
 
@@ -79,7 +79,7 @@ Specification: [RVVI-API reference model subsystem API](RVVI-API/README.md)
 
 
 -----
-## The common Virtual Peripherals used in the test bench - RVVI-VPI
+## The Virtual Verification Peripherals used in the test bench - RVVI-VVP
 
 When testing a processor there are components needed in the test bench to
 interact with the processor - for example a virtual UART to print information
@@ -89,10 +89,10 @@ These components are being defined so that they can be used in C/C++,
 SystemVerilog, test benches, and also in some cases within ISS - to allow ease
 of test creation.
 
-This RVVI-VPI is currently a work in progress and is looking cover: timers,
+This RVVI-VVP is currently a work in progress and is looking cover: timers,
 interrupts, debug, random event generators, and printer/log/UART capabilities.
 
-Specification: [RVVI-VPI Virtual Peripheral Interface](RVVI-VPI/README.md)
+Specification: [RVVI-VVP Virtual Verification Peripheral](RVVI-VVP/README.md)
 
 
 -------

@@ -13,6 +13,10 @@ can be found in the following locations:
 - [/include/host/rvvi/rvvi-api.svh](../include/host/rvvi/rvvi-api.svh)
   SystemVerilog
 
+The associated Doxygen documentation for the `rvvi-api.h` header file can be
+browsed here:
+[www.riscv-verification.org/docs/rvvi/doxygen](https://www.riscv-verification.org/docs/rvvi/doxygen).
+
 There are two general approaches for driving the RVVI-API interface:
 - Directly from a test bench via DPI calls.
 - Indirectly by a verilog module which monitors the RVVI-VLG interface (such as

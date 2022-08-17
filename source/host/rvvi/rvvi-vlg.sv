@@ -22,47 +22,47 @@
 
 interface RVVI_VLG import rvvi_pkg::*;
 #(
-    parameter int ILEN  = 32,
-    parameter int XLEN  = 32,
-    parameter int FLEN  = 32,
-    parameter int VLEN  = 256,
-    parameter int NHART = 1,
-    parameter int ISSUE = 1
+    parameter int ILEN   = 32,  // Instruction length
+    parameter int XLEN   = 32,  // GPR length
+    parameter int FLEN   = 32,  // FPR length
+    parameter int VLEN   = 256, // Vector length
+    parameter int NHART  = 1,   // Number of harts
+    parameter int RETIRE = 1    // Number of instructions that can retire simultaneously
 );
     //
     // RISCV output signals
     //
-    wire                       clk;                                     // interface clock
+    wire                      clk;                                      // Interface clock
 
-    wire                       valid      [(NHART-1):0][(ISSUE-1):0];   // Retired instruction
-    wire [63:0]                order      [(NHART-1):0][(ISSUE-1):0];   // Unique instruction order count (no gaps or reuse)
-    wire [(ILEN-1):0]          insn       [(NHART-1):0][(ISSUE-1):0];   // Instruction bit pattern
-    wire                       trap       [(NHART-1):0][(ISSUE-1):0];   // Trapped instruction
-    wire                       halt       [(NHART-1):0][(ISSUE-1):0];   // Halted  instruction
-    wire                       intr       [(NHART-1):0][(ISSUE-1):0];   // (RVFI Legacy) Flag first instruction of trap handler
-    wire [1:0]                 mode       [(NHART-1):0][(ISSUE-1):0];   // Privilege mode of operation
-    wire [1:0]                 ixl        [(NHART-1):0][(ISSUE-1):0];   // XLEN mode 32/64 bit
+    wire                      valid      [(NHART-1):0][(RETIRE-1):0];   // Retired instruction
+    wire [63:0]               order      [(NHART-1):0][(RETIRE-1):0];   // Unique instruction order count (no gaps or reuse)
+    wire [(ILEN-1):0]         insn       [(NHART-1):0][(RETIRE-1):0];   // Instruction bit pattern
+    wire                      trap       [(NHART-1):0][(RETIRE-1):0];   // Trapped instruction
+    wire                      halt       [(NHART-1):0][(RETIRE-1):0];   // Halted  instruction
+    wire                      intr       [(NHART-1):0][(RETIRE-1):0];   // (RVFI Legacy) Flag first instruction of trap handler
+    wire [1:0]                mode       [(NHART-1):0][(RETIRE-1):0];   // Privilege mode of operation
+    wire [1:0]                ixl        [(NHART-1):0][(RETIRE-1):0];   // XLEN mode 32/64 bit
 
-    wire [(XLEN-1):0]          pc_rdata   [(NHART-1):0][(ISSUE-1):0];   // PC of insn
-    wire [(XLEN-1):0]          pc_wdata   [(NHART-1):0][(ISSUE-1):0];   // PC of next instruction
+    wire [(XLEN-1):0]         pc_rdata   [(NHART-1):0][(RETIRE-1):0];   // PC of insn
+    wire [(XLEN-1):0]         pc_wdata   [(NHART-1):0][(RETIRE-1):0];   // PC of next instruction
 
     // X Registers
-    wire [31:0][(XLEN-1):0]    x_wdata    [(NHART-1):0][(ISSUE-1):0];   // X data value
-    wire [31:0]                x_wb       [(NHART-1):0][(ISSUE-1):0];   // X data writeback (change) flag
+    wire [31:0][(XLEN-1):0]   x_wdata    [(NHART-1):0][(RETIRE-1):0];   // X data value
+    wire [31:0]               x_wb       [(NHART-1):0][(RETIRE-1):0];   // X data writeback (change) flag
 
     // F Registers
-    wire [31:0][(FLEN-1):0]    f_wdata    [(NHART-1):0][(ISSUE-1):0];   // F data value
-    wire [31:0]                f_wb       [(NHART-1):0][(ISSUE-1):0];   // F data writeback (change) flag
+    wire [31:0][(FLEN-1):0]   f_wdata    [(NHART-1):0][(RETIRE-1):0];   // F data value
+    wire [31:0]               f_wb       [(NHART-1):0][(RETIRE-1):0];   // F data writeback (change) flag
 
     // V Registers
-    wire [31:0][(VLEN-1):0]    v_wdata    [(NHART-1):0][(ISSUE-1):0];   // V data value
-    wire [31:0]                v_wb       [(NHART-1):0][(ISSUE-1):0];   // V data writeback (change) flag
+    wire [31:0][(VLEN-1):0]   v_wdata    [(NHART-1):0][(RETIRE-1):0];   // V data value
+    wire [31:0]               v_wb       [(NHART-1):0][(RETIRE-1):0];   // V data writeback (change) flag
 
     // Control & State Registers
-    wire [4095:0][(XLEN-1):0]  csr        [(NHART-1):0][(ISSUE-1):0];   // Full CSR Address range
-    wire [4095:0]              csr_wb     [(NHART-1):0][(ISSUE-1):0];   // CSR writeback (change) flag
+    wire [4095:0][(XLEN-1):0] csr        [(NHART-1):0][(RETIRE-1):0];   // Full CSR Address range
+    wire [4095:0]             csr_wb     [(NHART-1):0][(RETIRE-1):0];   // CSR writeback (change) flag
 
-    wire                       lrsc_cancel[(NHART-1):0][(ISSUE-1):0];   // implementation defined cancel 
+    wire                      lrsc_cancel[(NHART-1):0][(RETIRE-1):0];   // Implementation defined cancel
 
     //
     // Synchronization of NETs

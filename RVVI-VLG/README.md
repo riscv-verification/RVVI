@@ -32,6 +32,14 @@ state transitions and state values.
   other supported registers. The instruction address retired is indicated by the
   pc_rdata variable.
 
+### order
+- This signal contains the instruction count for the instruction being reported
+  during a retirement or trap event.
+
+### insn
+- This signal contains the instruction word which is at the trap or retirement
+  event.
+
 ### trap
 - When this signal is true along with `valid`, an instruction execution has
   undergone a synchronous exception (syscalls, etc). This event allows the
@@ -47,18 +55,6 @@ state transitions and state values.
 ### intr
 - When this signal is true, it indicates that this retired instruction is the
   first instruction which is part of a trap handler.
-
-### order
-- This signal contains the instruction count for the instruction being reported
-  during a retirement or trap event.
-
-### insn
-- This signal contains the instruction word which is at the trap or retirement
-  event.
-
-### isize
-- The size of the instruction held in `insn`, this should be either
-  2(compressed) or 4(uncompressed).
 
 ### mode
 - This signal indicates the operating mode (Machine, Supervisor, User).
@@ -81,19 +77,19 @@ state transitions and state values.
   `x_wb=(1<<4 | 1<<1)` then register X4 and X1 have been written concurrently
   x_wb=0x0 indicates no written X register.
 
-### f_wb, f_wdata
+### f_wdata, f_wb
 - If the bit position within `f_wb` is true, then the position indicates a write
   into F, eg if `f_wb=0x4`, then the register F2 has been written. If
   `f_wb=(1<<4 | 1<<1)` then register F4 and F1 have been written concurrently
   f_wb=0x0 indicates no written F register.
 
-### v_wb, v_wdata
+### v_wdata, v_wb
 - If the bit position within `v_wb` is true, then the position indicates a write
   into V, eg if `v_wb=0x4`, then the register V2 has been written. If
   `v_wb=(1<<4 | 1<<1)` then register V4 and V1 have been written concurrently
   v_wb=0x0 indicates no written V register.
 
-### csr_wb, csr
+### csr, csr_wb
 - If the bit position within `csr_wb` is true, then a the position indicates a
   write into csr, eg if `csr_wb=0x1`, then the ustatus register (address 0x000)
   has been written. If `csr_wb=(1<<4 | 1<<0)` then address 0x004 and 0x001 have
@@ -129,7 +125,7 @@ follows:
 ### NHART
 - This is the number of harts that will be reported on this interface.
 
-### ISSUE
+### RETIRE
 - This is the maximum number of instructions that can be retired during a
   `valid` event.
 

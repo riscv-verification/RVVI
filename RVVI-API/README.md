@@ -15,7 +15,7 @@ can be found in the following locations:
 
 The associated Doxygen documentation for the `rvvi-api.h` header file can be
 browsed here:
-[www.riscv-verification.org/docs/rvvi/doxygen](https://www.riscv-verification.org/docs/rvvi/doxygen).
+- [www.riscv-verification.org/docs/rvvi/doxygen](https://www.riscv-verification.org/docs/rvvi/doxygen).
 
 There are two general approaches for driving the RVVI-API interface:
 - Directly from a test bench via DPI calls.

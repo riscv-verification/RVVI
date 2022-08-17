@@ -1,4 +1,4 @@
-# RISC-V Verification Interface (RVVI) Version 1.4
+# RISC-V Verification Interface (RVVI) Version 1.5
 
 This is a work in progress.
 

@@ -16,7 +16,7 @@
  * limitations under the License.
  *
  */
- 
+
 `ifndef _RVVI_PKG__
 `define _RVVI_PKG__
 
@@ -39,7 +39,11 @@ package rvvi_pkg;
 
   // The number of permissable errors during a test run.  If set to 0 then
   // the simulation will not halt due to any number of errors.
+`ifdef VERILATOR
+  int MAX_ERRS;
+`else
   int MAX_ERRS               = 0;
+`endif  // VERILATOR
 
   // Enable verbose messages
   bit VERBOSE                = 0;

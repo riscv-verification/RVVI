@@ -20,10 +20,22 @@
 `ifndef INCLUDE_RVVI_SVH
 `define INCLUDE_RVVI_SVH
 
-`define RVVI_API_VERSION 18
+`define RVVI_API_VERSION 19
 `define RVVI_TRUE 1
 `define RVVI_FALSE 0
 `define RVVI_INVALID_INDEX -1
+
+typedef enum {
+    RVVI_METRIC_RETIRES = 0,
+    RVVI_METRIC_TRAPS = 1,
+    RVVI_METRIC_MISMATCHES = 2,
+    RVVI_METRIC_COMPARISONS_PC = 3,
+    RVVI_METRIC_COMPARISONS_GPR = 4,
+    RVVI_METRIC_COMPARISONS_FPR = 5,
+    RVVI_METRIC_COMPARISONS_CSR = 6,
+    RVVI_METRIC_COMPARISONS_VR = 7,
+    RVVI_METRIC_COMPARISONS_INSBIN = 8
+} rvviMetricE;
 
 import "DPI-C" function int rvviVersionCheck(
     input int version);
@@ -222,5 +234,8 @@ import "DPI-C" function string rvviRefVrName(
 
 import "DPI-C" function string rvviErrorGet(
     );
+
+import "DPI-C" function longint rvviRefMetricGet(
+    input rvviMetricE metric);
 
 `endif  // INCLUDE_RVVI_SVH

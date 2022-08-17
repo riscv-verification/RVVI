@@ -27,10 +27,22 @@
 
 typedef uint32_t bool_t;
 
-#define RVVI_API_VERSION 18
+#define RVVI_API_VERSION 19
 #define RVVI_TRUE 1
 #define RVVI_FALSE 0
 #define RVVI_INVALID_INDEX -1
+
+typedef enum {
+    RVVI_METRIC_RETIRES = 0,
+    RVVI_METRIC_TRAPS = 1,
+    RVVI_METRIC_MISMATCHES = 2,
+    RVVI_METRIC_COMPARISONS_PC = 3,
+    RVVI_METRIC_COMPARISONS_GPR = 4,
+    RVVI_METRIC_COMPARISONS_FPR = 5,
+    RVVI_METRIC_COMPARISONS_CSR = 6,
+    RVVI_METRIC_COMPARISONS_VR = 7,
+    RVVI_METRIC_COMPARISONS_INSBIN = 8,
+} rvviMetricE;
 
 #ifdef __cplusplus
 extern "C" {
@@ -560,6 +572,15 @@ extern const char *rvviRefVrName(
 **/
 extern const char *rvviErrorGet(
     void);
+
+/*! \brief Query a verification metric from the reference model.
+ *
+ *  \param metric An enumeration identifying the metric to query and return.
+ *
+ *  \return The scalar quantity that has been queried.
+**/
+extern uint64_t rvviRefMetricGet(
+    rvviMetricE metric);
 
 #ifdef __cplusplus
 }  // extern "C"

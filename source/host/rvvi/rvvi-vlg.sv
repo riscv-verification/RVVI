@@ -22,12 +22,12 @@
 
 interface RVVI_VLG import rvvi_pkg::*;
 #(
-    parameter int ILEN   = 32,  // Instruction length
-    parameter int XLEN   = 32,  // GPR length
-    parameter int FLEN   = 32,  // FPR length
-    parameter int VLEN   = 256, // Vector length
-    parameter int NHART  = 1,   // Number of harts
-    parameter int RETIRE = 1    // Number of instructions that can retire simultaneously
+    parameter int ILEN   = 32,  // Instruction length in bits
+    parameter int XLEN   = 32,  // GPR length in bits
+    parameter int FLEN   = 32,  // FPR length in bits
+    parameter int VLEN   = 256, // Vector register size in bits
+    parameter int NHART  = 1,   // Number of harts reported
+    parameter int RETIRE = 1    // Number of instructions that can retire during valid event
 );
     //
     // RISCV output signals
@@ -70,24 +70,35 @@ interface RVVI_VLG import rvvi_pkg::*;
 	wire      clkD;
 	assign #1 clkD = clk;
 
-    string name[$];
-    int    value[$];
-    int    nets[string];
+    string  name[$];
+    int     value[$];
+    int     tslot[$];
+    int     nets[string];
+    int     vslot;
+    longint timestamp;
 
     function automatic void net_push(input string vname, input int vvalue);
-        msgdebug($sformatf("%m @ %0t: net_push %0s %0d", $time, vname, vvalue));
+        // Has time changed
+        longint now = $time;
+        if (now != timestamp) begin
+            timestamp = now;
+            vslot++;
+        end
+        msgdebug($sformatf("%0t: net_push name=%0s value=%0d vslot=%0d", $time, vname, vvalue, vslot));
         name.push_front(vname);
         value.push_front(vvalue);
+        tslot.push_front(vslot);
     endfunction
 
-    function automatic int net_pop(output string vname, output int vvalue);
+    function automatic int net_pop(output string vname, output int vvalue, output int vslot);
         int  ok;
         string msg;
         if (name.size() > 0) begin
             vname  = name.pop_back();
             vvalue = value.pop_back();
+            vslot  = tslot.pop_back();
             nets[vname] = vvalue;
-            msgdebug($sformatf("%m @ %0t: net_pop %0s %0d", $time, vname, vvalue));
+            msgdebug($sformatf("%0t: net_pop  name=%0s value=%0d vslot=%0d", $time, vname, vvalue, vslot));
             ok = 1;
         end else begin
             ok = 0;

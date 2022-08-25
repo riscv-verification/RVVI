@@ -20,7 +20,7 @@
 `ifndef INCLUDE_RVVI_SVH
 `define INCLUDE_RVVI_SVH
 
-`define RVVI_API_VERSION 19
+`define RVVI_API_VERSION 20
 `define RVVI_TRUE 1
 `define RVVI_FALSE 0
 `define RVVI_INVALID_INDEX -1
@@ -96,7 +96,8 @@ import "DPI-C" function void rvviRefNetGroupSet(
 
 import "DPI-C" function void rvviRefNetSet(
     input longint netIndex,
-    input longint value);
+    input longint value,
+    input longint when);
 
 import "DPI-C" function longint rvviRefNetGet(
     input longint netIndex);

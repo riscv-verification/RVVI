@@ -27,7 +27,7 @@
 
 typedef uint32_t bool_t;
 
-#define RVVI_API_VERSION 19
+#define RVVI_API_VERSION 20
 #define RVVI_TRUE 1
 #define RVVI_FALSE 0
 #define RVVI_INVALID_INDEX -1
@@ -201,10 +201,12 @@ extern void rvviRefNetGroupSet(
  *
  *  \param netIndex The net index returned prior by rvviRefNetIndexGet().
  *  \param value The new value to set the net state to.
+ *  \param when Time of arrival of this net, in simulation time.  The `when` parameter may be measured in simulation time or cycles.  It allows the RVVI-API to know which net changes have arrived at the same time.
 **/
 extern void rvviRefNetSet(
     uint64_t netIndex,
-    uint64_t value);
+    uint64_t value,
+    uint64_t when);
 
 /*! \brief Read the state of a net on the reference model.
  *

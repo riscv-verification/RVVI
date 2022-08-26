@@ -20,7 +20,7 @@
 `define NUM_REGS 32
 `define NUM_CSRS 4096
 
-interface RVVI_VLG import rvvi_pkg::*;
+interface rvviTrace
 #(
     parameter int ILEN   = 32,  // Instruction length in bits
     parameter int XLEN   = 32,  // GPR length in bits
@@ -72,25 +72,17 @@ interface RVVI_VLG import rvvi_pkg::*;
 
     string  name[$];
     int     value[$];
-    int     tslot[$];
+    longint tslot[$];
     int     nets[string];
-    int     vslot;
-    longint timestamp;
 
     function automatic void net_push(input string vname, input int vvalue);
-        // Has time changed
-        longint now = $time;
-        if (now != timestamp) begin
-            timestamp = now;
-            vslot++;
-        end
-        msgdebug($sformatf("%0t: net_push name=%0s value=%0d vslot=%0d", $time, vname, vvalue, vslot));
+        longint vslot = $time;
         name.push_front(vname);
         value.push_front(vvalue);
         tslot.push_front(vslot);
     endfunction
 
-    function automatic int net_pop(output string vname, output int vvalue, output int vslot);
+    function automatic int net_pop(output string vname, output int vvalue, output longint vslot);
         int  ok;
         string msg;
         if (name.size() > 0) begin
@@ -98,7 +90,6 @@ interface RVVI_VLG import rvvi_pkg::*;
             vvalue = value.pop_back();
             vslot  = tslot.pop_back();
             nets[vname] = vvalue;
-            msgdebug($sformatf("%0t: net_pop  name=%0s value=%0d vslot=%0d", $time, vname, vvalue, vslot));
             ok = 1;
         end else begin
             ok = 0;

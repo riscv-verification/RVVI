@@ -1,4 +1,4 @@
-# RISC-V Verification Interface (RVVI) Version 1.5
+# RISC-V Verification Interface (RVVI) Version 1.6
 
 This is a work in progress.
 
@@ -38,7 +38,7 @@ Currently there are 3 different areas that RVVI addresses:
 
 
 -----
-## The core (Device Under Test) RTL Verilog interface - RVVI-VLG
+## The core (Device Under Test) RTL Trace interface - RVVI-TRACE
 
 First is the interface to the internals of the RTL of the core's
 micro-architecture to provide values, state, and events related to the internal
@@ -46,16 +46,16 @@ signals up to several of the test bench components. Traditionally this was done
 to provide tracing capabilities such as for log file writing. In the past, this
 interface or similar has been used to create a 'tracer'.
 
-The RVVI-VLG interface includes capabilities for use with simple single hart
+The RVVI-TRACE interface includes capabilities for use with simple single hart
 in-order cores to multi-hart, multi-issue, Out-of-Order, cores with asynchronous
 interrupts, and debug modes etc.
 
-Another feature of the RVVI-VLG interface is to allow net changes observed by
-the RISC-V core to be propagated to consumers of the RVVI-VLG interface.
+Another feature of the RVVI-TRACE interface is to allow net changes observed by
+the RISC-V core to be propagated to consumers of the RVVI-TRACE interface.
 
-The RVVI-VLG interface is defined in SystemVerilog.
+The RVVI-TRACE interface is defined in SystemVerilog.
 
-Specification: [RVVI-VLG Verilog](RVVI-VLG/README.md)
+Specification: [RVVI-TRACE Verilog](RVVI-TRACE/README.md)
 
 
 -----
@@ -106,7 +106,7 @@ There is the RISC-V Formal Interface (RVFI)
 (https://github.com/SymbioticEDA/riscv-formal) from SymbioticEDA which is a very
 good interface for providing observation into a running core by streaming what
 is executing on the core (i.e. the basic tracer functionality) - but for quality
-RISC-V processor DV more is needed. Hence the need for RVVI. The RVVI-VLG
+RISC-V processor DV more is needed. Hence the need for RVVI. The RVVI-TRACE
 interface has some parts very similar to the RVFI formal interface and RVVI can
 be thought of as a superset of RVFI.
 

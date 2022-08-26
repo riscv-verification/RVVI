@@ -19,9 +19,9 @@ browsed here:
 
 There are two general approaches for driving the RVVI-API interface:
 - Directly from a test bench via DPI calls.
-- Indirectly by a verilog module which monitors the RVVI-VLG interface (such as
-  VLG2API provided by Imperas as part of ImperasDV) and issues the appropriate
-  calls.
+- Indirectly by a verilog module which monitors the `rvviTrace` interface (such
+  as `trace2api` provided by Imperas as part of ImperasDV) and issues the
+  appropriate calls.
 
 There are three main phases a test harness will be in charge of:
 - Initialization

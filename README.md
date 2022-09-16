@@ -34,6 +34,10 @@ In short, standards such as RVVI make re-use possible for RISC-V processor DV.
 Use of RVVI is not just of benefit for test bench re-use but also for test
 generators, functional coverage, and other testing methodologies.
 
+
+![Testbench For Advanced RISC-V Design Verification](diagrams/TestbenchForAdvancedRISC-VDesignVerification.png)
+
+
 Currently there are 3 different areas that RVVI addresses:
 
 

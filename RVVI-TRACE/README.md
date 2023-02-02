@@ -22,16 +22,16 @@ The `rvviTrace` interface takes a number of parameters which are defined as
 follows:
 
 ### `ILEN`
-This is the maximum permissable instruction length in bits.
+This is the maximum permissible instruction length in bits.
 
 ### `XLEN`
-This is the maximum permissable General purpose register size in bits.
+This is the maximum permissible General purpose register size in bits.
 
 ### `FLEN`
-This is the maximum permissable Floating point register size in bits.
+This is the maximum permissible Floating point register size in bits.
 
 ### `VLEN`
-This is the maximum permissable Vector register size in bits.
+This is the maximum permissible Vector register size in bits.
 
 ### `NHART`
 This is the number of harts that will be reported on this interface.

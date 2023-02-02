@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2022 Imperas Software Ltd., www.imperas.com
+ * Copyright (c) 2005-2023 Imperas Software Ltd., www.imperas.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ interface rvviTrace
     wire                      valid      [(NHART-1):0][(RETIRE-1):0];   // Retired instruction
     wire [63:0]               order      [(NHART-1):0][(RETIRE-1):0];   // Unique instruction order count (no gaps or reuse)
     wire [(ILEN-1):0]         insn       [(NHART-1):0][(RETIRE-1):0];   // Instruction bit pattern
-    wire                      trap       [(NHART-1):0][(RETIRE-1):0];   // Trapped instruction
+    wire                      trap       [(NHART-1):0][(RETIRE-1):0];   // Trapped instruction (External to Core, eg Memory Subsystem)
     wire                      halt       [(NHART-1):0][(RETIRE-1):0];   // Halted  instruction
     wire                      intr       [(NHART-1):0][(RETIRE-1):0];   // (RVFI Legacy) Flag first instruction of trap handler
     wire [1:0]                mode       [(NHART-1):0][(RETIRE-1):0];   // Privilege mode of operation
@@ -70,13 +70,15 @@ interface rvviTrace
 	wire      clkD;
 	assign #1 clkD = clk;
 
+	longint vslot;
+	always @(posedge clk) vslot++;
+	
     string  name[$];
     int     value[$];
     longint tslot[$];
     int     nets[string];
 
     function automatic void net_push(input string vname, input int vvalue);
-        longint vslot = $time;
         name.push_front(vname);
         value.push_front(vvalue);
         tslot.push_front(vslot);

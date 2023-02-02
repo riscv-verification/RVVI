@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2022 Imperas Software Ltd., www.imperas.com
+ * Copyright (c) 2005-2023 Imperas Software Ltd., www.imperas.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,10 +27,13 @@
 
 typedef uint32_t bool_t;
 
-#define RVVI_API_VERSION 20
+#define RVVI_API_VERSION 28
 #define RVVI_TRUE 1
 #define RVVI_FALSE 0
 #define RVVI_INVALID_INDEX -1
+#define RVVI_MEMORY_PRIVILEGE_READ 1
+#define RVVI_MEMORY_PRIVILEGE_WRITE 2
+#define RVVI_MEMORY_PRIVILEGE_EXEC 4
 
 typedef enum {
     RVVI_METRIC_RETIRES = 0,
@@ -42,6 +45,7 @@ typedef enum {
     RVVI_METRIC_COMPARISONS_CSR = 6,
     RVVI_METRIC_COMPARISONS_VR = 7,
     RVVI_METRIC_COMPARISONS_INSBIN = 8,
+    RVVI_METRIC_CYCLES = 9
 } rvviMetricE;
 
 #ifdef __cplusplus
@@ -50,7 +54,7 @@ extern "C" {
 
 /*! \brief Check the compiled RVVI API version.
  *
- *  Makes sure the ImperasDV version linked with matches the versions defined in this header file. This should be called before any other RVVI API function.  If this function returns RVVI_FALSE, no other RVVI API function should be called.
+ *  Makes sure the RVVI implementation linked with matches the versions defined in this header file. This should be called before any other RVVI API function. If this function returns RVVI_FALSE, no other RVVI API function should be called.
  *
  *  \param version Should be set to RVVI_API_VERSION.
  *
@@ -62,19 +66,13 @@ extern bool_t rvviVersionCheck(
 /*! \brief Initialize the DV reference model.
  *
  *  \param programPath File path of the ELF file to be executed. This parameter can be NULL if required.
- *  \param vendor Vendor string that the reference model will use.
- *  \param variant Variant string that the reference model will use.
- *  \param addressBusWidth The width in bits of the processors address bus. Set to 0 to use the maximum available width.
  *
  *  \return RVVI_TRUE if the reference was initialized successfully else RVVI_FALSE.
  *
  *  \note The reference model will begin execution from the entry point of the provided ELF file but can be overridden by the rvviRefPcSet() function.
 **/
 extern bool_t rvviRefInit(
-    const char *programPath,
-    const char *vendor,
-    const char *variant,
-    uint32_t addressBusWidth);
+    const char *programPath);
 
 /*! \brief Force the PC of the reference model to be particular value.
  *
@@ -89,15 +87,13 @@ extern bool_t rvviRefPcSet(
 
 /*! \brief Shutdown the reference module releasing any used resources.
  *
- *
  *  \return Returns RVVI_TRUE if shutdown was successful else RVVI_FALSE.
 **/
-extern bool_t rvviRefShutdown(
-    void);
+extern bool_t rvviRefShutdown(void);
 
 /*! \brief Notify the reference that a CSR is considered volatile.
  *
- *  \param hartId The hart that has updated its GPR.
+ *  \param hartId The hart that will have its CSR made volatile.
  *  \param csrIndex Index of the CSR register to be considered volatile (0x0 to 0xfff).
  *
  *  \return Returns RVVI_TRUE if operation was successful else RVVI_FALSE.
@@ -201,7 +197,7 @@ extern void rvviRefNetGroupSet(
  *
  *  \param netIndex The net index returned prior by rvviRefNetIndexGet().
  *  \param value The new value to set the net state to.
- *  \param when Time of arrival of this net, in simulation time.  The `when` parameter may be measured in simulation time or cycles.  It allows the RVVI-API to know which net changes have arrived at the same time.
+ *  \param when Time of arrival of this net, in simulation time. The `when` parameter may be measured in simulation time or cycles. It allows the RVVI-API to know which net changes have arrived at the same time.
 **/
 extern void rvviRefNetSet(
     uint64_t netIndex,
@@ -569,11 +565,9 @@ extern const char *rvviRefVrName(
 
 /*! \brief Return a string detailing the last RVVI-API error.
  *
- *
  *  \return The error string or an empty string if no error has occurred.
 **/
-extern const char *rvviErrorGet(
-    void);
+extern const char *rvviErrorGet(void);
 
 /*! \brief Query a verification metric from the reference model.
  *
@@ -584,6 +578,120 @@ extern const char *rvviErrorGet(
 extern uint64_t rvviRefMetricGet(
     rvviMetricE metric);
 
+/*! \brief Set the value of a CSR in the reference model.
+ *
+ *  \param hartId The hart which we are modifying the CSR of.
+ *  \param csrIndex The index of the CSR we are modifying (0x0 to 0xfff inclusive).
+ *  \param value The value to write into the CSR.
+**/
+extern void rvviRefCsrSet(
+    uint32_t hartId,
+    uint32_t csrIndex,
+    uint64_t value);
+
+/*! \brief Dump the current register state of a hart in the reference model.
+ *
+ *  \param hartId The hart which we should dump the register state of.
+**/
+extern void rvviRefStateDump(
+    uint32_t hartId);
+
+/*! \brief Load an additional program into the address space of the processor.
+ *
+ *  \param programPath File path of the ELF file to be loaded into memory.
+ *
+ *  \return RVVI_TRUE if the program was loaded successfully otherwise RVVI_FALSE
+**/
+extern bool_t rvviRefProgramLoad(
+    const char *programPath);
+
+/*! \brief Attempt to reconverge the reference model state to the DUT state.
+ *
+ *  \param hartId The hart which we should be reconverged.
+**/
+extern void rvviRefForceReconverge(
+    uint32_t hartId);
+
+/*! \brief Apply fine grain control over a CSRs volatility in the reference model.
+ *
+ *  \param hartId The hart that will have its CSR volatility adjusted.
+ *  \param csrIndex Index of the CSR register to have its volatility modified (0x0 to 0xfff).
+ *  \param csrMask Bitmask specifying volatility, set bits will be treated as volatile, clear bits are not
+ *
+ *  \return Returns RVVI_TRUE if operation was successful else RVVI_FALSE.
+**/
+extern bool_t rvviRefCsrSetVolatileMask(
+    uint32_t hartId,
+    uint32_t csrIndex,
+    uint64_t csrMask);
+
+/*! \brief Pass the current testbench cycle count to the RVVI implementation.
+ *
+ *  \param cycleCount The current cycle count of the DUT. This value is directly related to, and must be consistent with, the `when` parameter for rvviRefNetSet().
+**/
+extern void rvviDutCycleCountSet(
+    uint64_t cycleCount);
+
+/*! \brief Pass a vendor specific integer configuration parameter to the RVVI implementation.
+ *
+ *  \param configParam The configuration option that is to have its associated value set. This is vendor specific and not defined as part of the RVVI-API.
+ *  \param value An integer containing the data that should be passed to the configuration option.
+ *
+ *  \return Returns RVVI_TRUE if operation was successful else RVVI_FALSE.
+**/
+extern bool_t rvviRefConfigSetInt(
+    uint64_t configParam,
+    uint64_t value);
+
+/*! \brief Pass a vendor specific string configuration parameter to the RVVI implementation.
+ *
+ *  \param configParam The configuration option that is to have its associated value set. This is vendor specific and not defined as part of the RVVI-API.
+ *  \param value A string containing the data that should be passed to the configuration option.
+ *
+ *  \return Returns RVVI_TRUE if operation was successful else RVVI_FALSE.
+**/
+extern bool_t rvviRefConfigSetString(
+    uint64_t configParam,
+    const char *value);
+
+/*! \brief Given the name of a CSR, its unique index/address will be returned.
+ *
+ *  \param hartId HartId of the hart containing the CSR we are looking up the index of.
+ *  \param csrName The CSR name for which the CSR index should be retrieved.
+ *
+ *  \return Returns the CSR index if the operation was successful else RVVI_INVALID_INDEX.
+**/
+extern uint32_t rvviRefCsrIndex(
+    uint32_t hartId,
+    const char *csrName);
+
+/*! \brief Set the privilege mode for a region of the address space.
+ *
+ *  \param addrLo Lower address defining the memory region.
+ *  \param addrHi Upper address defining the memory region (inclusive).
+ *  \param access Access flags for this memory region; a combination of RVVI_PRIV_... flags or 0.
+ *
+ *  \return Returns RVVI_TRUE if operation was successful else RVVI_FALSE.
+**/
+extern bool_t rvviRefMemorySetPrivilege(
+    uint64_t addrLo,
+    uint64_t addrHi,
+    uint32_t access);
+
+/*! \brief Update a byte in one of the reference models vector registers.
+ *
+ *  \param hartId The hart that should have its vector register updated.
+ *  \param vrIndex The vector register index (0 to 31).
+ *  \param byteIndex The byte offset into the vector register (note 0 is LSB).
+ *  \param data New byte value to be written into the vector register.
+**/
+extern void rvviRefVrSet(
+    uint32_t hartId,
+    uint32_t vrIndex,
+    uint32_t byteIndex,
+    uint8_t data);
+
 #ifdef __cplusplus
 }  // extern "C"
 #endif
+

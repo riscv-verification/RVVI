@@ -44,6 +44,8 @@ Currently there are 3 different areas that RVVI addresses:
 -----
 ## The core (Device Under Test) RTL Trace interface - RVVI-TRACE
 
+Version 1.5
+
 First is the interface to the internals of the RTL of the core's
 micro-architecture to provide values, state, and events related to the internal
 signals up to several of the test bench components. Traditionally this was done
@@ -65,6 +67,8 @@ Specification: [RVVI-TRACE Verilog](RVVI-TRACE/README.md)
 -----
 ## The reference model DV subsystem interface - RVVI-API
 
+Version 1.28
+
 To verify a RISC-V core requires comparison of the Device Under Test (DUT)
 against a reference model. This is not as simple as just running programs on the
 reference and DUT and comparing PC values - it needs to take into account all
@@ -82,7 +86,9 @@ Specification: [RVVI-API reference model subsystem API](RVVI-API/README.md)
 
 
 -----
-## The Virtual Verification Peripherals used in the test bench - RVVI-VVP
+## The Virtual Verification Peripherals used in the test bench - RVVI-VVP 
+
+Version 0.0
 
 When testing a processor there are components needed in the test bench to
 interact with the processor - for example a virtual UART to print information

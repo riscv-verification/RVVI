@@ -1,5 +1,7 @@
 # RVVI-API RISC-V Verification Interface
 
+Version 1.28
+
 This repository contains a draft of RVVI-API, a standard interface for lockstep
 comparison between two RISC-V models for DV purposes.
 

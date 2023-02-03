@@ -1,5 +1,7 @@
 # RVVI-TRACE RISC-V Verification Interface
 
+Version 1.5
+
 This is a work in progress
 
 

@@ -22,13 +22,15 @@
 
 package rvviApiPkg;
 
-parameter RVVI_API_VERSION = 28;
+parameter RVVI_API_VERSION_MAJOR = 1;
+parameter RVVI_API_VERSION_MINOR = 29;
 parameter RVVI_TRUE = 1;
 parameter RVVI_FALSE = 0;
 parameter RVVI_INVALID_INDEX = -1;
 parameter RVVI_MEMORY_PRIVILEGE_READ = 1;
 parameter RVVI_MEMORY_PRIVILEGE_WRITE = 2;
 parameter RVVI_MEMORY_PRIVILEGE_EXEC = 4;
+parameter RVVI_API_VERSION = ((RVVI_API_VERSION_MAJOR << 24) | RVVI_API_VERSION_MINOR);
 
 typedef enum {
     RVVI_METRIC_RETIRES = 0,
@@ -251,9 +253,6 @@ import "DPI-C" context function void rvviRefStateDump(
 import "DPI-C" context function int rvviRefProgramLoad(
     input string programPath);
 
-import "DPI-C" context function void rvviRefForceReconverge(
-    input int hartId);
-
 import "DPI-C" context function int rvviRefCsrSetVolatileMask(
     input int hartId,
     input int csrIndex,
@@ -293,4 +292,3 @@ endfunction
 endpackage
 
 `endif  // _RVVI_API_PKG__
-

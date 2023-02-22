@@ -27,13 +27,15 @@
 
 typedef uint32_t bool_t;
 
-#define RVVI_API_VERSION 28
+#define RVVI_API_VERSION_MAJOR 1
+#define RVVI_API_VERSION_MINOR 29
 #define RVVI_TRUE 1
 #define RVVI_FALSE 0
 #define RVVI_INVALID_INDEX -1
 #define RVVI_MEMORY_PRIVILEGE_READ 1
 #define RVVI_MEMORY_PRIVILEGE_WRITE 2
 #define RVVI_MEMORY_PRIVILEGE_EXEC 4
+#define RVVI_API_VERSION ((RVVI_API_VERSION_MAJOR << 24) | RVVI_API_VERSION_MINOR)
 
 typedef enum {
     RVVI_METRIC_RETIRES = 0,
@@ -604,13 +606,6 @@ extern void rvviRefStateDump(
 **/
 extern bool_t rvviRefProgramLoad(
     const char *programPath);
-
-/*! \brief Attempt to reconverge the reference model state to the DUT state.
- *
- *  \param hartId The hart which we should be reconverged.
-**/
-extern void rvviRefForceReconverge(
-    uint32_t hartId);
 
 /*! \brief Apply fine grain control over a CSRs volatility in the reference model.
  *

@@ -20,6 +20,9 @@
 `define NUM_REGS 32
 `define NUM_CSRS 4096
 
+`define RVVI_TRACE_VERSION_MAJOR 1
+`define RVVI_TRACE_VERSION_MINOR 5
+
 interface rvviTrace
 #(
     parameter int ILEN   = 32,  // Instruction length in bits

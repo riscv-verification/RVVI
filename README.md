@@ -67,7 +67,7 @@ Specification: [RVVI-TRACE Verilog](RVVI-TRACE/README.md)
 -----
 ## The reference model DV subsystem interface - RVVI-API
 
-Version 1.28
+Version  1.29
 
 To verify a RISC-V core requires comparison of the Device Under Test (DUT)
 against a reference model. This is not as simple as just running programs on the
@@ -86,9 +86,9 @@ Specification: [RVVI-API reference model subsystem API](RVVI-API/README.md)
 
 
 -----
-## The Virtual Verification Peripherals used in the test bench - RVVI-VVP 
+## The Virtual Verification Peripherals used in the test bench - RVVI-VVP
 
-Version 0.0
+Version  0.0
 
 When testing a processor there are components needed in the test bench to
 interact with the processor - for example a virtual UART to print information

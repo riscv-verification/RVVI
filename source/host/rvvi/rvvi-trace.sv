@@ -70,9 +70,6 @@ interface rvviTrace
     //
     // Synchronization of NETs
     //
-	wire      clkD;
-	assign #1 clkD = clk;
-
 	longint vslot;
 	always @(posedge clk) vslot++;
 	
@@ -81,20 +78,20 @@ interface rvviTrace
     longint tslot[$];
     int     nets[string];
 
-    function automatic void net_push(input string vname, input int vvalue);
-        name.push_front(vname);
-        value.push_front(vvalue);
+    function automatic void net_push(input string pname, input int pvalue);
+        name.push_front(pname);
+        value.push_front(pvalue);
         tslot.push_front(vslot);
     endfunction
 
-    function automatic int net_pop(output string vname, output int vvalue, output longint vslot);
+    function automatic int net_pop(output string pname, output int pvalue, output longint pslot);
         int  ok;
         string msg;
         if (name.size() > 0) begin
-            vname  = name.pop_back();
-            vvalue = value.pop_back();
-            vslot  = tslot.pop_back();
-            nets[vname] = vvalue;
+            pname  = name.pop_back();
+            pvalue = value.pop_back();
+            pslot  = tslot.pop_back();
+            nets[pname] = pvalue;
             ok = 1;
         end else begin
             ok = 0;

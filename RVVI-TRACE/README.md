@@ -148,21 +148,21 @@ expected to drive all required.
 
 ![Instruction Retirement](../diagrams/InstructionRetirement.png)
 
-The diagram above a number of instructions being retired, with GPR and CSR
+The diagram above shows a number of instructions being retired, with GPR and CSR
 register file writes being communicated as a result.
 
 ### Load address misaligned
 
 ![LoadAddressMisalignedTrap](../diagrams/LoadAddressMisalignedTrap.png)
 
-The diagram above shows a processor taking a synchronous exception due to
+The diagram above shows a processor taking a synchronous exception due to the
 execution of a load word instruction from a non-aligned memory address.
 
 ### Environment call exception
 
 ![Environment call](../diagrams/EnvironmentCallException.png)
 
-The diagram above shows a processor executing of an ECALL instruction.
+The diagram above shows a processor executing an ECALL instruction.
 
 > _RISC-V privileged specification 20211203, section 3.3.1:_
 >

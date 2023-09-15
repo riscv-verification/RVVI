@@ -22,8 +22,12 @@
 
 package rvviApiPkg;
 
+`ifdef UVM
+import uvm_pkg::*;
+`endif
+
 parameter RVVI_API_VERSION_MAJOR = 1;
-parameter RVVI_API_VERSION_MINOR = 29;
+parameter RVVI_API_VERSION_MINOR = 32;
 parameter RVVI_TRUE = 1;
 parameter RVVI_FALSE = 0;
 parameter RVVI_INVALID_INDEX = -1;
@@ -42,7 +46,10 @@ typedef enum {
     RVVI_METRIC_COMPARISONS_CSR = 6,
     RVVI_METRIC_COMPARISONS_VR = 7,
     RVVI_METRIC_COMPARISONS_INSBIN = 8,
-    RVVI_METRIC_CYCLES = 9
+    RVVI_METRIC_CYCLES = 9,
+    RVVI_METRIC_ERRORS = 10,
+    RVVI_METRIC_WARNINGS = 11,
+    RVVI_METRIC_FATALS = 12
 } rvviMetricE;
 
 import "DPI-C" context function int rvviVersionCheck(
@@ -109,7 +116,8 @@ import "DPI-C" context function longint rvviRefNetGet(
 import "DPI-C" context function void rvviDutRetire(
     input int hartId,
     input longint dutPc,
-    input longint dutInsBin);
+    input longint dutInsBin,
+    input int debugMode);
 
 import "DPI-C" context function void rvviDutTrap(
     input int hartId,
@@ -287,6 +295,16 @@ import "DPI-C" context function void rvviRefVrSet(
 export "DPI-C" function SVWriteC;
 function void SVWriteC(input string text);
     $write(text);
+endfunction
+
+export "DPI-C" function SVFatalC;
+function void SVFatalC(input string text);
+`ifdef UVM
+    `uvm_fatal("IDV", "Fatal Error from plugin");
+`else
+    $display("IDV Fatal Error from IDV plugin");
+    $fatal;
+`endif
 endfunction
 
 endpackage

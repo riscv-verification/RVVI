@@ -1,6 +1,6 @@
 # RVVI-API RISC-V Verification Interface
 
-Version 1.29
+Version 1.32
 
 This repository contains a draft of RVVI-API, a standard interface for lockstep
 comparison between two RISC-V models for DV purposes.
@@ -11,11 +11,11 @@ comparison between two RISC-V models for DV purposes.
 
 The RVVI-API is defined and provided as a C header and SystemVerilog package
 which can be found in the following locations:
-- [/include/host/rvvi/rvvi-api.h](../include/host/rvvi/rvvi-api.h) C/C++.
-- [/source/host/rvvi/rvvi-api-pkg.sv](../source/host/rvvi/rvvi-api-pkg.sv)
+- [/include/host/rvvi/rvviApi.h](../include/host/rvvi/rvviApi.h) C/C++.
+- [/source/host/rvvi/rvviApiPkg.sv](../source/host/rvvi/rvviApiPkg.sv)
   SystemVerilog.
 
-The associated Doxygen documentation for the `rvvi-api.h` header file can be
+The associated Doxygen documentation for the `rvviApi.h` header file can be
 browsed here:
 - [www.riscv-verification.org/docs/rvvi/doxygen](
   https://www.riscv-verification.org/docs/rvvi/doxygen).

@@ -1,7 +1,5 @@
 # RISC-V Verification Interface (RVVI)
 
-This is a work in progress.
-
 -----
 ## About
 
@@ -67,7 +65,7 @@ Specification: [RVVI-TRACE Verilog](RVVI-TRACE/README.md)
 -----
 ## The reference model DV subsystem interface - RVVI-API
 
-Version  1.29
+Version  1.32
 
 To verify a RISC-V core requires comparison of the Device Under Test (DUT)
 against a reference model. This is not as simple as just running programs on the

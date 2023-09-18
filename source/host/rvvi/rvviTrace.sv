@@ -23,6 +23,34 @@
 `define RVVI_TRACE_VERSION_MAJOR 1
 `define RVVI_TRACE_VERSION_MINOR 5
 
+/*
+ * A single DTM (Debug Transport Module), connects 
+ * via the DMI (Debug Module Interface) to
+ * a DM (Debug Module), which can control N harts
+ * 
+ */
+interface dm
+#(
+    parameter int ILEN   = 32,  // Instruction length in bits
+    parameter int XLEN   = 32,  // GPR length in bits
+    parameter int FLEN   = 32,  // FPR length in bits
+    parameter int VLEN   = 256, // Vector register size in bits
+    parameter int NHART  = 1,   // Number of harts reported
+    parameter int RETIRE = 1    // Number of instructions that can retire during valid event
+);
+    //
+    // RISCV DM signals
+    //
+    wire                      clk;                                      // Interface clock
+    wire                      rd;                                       // read
+    wire                      wr;                                       // write
+    wire [31:0]               address;
+    wire [31:0]               data;
+
+    bit  [(XLEN-1):0]         store      [127:0];                       // Storage for DM registers
+
+endinterface
+
 interface rvviTrace
 #(
     parameter int ILEN   = 32,  // Instruction length in bits
@@ -36,18 +64,15 @@ interface rvviTrace
     // RISCV output signals
     //
     wire                      clk;                                      // Interface clock
+    wire                      valid      [(NHART-1):0][(RETIRE-1):0];   // Valid event
+    wire [63:0]               order      [(NHART-1):0][(RETIRE-1):0];   // Unique event order count (no gaps or reuse)
 
-    wire                      valid      [(NHART-1):0][(RETIRE-1):0];   // Retired instruction
-    wire [63:0]               order      [(NHART-1):0][(RETIRE-1):0];   // Unique instruction order count (no gaps or reuse)
     wire [(ILEN-1):0]         insn       [(NHART-1):0][(RETIRE-1):0];   // Instruction bit pattern
-    wire                      trap       [(NHART-1):0][(RETIRE-1):0];   // Trapped instruction (External to Core, eg Memory Subsystem)
-    wire                      halt       [(NHART-1):0][(RETIRE-1):0];   // Halted  instruction
-    wire                      intr       [(NHART-1):0][(RETIRE-1):0];   // (RVFI Legacy) Flag first instruction of trap handler
-    wire [1:0]                mode       [(NHART-1):0][(RETIRE-1):0];   // Privilege mode of operation
-    wire [1:0]                ixl        [(NHART-1):0][(RETIRE-1):0];   // XLEN mode 32/64 bit
+    wire                      trap       [(NHART-1):0][(RETIRE-1):0];   // State update without instruction retirement
+    wire                      debug_mode [(NHART-1):0][(RETIRE-1):0];   // Retired instruction executed in debug mode
 
-    wire [(XLEN-1):0]         pc_rdata   [(NHART-1):0][(RETIRE-1):0];   // PC of insn
-    wire [(XLEN-1):0]         pc_wdata   [(NHART-1):0][(RETIRE-1):0];   // PC of next instruction
+    // Program counter
+    wire [(XLEN-1):0]         pc_rdata   [(NHART-1):0][(RETIRE-1):0];   // PC of instruction
 
     // X Registers
     wire [31:0][(XLEN-1):0]   x_wdata    [(NHART-1):0][(RETIRE-1):0];   // X data value
@@ -61,18 +86,35 @@ interface rvviTrace
     wire [31:0][(VLEN-1):0]   v_wdata    [(NHART-1):0][(RETIRE-1):0];   // V data value
     wire [31:0]               v_wb       [(NHART-1):0][(RETIRE-1):0];   // V data writeback (change) flag
 
-    // Control & State Registers
+    // Control and Status Registers
     wire [4095:0][(XLEN-1):0] csr        [(NHART-1):0][(RETIRE-1):0];   // Full CSR Address range
     wire [4095:0]             csr_wb     [(NHART-1):0][(RETIRE-1):0];   // CSR writeback (change) flag
 
+    // Atomic Memory Control
     wire                      lrsc_cancel[(NHART-1):0][(RETIRE-1):0];   // Implementation defined cancel
 
     //
+    // Optional
+    //
+    wire [(XLEN-1):0]         pc_wdata   [(NHART-1):0][(RETIRE-1):0];   // PC of next instruction
+    wire                      intr       [(NHART-1):0][(RETIRE-1):0];   // (RVFI Legacy) Flag first instruction of trap handler
+    wire                      halt       [(NHART-1):0][(RETIRE-1):0];   // Halted  instruction
+    wire [1:0]                ixl        [(NHART-1):0][(RETIRE-1):0];   // XLEN mode 32/64 bit
+    wire [1:0]                mode       [(NHART-1):0][(RETIRE-1):0];   // Privilege mode of operation
+
+    //
+    // Optional DMI Interface
+    //
+    dm dm();
+    
+    //
     // Synchronization of NETs
     //
-	longint vslot;
-	always @(posedge clk) vslot++;
-	
+    longint vslot;
+    always @(posedge clk) begin
+        vslot <= vslot + 1;
+    end
+
     string  name[$];
     int     value[$];
     longint tslot[$];

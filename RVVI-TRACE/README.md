@@ -13,7 +13,7 @@ asynchronous event changes on items such as Interrupts and Debug nets.
 
 The primary RVVI-TRACE interface, `rvviTrace`, is specified in the following
 file:
-- [/source/host/rvvi/rvvi-trace.sv](../source/host/rvvi/rvvi-trace.sv)
+- [/source/host/rvvi/rvviTrace.sv](../source/host/rvvi/rvviTrace.sv)
 
 A number of illustrative waveform diagrams are provided in the [Example Waveforms](#example-waveform-diagrams) section.
 
@@ -38,17 +38,21 @@ This interface provides internal visibility of the state of the RISC-V device.
 All signals on the RVVI interface are outputs from the device, for observing
 state transitions and state values.
 
+Please note that the data conveyed on this interface should not be relied upon
+to persist beyond an individual event.
+
 ### `clk`
 The RVVI Trace interface is synchronous to the positive edge of the clk
 signal. The interface should only be sampled on the positive edge of this
 clock signal.
 
 ### `valid`
-When this signal is true, an instruction has been retired by the device or has
-trapped, and subsequent internal state values will have been updated
-accordingly, this includes the Integer/GPR, Float/FPR, Vector/VR CSR and any
-other supported registers. The instruction address retired is indicated by the
-pc_rdata variable.
+When this signal is true, an event is being communicated on the RVVI-TRACE
+interface. An event may be, for example, that an instruction has been retired or
+has trapped, and any changed processor state will also be communicated
+accordingly, this includes the Integer/GPR, Float/FPR, Vector/VR
+CSR and any other supported registers. The instruction address which retired is
+indicated by the pc_rdata variable.
 
 ### `order`
 This signal contains the instruction count for the instruction being reported
@@ -56,18 +60,20 @@ during a retirement or trap event.
 
 ### `insn`
 This signal contains the instruction word which is at the trap or retirement
-event.
+event. The instruction word should always be reported with little-endian byte
+ordering regardless of the mstatus.mbe field or endianness of the processor.
 
 ### `trap`
-When this signal is true along with `valid`, an instruction execution has
-undergone a synchronous exception (syscalls, etc). This event allows the
-reading of internal state. The instruction address trapped is indicated by the
-`pc_rdata` variable. If this signal is false when `valid` is asserted, then an
-instruction has retired.
+When this signal is true along with `valid`, instruction execution has resulted
+in a synchronous exception (syscalls, etc). This event allows the state of the
+DUT to be conveyed between instruction retirements. The address of the
+instruction which trapped is indicated by the `pc_rdata` variable. If this
+signal is false when `valid` is asserted, then an instruction has instead
+retired normally.
 
 ### `halt`
-When this signal is true, it indicates that the hart has gone into a halted
-state at this instruction.
+When this signal is true, it indicates that the hart has entered a halted
+state as a result of executing this instruction.
 
 ### `intr`
 When this signal is true, it indicates that this retired instruction is the
@@ -92,25 +98,29 @@ retirement event.
 If the bit position within `x_wb` is true, then the position indicates a write
 into X, eg if `x_wb=0x4`, then the register X2 has been written. If
 `x_wb=(1<<4 | 1<<1)` then register X4 and X1 have been written concurrently
-x_wb=0x0 indicates no written X register.
+x_wb=0x0 indicates no written X register. If `x_wb` is false, then the contents
+is undefined.
 
 ### `f_wdata`, `f_wb`
 If the bit position within `f_wb` is true, then the position indicates a write
 into F, eg if `f_wb=0x4`, then the register F2 has been written. If
 `f_wb=(1<<4 | 1<<1)` then register F4 and F1 have been written concurrently
-f_wb=0x0 indicates no written F register.
+f_wb=0x0 indicates no written F register. If `f_wb` is false, then the contents
+is undefined.
 
 ### `v_wdata`, `v_wb`
 If the bit position within `v_wb` is true, then the position indicates a write
 into V, eg if `v_wb=0x4`, then the register V2 has been written. If
 `v_wb=(1<<4 | 1<<1)` then register V4 and V1 have been written concurrently
-v_wb=0x0 indicates no written V register.
+v_wb=0x0 indicates no written V register. If `v_wb` is false, then the contents
+is undefined.
 
 ### `csr`, `csr_wb`
 If the bit position within `csr_wb` is true, then a the position indicates a
 write into csr, eg if `csr_wb=0x1`, then the ustatus register (address 0x000)
 has been written. If `csr_wb=(1<<4 | 1<<0)` then address 0x004 and 0x001 have
-been written concurrently csr_wb=0x0 indicates no written csr.
+been written concurrently csr_wb=0x0 indicates no written csr. If `csr_wb` is
+false, then the contents is undefined.
 
 ### `lrsc_cancel`
 If this signal is true then this indicates that the reference model should
@@ -119,6 +129,11 @@ instruction. This signal should _NOT_ be used to indicate reservation
 cancellations caused by the normal operation of the `SC` instruction. Use of
 this signal is only to propagate _implementation defined_ cancellations to the
 reference model.
+
+### `debug_mode`
+This signal should be driven true if the current instruction retirement event
+takes place when the processor is operating in debug mode. This signal should be
+driven false otherwise.
 
 ----
 ## rvviTrace Interface functions
@@ -173,3 +188,16 @@ Execution of an ECALL instruction results in a trap being raised and the
 instruction does not retire. Thus a trap event should be presented on the
 RVVI-TRACE interface, with the `trap` signal being asserted, and all relevant
 CSRs modified by the trap being provided.
+
+### Resume from WFI
+
+![Resume from WFI with MSTATUS.MIE=0](../diagrams/WFIMie0.png)
+
+The diagram above shows a processor retiring a WFI instruction. The processor
+then resumes from its halted state because an interrupt net has been asserted.
+Since the global interrupt enable is 0, no interrupt is taken.
+
+![Resume from WFI with MSTATUS.MIE=1](../diagrams/WFIMie1.png)
+
+With interrupts enabled as shown above, the processor resumes from the WFI and
+branches to the trap handler.

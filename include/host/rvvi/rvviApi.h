@@ -19,7 +19,7 @@
 
 #pragma once
 
-/*! \file rvvi-api.h
+/*! \file rvviApi.h
  *  \brief RVVI interface, C API header.
 **/
 
@@ -28,7 +28,7 @@
 typedef uint32_t bool_t;
 
 #define RVVI_API_VERSION_MAJOR 1
-#define RVVI_API_VERSION_MINOR 29
+#define RVVI_API_VERSION_MINOR 32
 #define RVVI_TRUE 1
 #define RVVI_FALSE 0
 #define RVVI_INVALID_INDEX -1
@@ -47,7 +47,10 @@ typedef enum {
     RVVI_METRIC_COMPARISONS_CSR = 6,
     RVVI_METRIC_COMPARISONS_VR = 7,
     RVVI_METRIC_COMPARISONS_INSBIN = 8,
-    RVVI_METRIC_CYCLES = 9
+    RVVI_METRIC_CYCLES = 9,
+    RVVI_METRIC_ERRORS = 10,
+    RVVI_METRIC_WARNINGS = 11,
+    RVVI_METRIC_FATALS = 12,
 } rvviMetricE;
 
 #ifdef __cplusplus
@@ -220,11 +223,13 @@ extern uint64_t rvviRefNetGet(
  *  \param hartId The hart that has retired an instruction.
  *  \param dutPc The address of the instruction that has retired.
  *  \param dutInsBin The binary instruction representation.
+ *  \param debugMode True if this instruction was executed in debug mode.
 **/
 extern void rvviDutRetire(
     uint32_t hartId,
     uint64_t dutPc,
-    uint64_t dutInsBin);
+    uint64_t dutInsBin,
+    bool_t debugMode);
 
 /*! \brief Notify the reference that the DUT received a trap.
  *

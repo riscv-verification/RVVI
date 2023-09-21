@@ -24,10 +24,10 @@
 `define RVVI_TRACE_VERSION_MINOR 5
 
 /*
- * A single DTM (Debug Transport Module), connects 
+ * A single DTM (Debug Transport Module), connects
  * via the DMI (Debug Module Interface) to
  * a DM (Debug Module), which can control N harts
- * 
+ *
  */
 interface dm
 #(
@@ -106,7 +106,7 @@ interface rvviTrace
     // Optional DMI Interface
     //
     dm dm();
-    
+
     //
     // Synchronization of NETs
     //

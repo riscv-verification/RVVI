@@ -300,13 +300,14 @@ endfunction
 export "DPI-C" function SVFatalC;
 function void SVFatalC(input string text);
 `ifdef UVM
-    `uvm_fatal("IDV", "Fatal Error from plugin");
+    `uvm_fatal("IDV", "Fatal from IDV plugin");
 `else
-    $display("IDV Fatal Error from IDV plugin");
+    $display(text);
     $fatal;
 `endif
 endfunction
 
-endpackage
+endpackage: rvviApiPkg
 
 `endif  // _RVVI_API_PKG__
+

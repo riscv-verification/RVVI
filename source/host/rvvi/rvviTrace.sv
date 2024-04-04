@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2023 Imperas Software Ltd., www.imperas.com
+ * Copyright (c) 2005-2024 Imperas Software Ltd., www.imperas.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -115,24 +115,24 @@ interface rvviTrace
         vslot <= vslot + 1;
     end
 
-    string  name[$];
-    int     value[$];
-    longint tslot[$];
-    int     nets[string];
+    string           name[$];
+    longint unsigned value[$];
+    longint unsigned tslot[$];
+    longint unsigned nets[string];
 
-    function automatic void net_push(input string pname, input int pvalue);
+    function automatic void net_push(input string pname, input longint unsigned pvalue);
         name.push_front(pname);
         value.push_front(pvalue);
         tslot.push_front(vslot);
     endfunction
 
-    function automatic int net_pop(output string pname, output int pvalue, output longint pslot);
+    function automatic int net_pop(output string pname, output longint unsigned pvalue, output longint unsigned pslot);
         int  ok;
         string msg;
         if (name.size() > 0) begin
-            pname  = name.pop_back();
-            pvalue = value.pop_back();
-            pslot  = tslot.pop_back();
+            pname       = name.pop_back();
+            pvalue      = value.pop_back();
+            pslot       = tslot.pop_back();
             nets[pname] = pvalue;
             ok = 1;
         end else begin

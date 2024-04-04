@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2023 Imperas Software Ltd., www.imperas.com
+ * Copyright (c) 2005-2024 Imperas Software Ltd., www.imperas.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,10 @@
 
 #include <stdint.h>
 
-typedef uint32_t bool_t;
+typedef int8_t bool_t;
 
 #define RVVI_API_VERSION_MAJOR 1
-#define RVVI_API_VERSION_MINOR 32
+#define RVVI_API_VERSION_MINOR 34
 #define RVVI_TRUE 1
 #define RVVI_FALSE 0
 #define RVVI_INVALID_INDEX -1
@@ -50,7 +50,7 @@ typedef enum {
     RVVI_METRIC_CYCLES = 9,
     RVVI_METRIC_ERRORS = 10,
     RVVI_METRIC_WARNINGS = 11,
-    RVVI_METRIC_FATALS = 12,
+    RVVI_METRIC_FATALS = 12
 } rvviMetricE;
 
 #ifdef __cplusplus
@@ -234,7 +234,7 @@ extern void rvviDutRetire(
 /*! \brief Notify the reference that the DUT received a trap.
  *
  *  \param hartId The hart that has retired an instruction.
- *  \param dutPc The address of the instruction that has retired.
+ *  \param dutPc The program counter at the time the exception was raised.
  *  \param dutInsBin The binary instruction representation.
 **/
 extern void rvviDutTrap(
@@ -659,7 +659,7 @@ extern bool_t rvviRefConfigSetString(
  *  \param hartId HartId of the hart containing the CSR we are looking up the index of.
  *  \param csrName The CSR name for which the CSR index should be retrieved.
  *
- *  \return Returns the CSR index if the operation was successful else RVVI_INVALID_INDEX.
+ *  \return The CSR register value read from the specified hart. RVVI_INVALID_INDEX will be returned if the CSR does not exist or the function fails.
 **/
 extern uint32_t rvviRefCsrIndex(
     uint32_t hartId,
@@ -669,7 +669,7 @@ extern uint32_t rvviRefCsrIndex(
  *
  *  \param addrLo Lower address defining the memory region.
  *  \param addrHi Upper address defining the memory region (inclusive).
- *  \param access Access flags for this memory region; a combination of RVVI_PRIV_... flags or 0.
+ *  \param access Access flags for this memory region; a combination of RVVI_MEMORY_PRIVILEGE_... flags or 0.
  *
  *  \return Returns RVVI_TRUE if operation was successful else RVVI_FALSE.
 **/

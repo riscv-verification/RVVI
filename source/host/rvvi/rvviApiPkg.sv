@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2023 Imperas Software Ltd., www.imperas.com
+ * Copyright (c) 2005-2024 Imperas Software Ltd., www.imperas.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import uvm_pkg::*;
 `endif
 
 parameter RVVI_API_VERSION_MAJOR = 1;
-parameter RVVI_API_VERSION_MINOR = 32;
+parameter RVVI_API_VERSION_MINOR = 34;
 parameter RVVI_TRUE = 1;
 parameter RVVI_FALSE = 0;
 parameter RVVI_INVALID_INDEX = -1;
@@ -52,23 +52,23 @@ typedef enum {
     RVVI_METRIC_FATALS = 12
 } rvviMetricE;
 
-import "DPI-C" context function int rvviVersionCheck(
+import "DPI-C" context function byte rvviVersionCheck(
     input int version);
 
-import "DPI-C" context function int rvviRefInit(
+import "DPI-C" context function byte rvviRefInit(
     input string programPath);
 
-import "DPI-C" context function int rvviRefPcSet(
+import "DPI-C" context function byte rvviRefPcSet(
     input int hartId,
     input longint address);
 
-import "DPI-C" context function int rvviRefShutdown();
+import "DPI-C" context function byte rvviRefShutdown();
 
-import "DPI-C" context function int rvviRefCsrSetVolatile(
+import "DPI-C" context function byte rvviRefCsrSetVolatile(
     input int hartId,
     input int csrIndex);
 
-import "DPI-C" context function int rvviRefMemorySetVolatile(
+import "DPI-C" context function byte rvviRefMemorySetVolatile(
     input longint addressLow,
     input longint addressHigh);
 
@@ -117,7 +117,7 @@ import "DPI-C" context function void rvviDutRetire(
     input int hartId,
     input longint dutPc,
     input longint dutInsBin,
-    input int debugMode);
+    input byte debugMode);
 
 import "DPI-C" context function void rvviDutTrap(
     input int hartId,
@@ -127,43 +127,43 @@ import "DPI-C" context function void rvviDutTrap(
 import "DPI-C" context function void rvviRefReservationInvalidate(
     input int hartId);
 
-import "DPI-C" context function int rvviRefEventStep(
+import "DPI-C" context function byte rvviRefEventStep(
     input int hartId);
 
-import "DPI-C" context function int rvviRefGprsCompare(
+import "DPI-C" context function byte rvviRefGprsCompare(
     input int hartId);
 
-import "DPI-C" context function int rvviRefGprsCompareWritten(
+import "DPI-C" context function byte rvviRefGprsCompareWritten(
     input int hartId,
-    input int ignoreX0);
+    input byte ignoreX0);
 
-import "DPI-C" context function int rvviRefInsBinCompare(
+import "DPI-C" context function byte rvviRefInsBinCompare(
     input int hartId);
 
-import "DPI-C" context function int rvviRefPcCompare(
+import "DPI-C" context function byte rvviRefPcCompare(
     input int hartId);
 
-import "DPI-C" context function int rvviRefCsrCompare(
+import "DPI-C" context function byte rvviRefCsrCompare(
     input int hartId,
     input int csrIndex);
 
 import "DPI-C" context function void rvviRefCsrCompareEnable(
     input int hartId,
     input int csrIndex,
-    input int enableState);
+    input byte enableState);
 
 import "DPI-C" context function void rvviRefCsrCompareMask(
     input int hartId,
     input int csrIndex,
     input longint mask);
 
-import "DPI-C" context function int rvviRefCsrsCompare(
+import "DPI-C" context function byte rvviRefCsrsCompare(
     input int hartId);
 
-import "DPI-C" context function int rvviRefVrsCompare(
+import "DPI-C" context function byte rvviRefVrsCompare(
     input int hartId);
 
-import "DPI-C" context function int rvviRefFprsCompare(
+import "DPI-C" context function byte rvviRefFprsCompare(
     input int hartId);
 
 import "DPI-C" context function void rvviRefGprSet(
@@ -227,14 +227,14 @@ import "DPI-C" context function string rvviRefGprName(
     input int hartId,
     input int gprIndex);
 
-import "DPI-C" context function int rvviRefCsrPresent(
+import "DPI-C" context function byte rvviRefCsrPresent(
     input int hartId,
     input int csrIndex);
 
-import "DPI-C" context function int rvviRefFprsPresent(
+import "DPI-C" context function byte rvviRefFprsPresent(
     input int hartId);
 
-import "DPI-C" context function int rvviRefVrsPresent(
+import "DPI-C" context function byte rvviRefVrsPresent(
     input int hartId);
 
 import "DPI-C" context function string rvviRefFprName(
@@ -258,10 +258,10 @@ import "DPI-C" context function void rvviRefCsrSet(
 import "DPI-C" context function void rvviRefStateDump(
     input int hartId);
 
-import "DPI-C" context function int rvviRefProgramLoad(
+import "DPI-C" context function byte rvviRefProgramLoad(
     input string programPath);
 
-import "DPI-C" context function int rvviRefCsrSetVolatileMask(
+import "DPI-C" context function byte rvviRefCsrSetVolatileMask(
     input int hartId,
     input int csrIndex,
     input longint csrMask);
@@ -269,11 +269,11 @@ import "DPI-C" context function int rvviRefCsrSetVolatileMask(
 import "DPI-C" context function void rvviDutCycleCountSet(
     input longint cycleCount);
 
-import "DPI-C" context function int rvviRefConfigSetInt(
+import "DPI-C" context function byte rvviRefConfigSetInt(
     input longint configParam,
     input longint value);
 
-import "DPI-C" context function int rvviRefConfigSetString(
+import "DPI-C" context function byte rvviRefConfigSetString(
     input longint configParam,
     input string value);
 
@@ -281,7 +281,7 @@ import "DPI-C" context function int rvviRefCsrIndex(
     input int hartId,
     input string csrName);
 
-import "DPI-C" context function int rvviRefMemorySetPrivilege(
+import "DPI-C" context function byte rvviRefMemorySetPrivilege(
     input longint addrLo,
     input longint addrHi,
     input int access);
@@ -292,20 +292,7 @@ import "DPI-C" context function void rvviRefVrSet(
     input int byteIndex,
     input int data);
 
-export "DPI-C" function SVWriteC;
-function void SVWriteC(input string text);
-    $write(text);
-endfunction
-
-export "DPI-C" function SVFatalC;
-function void SVFatalC(input string text);
-`ifdef UVM
-    `uvm_fatal("IDV", "Fatal from IDV plugin");
-`else
-    $display(text);
-    $fatal;
-`endif
-endfunction
+import "DPI-C" context function void setContextExtMemory(input string func);
 
 endpackage: rvviApiPkg
 

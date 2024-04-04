@@ -55,8 +55,8 @@ CSR and any other supported registers. The instruction address which retired is
 indicated by the pc_rdata variable.
 
 ### `order`
-This signal contains the instruction count for the instruction being reported
-during a retirement or trap event.
+This signal contains the event count for the event being reported during a retirement or 
+trap event. The value of order should monotonically repeat with no gaps or repeats
 
 ### `insn`
 This signal contains the instruction word which is at the trap or retirement
@@ -65,11 +65,11 @@ ordering regardless of the mstatus.mbe field or endianness of the processor.
 
 ### `trap`
 When this signal is true along with `valid`, instruction execution has resulted
-in a synchronous exception (syscalls, etc). This event allows the state of the
+in an exception to program execution to occur . This event allows the state of the
 DUT to be conveyed between instruction retirements. The address of the
 instruction which trapped is indicated by the `pc_rdata` variable. If this
 signal is false when `valid` is asserted, then an instruction has instead
-retired normally.
+retired normally. State comparison will only occur upon instruction retirement (trap=0)
 
 ### `halt`
 When this signal is true, it indicates that the hart has entered a halted

@@ -1,0 +1,21 @@
+{
+ "signal": [
+  ["test",
+   {"name": "instruction", "wave": "x|2x|2x", "data": ["lw t0, 1(sp)", "addi sp, sp, -128"]}
+  ],
+  ["rvvi-trace",
+   {"name": "clk",            "wave": "p..Pp.P"},
+   {"name": "valid",          "wave": "0|10|10"},
+   {"name": "order",          "wave": "x|2x|2x", "data": ["n", "n+1"]},
+   {"name": "trap",           "wave": "x|1x|0x"},
+   {"name": "insn",           "wave": "x|2x|2x", "data": ["00112283h", "f8010113h"]},
+   {"name": "x_wdata[sp]",    "wave": "x|xx|2x", "data": ["10080h"]},
+   {"name": "x_wb[sp]",       "wave": "x|0x|1x"},
+   {"name": "csr[mcause]",    "wave": "x|2x|..", "data": ["4"]},
+   {"name": "csr_wb[mcause]", "wave": "x|1x|0x"},
+   {"name": "pc_rdata",       "wave": "x|2x|2x", "data": ["800h", "0"]}
+  ]
+ ],
+ "head":   {"text": "Load address misaligned trap" },
+ "config": {"hscale": 3 }
+}

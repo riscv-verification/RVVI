@@ -1,0 +1,24 @@
+{
+  "signal": [
+   ["test",
+    {"name": "instruction",    "wave": "x3x3x4x5x", "data": ["wfi", "lui", "mret", "lui"]}
+   ],
+   ["rvvi-trace",
+    {"name": "clk",            "wave": "p.|p|p|p."},
+    {"name": "valid",          "wave": "010101010"},
+    {"name": "trap",           "wave": "x0x1x0x0x"},
+    {"name": "order",          "wave": "x3x3x4x5x", "data": ["n", "n+1", "n+2", "n+3"]},
+    {"name": "pc_rdata",       "wave": "x3x3x4x5x", "data": ["1000h", "1004h", "mtvec", "1004h"]},
+    {"name": "csr[mepc]",      "wave": "xxx3xxxxx", "data": ["1004h"]},
+    {"name": "csr_wb[mepc]",   "wave": "x0x1x0x0x"}
+   ],
+   ["net",
+    {"name": "net_push()",     "wave": "0.8080...", "data": ["interrupt=1", "interrupt=0"]}
+   ]
+  ],
+  "head": {
+    "text": "Wait for interrupt (interrupt enabled)"
+  },
+  "config": {"hscale": 3}
+ }
+ 

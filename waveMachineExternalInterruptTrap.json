@@ -1,0 +1,23 @@
+{
+ "signal": [
+  ["test",
+   {"name": "instruction",    "wave": "x|2x|2x|2x", "data": ["addi", "sw", "auipc"]}
+  ],
+  ["rvvi-trace",
+   {"name": "valid",          "wave": "0|10|10|10"},
+   {"name": "order",          "wave": "x|2x|2x|2x", "data": ["n", "n+1", "n+2"]},
+   {"name": "trap",           "wave": "x|0x|1x|0x"},
+   {"name": "intr",           "wave": "x|0x|0x|1x"},
+   {"name": "csr[mcause]",    "wave": "x|..|2x|..", "data": ["8000000bh"]},
+   {"name": "csr_wb[mcause]", "wave": "x|0x|1x|0x"},
+   {"name": "csr[mepc]",      "wave": "x|xx|2x|..", "data": ["0000102ch"]},
+   {"name": "csr_wb[mepc]",   "wave": "x|0x|1x|0x"},
+   {"name": "pc_rdata",       "wave": "x|2x|2x|2x", "data": ["00001028h", "0000102ch", "mtvec"]}
+  ],
+  ["net",
+   {"name": "net_push()",     "wave": "020....20.", "data": ["mextint=1", "mextint=0"]}
+  ]
+ ],
+ "head": {"text": "Interrupt handling (Machine External Interrupt) with trap event"},
+ "config": {"hscale": 2}
+}

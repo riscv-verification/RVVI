@@ -1,0 +1,19 @@
+{
+ "signal": [
+  ["test",
+   {"name": "instruction", "wave": "x2x|2x|2x", "data": ["addi", "ecall", "sw"]}
+  ],
+  ["rvvi-trace",
+   {"name": "clk",            "wave": "p.Pp.Pp.P"},
+   {"name": "valid",          "wave": "010|10|10"},
+   {"name": "order",          "wave": "x2x|2x|2x", "data": ["n", "n+1", "n+2"]},
+   {"name": "trap",           "wave": "x0x|1x|0x"},
+   {"name": "intr",           "wave": "x0x.0x.1x"},
+   {"name": "insn",           "wave": "x2x|2x|2x", "data": ["3e800093h", "00000073h", "00012223h"]},
+   {"name": "csr[mcause]",    "wave": "x..|2x|..", "data": ["11"]},
+   {"name": "csr_wb[mcause]", "wave": "x0x|1x|0x"}
+  ]
+ ],
+ "head": {"text": "Environment call exception"},
+ "config": {"hscale": 2}
+}

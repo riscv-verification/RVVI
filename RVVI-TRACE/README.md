@@ -133,7 +133,8 @@ reference model.
 ### `debug_mode`
 This signal should be driven true if the current instruction retirement event
 takes place when the processor is operating in debug mode. This signal should be
-driven false otherwise.
+driven false otherwise. This is an optional signal, and should be tied to false
+when unused.
 
 ----
 ## rvviTrace Interface functions

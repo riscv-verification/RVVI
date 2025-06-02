@@ -28,7 +28,7 @@
 typedef int8_t bool_t;
 
 #define RVVI_API_VERSION_MAJOR 1
-#define RVVI_API_VERSION_MINOR 34
+#define RVVI_API_VERSION_MINOR 35
 #define RVVI_TRUE 1
 #define RVVI_FALSE 0
 #define RVVI_INVALID_INDEX -1
@@ -233,9 +233,9 @@ extern void rvviDutRetire(
 
 /*! \brief Notify the reference that the DUT received a trap.
  *
- *  \param hartId The hart that has retired an instruction.
+ *  \param hartId The hart that has trapped.
  *  \param dutPc The program counter at the time the exception was raised.
- *  \param dutInsBin The binary instruction representation.
+ *  \param dutInsBin The binary instruction fetched prior to trapping.
 **/
 extern void rvviDutTrap(
     uint32_t hartId,
@@ -690,6 +690,52 @@ extern void rvviRefVrSet(
     uint32_t vrIndex,
     uint32_t byteIndex,
     uint8_t data);
+
+/*! \brief Lookup a connection on the reference model and return its index.
+ *
+ *  \param name The connection name to locate.
+ *
+ *  \return Unique index for this connection or RVVI_INVALID_INDEX if it was not found.
+ *
+ *  \note Please consult the model datasheet for a list of valid connection names.
+**/
+extern uint64_t rvviRefConnIndexGet(
+    const char *name);
+
+/*! \brief Mark a connection as empty (no data available for read / space for write).
+ *
+ *  \param connIndex Connection index
+ *
+ *  \return Returns RVVI_TRUE if operation was successful else RVVI_FALSE.
+**/
+extern bool_t rvviRefConnSetEmpty(
+    uint64_t connIndex);
+
+/*! \brief Mark a connection as full (data available for read / no space for write).
+ *
+ *  \param connIndex Connection index
+ *
+ *  \return Returns RVVI_TRUE if operation was successful else RVVI_FALSE.
+**/
+extern bool_t rvviRefConnSetFull(
+    uint64_t connIndex);
+
+/*! \brief Write data into a connection input/compare latch.
+ *
+ *  \param connIndex Connection index
+ *  \param offset Byte offset into the latch that data should be written.
+ *  \param value Data to write into the input/compare latch.
+ *  \param commit Write all latched data into to input connection.
+ *
+ *  \return Returns RVVI_TRUE if operation was successful else RVVI_FALSE.
+ *
+ *  \note After a commit operation all latched data is cleared back to 0.
+**/
+extern bool_t rvviRefConnData(
+    uint64_t connIndex,
+    uint32_t offset,
+    uint64_t value,
+    bool_t commit);
 
 #ifdef __cplusplus
 }  // extern "C"

@@ -1,0 +1,82 @@
+VERSION 0 1
+VENDOR ImperasFPM 0 1
+PARAMS 6 ILEN 32 XLEN 32 FLEN 64 VLEN 0 NHART 1 RETIRE 1
+RET  1000 '_start+0'        00000317 'auipc   t1,0x0'        X  6 't1' 00001000
+RET  1004 '_start+4'        04030313 'addi    t1,t1,64'      X  6 't1' 00001040
+RET  1008 '_start+8'        30531073 'csrw    mtvec,t1'      C 305 'mtvec' 00001040
+TRAP 100c '_start+12'           9002 'ebreak'                C 300 'mstatus' 00003800 C 341 'mepc' 0000100c C 342 'mcause' 00000003 C 343 'mtval' 0000100c
+RET  1040 'trap_handler+0'  34029073 'csrw    mscratch,t0'  
+RET  1044 'trap_handler+4'  341022f3 'csrr    t0,mepc'       X  5 't0' 0000100c
+RET  1048 'trap_handler+8'  00028283 'lb      t0,0(t0)'      X  5 't0' 00000002
+RET  104c 'trap_handler+12' 0032f293 'andi    t0,t0,3'      
+RET  1050 'trap_handler+16' 0032c293 'xori    t0,t0,3'       X  5 't0' 00000001
+RET  1054 'trap_handler+20' 00029b63 'bnez    t0,106a'      
+RET  106a 'trap_handler+42' 341022f3 'csrr    t0,mepc'       X  5 't0' 0000100c
+RET  106e 'trap_handler+46'     0289 'addi    t0,t0,2'       X  5 't0' 0000100e
+RET  1070 'trap_handler+48' 34129073 'csrw    mepc,t0'       C 341 'mepc' 0000100e
+RET  1074 'trap_handler+52' 340022f3 'csrr    t0,mscratch'   X  5 't0' 00000000
+RET  1078 'trap_handler+56' 30200073 'mret'                  C 300 'mstatus' 00002080
+RET  100e '_start+14'       00000297 'auipc   t0,0x0'        X  5 't0' 0000100e
+RET  1012 '_start+18'       07228293 'addi    t0,t0,114'     X  5 't0' 00001080
+TRAP 1016 '_start+22'       0012a303 'lw      t1,1(t0)'      C 300 'mstatus' 00003800 C 341 'mepc' 00001016 C 342 'mcause' 00000004 C 343 'mtval' 00001081
+RET  1040 'trap_handler+0'  34029073 'csrw    mscratch,t0'   C 340 'mscratch' 00001080
+RET  1044 'trap_handler+4'  341022f3 'csrr    t0,mepc'       X  5 't0' 00001016
+RET  1048 'trap_handler+8'  00028283 'lb      t0,0(t0)'      X  5 't0' 00000003
+RET  104c 'trap_handler+12' 0032f293 'andi    t0,t0,3'      
+RET  1050 'trap_handler+16' 0032c293 'xori    t0,t0,3'       X  5 't0' 00000000
+RET  1054 'trap_handler+20' 00029b63 'bnez    t0,106a'      
+RET  1058 'trap_handler+24' 341022f3 'csrr    t0,mepc'       X  5 't0' 00001016
+RET  105c 'trap_handler+28'     0291 'addi    t0,t0,4'       X  5 't0' 0000101a
+RET  105e 'trap_handler+30' 34129073 'csrw    mepc,t0'       C 341 'mepc' 0000101a
+RET  1062 'trap_handler+34' 340022f3 'csrr    t0,mscratch'   X  5 't0' 00001080
+RET  1066 'trap_handler+38' 30200073 'mret'                  C 300 'mstatus' 00002080
+RET  101a '_start+26'       00000297 'auipc   t0,0x0'        X  5 't0' 0000101a
+RET  101e '_start+30'       06628293 'addi    t0,t0,102'     X  5 't0' 00001080
+RET  1022 '_start+34'       deafd337 'lui     t1,0xdeafd'    X  6 't1' deafd000
+RET  1026 '_start+38'       afe30313 'addi    t1,t1,-1282'   X  6 't1' deafcafe
+TRAP 102a '_start+42'       0062a1a3 'sw      t1,3(t0)'      C 300 'mstatus' 00003800 C 341 'mepc' 0000102a C 342 'mcause' 00000006 C 343 'mtval' 00001083
+RET  1040 'trap_handler+0'  34029073 'csrw    mscratch,t0'  
+RET  1044 'trap_handler+4'  341022f3 'csrr    t0,mepc'       X  5 't0' 0000102a
+RET  1048 'trap_handler+8'  00028283 'lb      t0,0(t0)'      X  5 't0' ffffffa3
+RET  104c 'trap_handler+12' 0032f293 'andi    t0,t0,3'       X  5 't0' 00000003
+RET  1050 'trap_handler+16' 0032c293 'xori    t0,t0,3'       X  5 't0' 00000000
+RET  1054 'trap_handler+20' 00029b63 'bnez    t0,106a'      
+RET  1058 'trap_handler+24' 341022f3 'csrr    t0,mepc'       X  5 't0' 0000102a
+RET  105c 'trap_handler+28'     0291 'addi    t0,t0,4'       X  5 't0' 0000102e
+RET  105e 'trap_handler+30' 34129073 'csrw    mepc,t0'       C 341 'mepc' 0000102e
+RET  1062 'trap_handler+34' 340022f3 'csrr    t0,mscratch'   X  5 't0' 00001080
+RET  1066 'trap_handler+38' 30200073 'mret'                  C 300 'mstatus' 00002080
+TRAP 102e '_start+46'           0000 'illegal'               C 300 'mstatus' 00003800 C 342 'mcause' 00000002 C 343 'mtval' 00000000
+RET  1040 'trap_handler+0'  34029073 'csrw    mscratch,t0'  
+RET  1044 'trap_handler+4'  341022f3 'csrr    t0,mepc'       X  5 't0' 0000102e
+RET  1048 'trap_handler+8'  00028283 'lb      t0,0(t0)'      X  5 't0' 00000000
+RET  104c 'trap_handler+12' 0032f293 'andi    t0,t0,3'      
+RET  1050 'trap_handler+16' 0032c293 'xori    t0,t0,3'       X  5 't0' 00000003
+RET  1054 'trap_handler+20' 00029b63 'bnez    t0,106a'      
+RET  106a 'trap_handler+42' 341022f3 'csrr    t0,mepc'       X  5 't0' 0000102e
+RET  106e 'trap_handler+46'     0289 'addi    t0,t0,2'       X  5 't0' 00001030
+RET  1070 'trap_handler+48' 34129073 'csrw    mepc,t0'       C 341 'mepc' 00001030
+RET  1074 'trap_handler+52' 340022f3 'csrr    t0,mscratch'   X  5 't0' 00001080
+RET  1078 'trap_handler+56' 30200073 'mret'                  C 300 'mstatus' 00002080
+TRAP 1030 '_start+48'           0000 'illegal'               C 300 'mstatus' 00003800
+RET  1040 'trap_handler+0'  34029073 'csrw    mscratch,t0'  
+RET  1044 'trap_handler+4'  341022f3 'csrr    t0,mepc'       X  5 't0' 00001030
+RET  1048 'trap_handler+8'  00028283 'lb      t0,0(t0)'      X  5 't0' 00000000
+RET  104c 'trap_handler+12' 0032f293 'andi    t0,t0,3'      
+RET  1050 'trap_handler+16' 0032c293 'xori    t0,t0,3'       X  5 't0' 00000003
+RET  1054 'trap_handler+20' 00029b63 'bnez    t0,106a'      
+RET  106a 'trap_handler+42' 341022f3 'csrr    t0,mepc'       X  5 't0' 00001030
+RET  106e 'trap_handler+46'     0289 'addi    t0,t0,2'       X  5 't0' 00001032
+RET  1070 'trap_handler+48' 34129073 'csrw    mepc,t0'       C 341 'mepc' 00001032
+RET  1074 'trap_handler+52' 340022f3 'csrr    t0,mscratch'   X  5 't0' 00001080
+RET  1078 'trap_handler+56' 30200073 'mret'                  C 300 'mstatus' 00002080
+RET  1032 '_start+50'           a001 'j       1032'         
+RET  1032 '_start+50'           a001 'j       1032'         
+RET  1032 '_start+50'           a001 'j       1032'         
+RET  1032 '_start+50'           a001 'j       1032'         
+RET  1032 '_start+50'           a001 'j       1032'         
+RET  1032 '_start+50'           a001 'j       1032'         
+RET  1032 '_start+50'           a001 'j       1032'         
+RET  1032 '_start+50'           a001 'j       1032'         
+RET  1032 '_start+50'           a001 'j       1032'         
+RET  1032 '_start+50'           a001 'j       1032'         

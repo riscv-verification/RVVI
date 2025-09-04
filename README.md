@@ -61,11 +61,25 @@ The RVVI-TRACE interface is defined in SystemVerilog.
 
 Specification: [RVVI-TRACE Verilog](RVVI-TRACE/README.md)
 
+-----
+## The RVVI-TEXT text trace file format
+
+Version 0.1
+
+The RVVI-TEXT format is designed to provide a standardized way to represent
+RVVI-TRACE verification traces. This format facilitates the exchange of trace
+data between different tools and environments, ensuring consistency and
+interoperability in RISC-V verification workflows. By utilizing a clear and
+structured text format, users can easily analyze and visualize trace data,
+making it an essential component for RISC-V verification and debugging
+processes.
+
+Specification: [RVVI-TEXT specification](RVVI-TEXT/README.md)
 
 -----
 ## The reference model DV subsystem interface - RVVI-API
 
-Version  1.34
+Version 1.34
 
 To verify a RISC-V core requires comparison of the Device Under Test (DUT)
 against a reference model. This is not as simple as just running programs on the
@@ -86,7 +100,7 @@ Specification: [RVVI-API reference model subsystem API](RVVI-API/README.md)
 -----
 ## The Virtual Verification Peripherals used in the test bench - RVVI-VVP
 
-Version  0.0
+Version 0.0
 
 When testing a processor there are components needed in the test bench to
 interact with the processor - for example a virtual UART to print information

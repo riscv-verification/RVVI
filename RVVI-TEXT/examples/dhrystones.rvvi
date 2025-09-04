@@ -1,0 +1,102 @@
+VERSION 0 1
+VENDOR ImperasFPM 0 1
+PARAMS 6 ILEN 32 XLEN 32 FLEN 64 VLEN 0 NHART 1 RETIRE 1
+RET  100b0 '_start+0'        00014197 'auipc   gp,0x14'       X  3 'gp' 000240b0
+RET  100b4 '_start+4'        b4418193 'addi    gp,gp,-1212'   X  3 'gp' 00023bf4
+RET  100b8 '_start+8'        81418513 'addi    a0,gp,-2028'   X 10 'a0' 00023408
+RET  100bc '_start+12'       00016617 'auipc   a2,0x16'       X 12 'a2' 000260bc
+RET  100c0 '_start+16'       bd060613 'addi    a2,a2,-1072'   X 12 'a2' 00025c8c
+RET  100c4 '_start+20'           8e09 'sub     a2,a2,a0'      X 12 'a2' 00002884
+RET  100c6 '_start+22'           4581 'li      a1,0'         
+RET  100c8 '_start+24'       136010ef 'jal     ra,111fe'      X  1 'ra' 000100cc
+RET  111fe 'memset+0'            433d 'li      t1,15'         X  6 't1' 0000000f
+RET  11200 'memset+2'            872a 'mv      a4,a0'         X 14 'a4' 00023408
+RET  11202 'memset+4'        02c37363 'bgeu    t1,a2,11228'  
+RET  11206 'memset+8'        00f77793 'andi    a5,a4,15'      X 15 'a5' 00000008
+RET  1120a 'memset+12'           efbd 'bnez    a5,11288'     
+RET  11288 'memset+138'      00279693 'slli    a3,a5,0x2'     X 13 'a3' 00000020
+RET  1128c 'memset+142'      00000297 'auipc   t0,0x0'        X  5 't0' 0001128c
+RET  11290 'memset+146'          9696 'add     a3,a3,t0'      X 13 'a3' 000112ac
+RET  11292 'memset+148'          8286 'mv      t0,ra'         X  5 't0' 000100cc
+RET  11294 'memset+150'      fa8680e7 'jalr    ra,-88(a3)'    X  1 'ra' 00011298
+RET  11254 'memset+86'       00b703a3 'sb      a1,7(a4)'     
+RET  11258 'memset+90'       00b70323 'sb      a1,6(a4)'     
+RET  1125c 'memset+94'       00b702a3 'sb      a1,5(a4)'     
+RET  11260 'memset+98'       00b70223 'sb      a1,4(a4)'     
+RET  11264 'memset+102'      00b701a3 'sb      a1,3(a4)'     
+RET  11268 'memset+106'      00b70123 'sb      a1,2(a4)'     
+RET  1126c 'memset+110'      00b700a3 'sb      a1,1(a4)'     
+RET  11270 'memset+114'      00b70023 'sb      a1,0(a4)'     
+RET  11274 'memset+118'          8082 'jr      ra'           
+RET  11298 'memset+154'          8096 'mv      ra,t0'         X  1 'ra' 000100cc
+RET  1129a 'memset+156'          17c1 'addi    a5,a5,-16'     X 15 'a5' fffffff8
+RET  1129c 'memset+158'          8f1d 'sub     a4,a4,a5'      X 14 'a4' 00023410
+RET  1129e 'memset+160'          963e 'add     a2,a2,a5'      X 12 'a2' 0000287c
+RET  112a0 'memset+162'      f8c374e3 'bgeu    t1,a2,11228'  
+RET  112a4 'memset+166'          b7a5 'j       1120c'        
+RET  1120c 'memset+14'           e5ad 'bnez    a1,11276'     
+RET  1120e 'memset+16'       ff067693 'andi    a3,a2,-16'     X 13 'a3' 00002870
+RET  11212 'memset+20'           8a3d 'andi    a2,a2,15'      X 12 'a2' 0000000c
+RET  11214 'memset+22'           96ba 'add     a3,a3,a4'      X 13 'a3' 00025c80
+RET  11216 'memset+24'           c30c 'sw      a1,0(a4)'     
+RET  11218 'memset+26'           c34c 'sw      a1,4(a4)'     
+RET  1121a 'memset+28'           c70c 'sw      a1,8(a4)'     
+RET  1121c 'memset+30'           c74c 'sw      a1,12(a4)'    
+RET  1121e 'memset+32'           0741 'addi    a4,a4,16'      X 14 'a4' 00023420
+RET  11220 'memset+34'       fed76be3 'bltu    a4,a3,11216'  
+RET  11216 'memset+24'           c30c 'sw      a1,0(a4)'     
+RET  11218 'memset+26'           c34c 'sw      a1,4(a4)'     
+RET  1121a 'memset+28'           c70c 'sw      a1,8(a4)'     
+RET  1121c 'memset+30'           c74c 'sw      a1,12(a4)'    
+RET  1121e 'memset+32'           0741 'addi    a4,a4,16'      X 14 'a4' 00023430
+RET  11220 'memset+34'       fed76be3 'bltu    a4,a3,11216'  
+RET  11216 'memset+24'           c30c 'sw      a1,0(a4)'     
+RET  11218 'memset+26'           c34c 'sw      a1,4(a4)'     
+RET  1121a 'memset+28'           c70c 'sw      a1,8(a4)'     
+RET  1121c 'memset+30'           c74c 'sw      a1,12(a4)'    
+RET  1121e 'memset+32'           0741 'addi    a4,a4,16'      X 14 'a4' 00023440
+RET  11220 'memset+34'       fed76be3 'bltu    a4,a3,11216'  
+RET  11216 'memset+24'           c30c 'sw      a1,0(a4)'     
+RET  11218 'memset+26'           c34c 'sw      a1,4(a4)'     
+RET  1121a 'memset+28'           c70c 'sw      a1,8(a4)'     
+RET  1121c 'memset+30'           c74c 'sw      a1,12(a4)'    
+RET  1121e 'memset+32'           0741 'addi    a4,a4,16'      X 14 'a4' 00023450
+RET  11220 'memset+34'       fed76be3 'bltu    a4,a3,11216'  
+RET  11216 'memset+24'           c30c 'sw      a1,0(a4)'     
+RET  11218 'memset+26'           c34c 'sw      a1,4(a4)'     
+RET  1121a 'memset+28'           c70c 'sw      a1,8(a4)'     
+RET  1121c 'memset+30'           c74c 'sw      a1,12(a4)'    
+RET  1121e 'memset+32'           0741 'addi    a4,a4,16'      X 14 'a4' 00023460
+RET  11220 'memset+34'       fed76be3 'bltu    a4,a3,11216'  
+RET  11216 'memset+24'           c30c 'sw      a1,0(a4)'     
+RET  11218 'memset+26'           c34c 'sw      a1,4(a4)'     
+RET  1121a 'memset+28'           c70c 'sw      a1,8(a4)'     
+RET  1121c 'memset+30'           c74c 'sw      a1,12(a4)'    
+RET  1121e 'memset+32'           0741 'addi    a4,a4,16'      X 14 'a4' 00023470
+RET  11220 'memset+34'       fed76be3 'bltu    a4,a3,11216'  
+RET  11216 'memset+24'           c30c 'sw      a1,0(a4)'     
+RET  11218 'memset+26'           c34c 'sw      a1,4(a4)'     
+RET  1121a 'memset+28'           c70c 'sw      a1,8(a4)'     
+RET  1121c 'memset+30'           c74c 'sw      a1,12(a4)'    
+RET  1121e 'memset+32'           0741 'addi    a4,a4,16'      X 14 'a4' 00023480
+RET  11220 'memset+34'       fed76be3 'bltu    a4,a3,11216'  
+RET  11216 'memset+24'           c30c 'sw      a1,0(a4)'     
+RET  11218 'memset+26'           c34c 'sw      a1,4(a4)'     
+RET  1121a 'memset+28'           c70c 'sw      a1,8(a4)'     
+RET  1121c 'memset+30'           c74c 'sw      a1,12(a4)'    
+RET  1121e 'memset+32'           0741 'addi    a4,a4,16'      X 14 'a4' 00023490
+RET  11220 'memset+34'       fed76be3 'bltu    a4,a3,11216'  
+RET  11216 'memset+24'           c30c 'sw      a1,0(a4)'     
+RET  11218 'memset+26'           c34c 'sw      a1,4(a4)'     
+RET  1121a 'memset+28'           c70c 'sw      a1,8(a4)'     
+RET  1121c 'memset+30'           c74c 'sw      a1,12(a4)'    
+RET  1121e 'memset+32'           0741 'addi    a4,a4,16'      X 14 'a4' 000234a0
+RET  11220 'memset+34'       fed76be3 'bltu    a4,a3,11216'  
+RET  11216 'memset+24'           c30c 'sw      a1,0(a4)'     
+RET  11218 'memset+26'           c34c 'sw      a1,4(a4)'     
+RET  1121a 'memset+28'           c70c 'sw      a1,8(a4)'     
+RET  1121c 'memset+30'           c74c 'sw      a1,12(a4)'    
+RET  1121e 'memset+32'           0741 'addi    a4,a4,16'      X 14 'a4' 000234b0
+RET  11220 'memset+34'       fed76be3 'bltu    a4,a3,11216'  
+RET  11216 'memset+24'           c30c 'sw      a1,0(a4)'     
+RET  11218 'memset+26'           c34c 'sw      a1,4(a4)'     

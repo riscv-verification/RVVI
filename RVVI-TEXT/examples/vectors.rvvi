@@ -1,0 +1,872 @@
+VERSION 0 1
+VENDOR ImperasFPM 0 1
+PARAMS 6 ILEN 32 XLEN 64 FLEN 64 VLEN 512 NHART 1 RETIRE 1
+RET  80000000 'rvtest_entry_point+0' 0480006f 'j       80000048'     
+RET  80000048 'reset_vector+0'  00002537 'lui     a0,0x2'        X 10 'a0' 2000
+RET  8000004c 'reset_vector+4'  8005051b 'addiw   a0,a0,-2048'   X 10 'a0' 1800
+RET  80000050 'reset_vector+8'  30052073 'csrs    mstatus,a0'    C 300 'mstatus' a00001800
+RET  80000054 'reset_vector+12' 00000297 'auipc   t0,0x0'        X  5 't0' 80000054
+RET  80000058 'reset_vector+16' fb028293 'addi    t0,t0,-80'     X  5 't0' 80000004
+RET  8000005c 'reset_vector+20' 30529073 'csrw    mtvec,t0'      C 305 'mtvec' 80000004
+RET  80000060 'reset_vector+24' 00000297 'auipc   t0,0x0'        X  5 't0' 80000060
+RET  80000064 'reset_vector+28' 02028293 'addi    t0,t0,32'      X  5 't0' 80000080
+RET  80000068 'reset_vector+32' 34129073 'csrw    mepc,t0'       C 341 'mepc' 80000080
+RET  8000006c 'reset_vector+36' f1402573 'csrr    a0,mhartid'    X 10 'a0' 0
+RET  80000070 'reset_vector+40' 30200073 'mret'                  C 300 'mstatus' a00000080
+RET  80000080 'rvtest_init+0'   ff76e0b7 'lui     ra,0xff76e'    X  1 'ra' ffffffffff76e000
+RET  80000084 'rvtest_init+4'   f570809b 'addiw   ra,ra,-169'    X  1 'ra' ffffffffff76df57
+RET  80000088 'rvtest_init+8'   01309093 'slli    ra,ra,0x13'    X  1 'ra' fffffbb6fab80000
+RET  8000008c 'rvtest_init+12'  bb708093 'addi    ra,ra,-1097'   X  1 'ra' fffffbb6fab7fbb7
+RET  80000090 'rvtest_init+16'  00e09093 'slli    ra,ra,0xe'     X  1 'ra' feedbeadfeedc000
+RET  80000094 'rvtest_init+20'  ead08093 'addi    ra,ra,-339'    X  1 'ra' feedbeadfeedbead
+RET  80000098 'rvtest_init+24'  ff76e137 'lui     sp,0xff76e'    X  2 'sp' ffffffffff76e000
+RET  8000009c 'rvtest_init+28'  f571011b 'addiw   sp,sp,-169'    X  2 'sp' ffffffffff76df57
+RET  800000a0 'rvtest_init+32'  01311113 'slli    sp,sp,0x13'    X  2 'sp' fffffbb6fab80000
+RET  800000a4 'rvtest_init+36'  bb710113 'addi    sp,sp,-1097'   X  2 'sp' fffffbb6fab7fbb7
+RET  800000a8 'rvtest_init+40'  00d11113 'slli    sp,sp,0xd'     X  2 'sp' ff76df56ff76e000
+RET  800000ac 'rvtest_init+44'  f5610113 'addi    sp,sp,-170'    X  2 'sp' ff76df56ff76df56
+RET  800000b0 'rvtest_init+48'  000801b7 'lui     gp,0x80'       X  3 'gp' 80000
+RET  800000b4 'rvtest_init+52'  bb71819b 'addiw   gp,gp,-1097'   X  3 'gp' 7fbb7
+RET  800000b8 'rvtest_init+56'  00d19193 'slli    gp,gp,0xd'     X  3 'gp' ff76e000
+RET  800000bc 'rvtest_init+60'  f5718193 'addi    gp,gp,-169'    X  3 'gp' ff76df57
+RET  800000c0 'rvtest_init+64'  01319193 'slli    gp,gp,0x13'    X  3 'gp' 7fbb6fab80000
+RET  800000c4 'rvtest_init+68'  bb718193 'addi    gp,gp,-1097'   X  3 'gp' 7fbb6fab7fbb7
+RET  800000c8 'rvtest_init+72'  00c19193 'slli    gp,gp,0xc'     X  3 'gp' 7fbb6fab7fbb7000
+RET  800000cc 'rvtest_init+76'  fab18193 'addi    gp,gp,-85'     X  3 'gp' 7fbb6fab7fbb6fab
+RET  800000d0 'rvtest_init+80'  fff80237 'lui     tp,0xfff80'    X  4 'tp' fffffffffff80000
+RET  800000d4 'rvtest_init+84'  bb72021b 'addiw   tp,tp,-1097'   X  4 'tp' fffffffffff7fbb7
+RET  800000d8 'rvtest_init+88'  00d21213 'slli    tp,tp,0xd'     X  4 'tp' fffffffeff76e000
+RET  800000dc 'rvtest_init+92'  f5720213 'addi    tp,tp,-169'    X  4 'tp' fffffffeff76df57
+RET  800000e0 'rvtest_init+96'  01221213 'slli    tp,tp,0x12'    X  4 'tp' fffbfddb7d5c0000
+RET  800000e4 'rvtest_init+100' ddb20213 'addi    tp,tp,-549'    X  4 'tp' fffbfddb7d5bfddb
+RET  800000e8 'rvtest_init+104' 00c21213 'slli    tp,tp,0xc'     X  4 'tp' bfddb7d5bfddb000
+RET  800000ec 'rvtest_init+108' 7d520213 'addi    tp,tp,2005'    X  4 'tp' bfddb7d5bfddb7d5
+RET  800000f0 'rvtest_init+112' 00000297 'auipc   t0,0x0'        X  5 't0' 800000f0
+RET  800000f4 'rvtest_init+116' 32028293 'addi    t0,t0,800'     X  5 't0' 80000410
+RET  800000f8 'rvtest_init+120' 00002317 'auipc   t1,0x2'        X  6 't1' 800020f8
+RET  800000fc 'rvtest_init+124' f0830313 'addi    t1,t1,-248'    X  6 't1' 80002000
+RET  80000100 'rvtest_init+128' ffb803b7 'lui     t2,0xffb80'    X  7 't2' ffffffffffb80000
+RET  80000104 'rvtest_init+132' bb73839b 'addiw   t2,t2,-1097'   X  7 't2' ffffffffffb7fbb7
+RET  80000108 'rvtest_init+136' 00d39393 'slli    t2,t2,0xd'     X  7 't2' fffffff6ff76e000
+RET  8000010c 'rvtest_init+140' f5738393 'addi    t2,t2,-169'    X  7 't2' fffffff6ff76df57
+RET  80000110 'rvtest_init+144' 00f39393 'slli    t2,t2,0xf'     X  7 't2' fffb7fbb6fab8000
+RET  80000114 'rvtest_init+148' fbb38393 'addi    t2,t2,-69'     X  7 't2' fffb7fbb6fab7fbb
+RET  80000118 'rvtest_init+152' 00c39393 'slli    t2,t2,0xc'     X  7 't2' b7fbb6fab7fbb000
+RET  8000011c 'rvtest_init+156' 6fa38393 'addi    t2,t2,1786'    X  7 't2' b7fbb6fab7fbb6fa
+RET  80000120 'rvtest_init+160' 00b80437 'lui     s0,0xb80'      X  8 's0' b80000
+RET  80000124 'rvtest_init+164' bb74041b 'addiw   s0,s0,-1097'   X  8 's0' b7fbb7
+RET  80000128 'rvtest_init+168' 00d41413 'slli    s0,s0,0xd'     X  8 's0' 16ff76e000
+RET  8000012c 'rvtest_init+172' f5740413 'addi    s0,s0,-169'    X  8 's0' 16ff76df57
+RET  80000130 'rvtest_init+176' 00d41413 'slli    s0,s0,0xd'     X  8 's0' 2dfeedbeae000
+RET  80000134 'rvtest_init+180' fef40413 'addi    s0,s0,-17'     X  8 's0' 2dfeedbeadfef
+RET  80000138 'rvtest_init+184' 00d41413 'slli    s0,s0,0xd'     X  8 's0' 5bfddb7d5bfde000
+RET  8000013c 'rvtest_init+188' b7d40413 'addi    s0,s0,-1155'   X  8 's0' 5bfddb7d5bfddb7d
+RET  80000140 'rvtest_init+192' feb804b7 'lui     s1,0xfeb80'    X  9 's1' fffffffffeb80000
+RET  80000144 'rvtest_init+196' bb74849b 'addiw   s1,s1,-1097'   X  9 's1' fffffffffeb7fbb7
+RET  80000148 'rvtest_init+200' 00d49493 'slli    s1,s1,0xd'     X  9 's1' ffffffd6ff76e000
+RET  8000014c 'rvtest_init+204' f5748493 'addi    s1,s1,-169'    X  9 's1' ffffffd6ff76df57
+RET  80000150 'rvtest_init+208' 00d49493 'slli    s1,s1,0xd'     X  9 's1' fffadfeedbeae000
+RET  80000154 'rvtest_init+212' fef48493 'addi    s1,s1,-17'     X  9 's1' fffadfeedbeadfef
+RET  80000158 'rvtest_init+216' 00c49493 'slli    s1,s1,0xc'     X  9 's1' adfeedbeadfef000
+RET  8000015c 'rvtest_init+220' dbe48493 'addi    s1,s1,-578'    X  9 's1' adfeedbeadfeedbe
+RET  80000160 'rvtest_init+224' 02b80537 'lui     a0,0x2b80'     X 10 'a0' 2b80000
+RET  80000164 'rvtest_init+228' bb75051b 'addiw   a0,a0,-1097'   X 10 'a0' 2b7fbb7
+RET  80000168 'rvtest_init+232' 00d51513 'slli    a0,a0,0xd'     X 10 'a0' 56ff76e000
+RET  8000016c 'rvtest_init+236' f5750513 'addi    a0,a0,-169'    X 10 'a0' 56ff76df57
+RET  80000170 'rvtest_init+240' 00c51513 'slli    a0,a0,0xc'     X 10 'a0' 56ff76df57000
+RET  80000174 'rvtest_init+244' ff750513 'addi    a0,a0,-9'      X 10 'a0' 56ff76df56ff7
+RET  80000178 'rvtest_init+248' 00c51513 'slli    a0,a0,0xc'     X 10 'a0' 56ff76df56ff7000
+RET  8000017c 'rvtest_init+252' 6df50513 'addi    a0,a0,1759'    X 10 'a0' 56ff76df56ff76df
+RET  80000180 'rvtest_init+256' ff5705b7 'lui     a1,0xff570'    X 11 'a1' ffffffffff570000
+RET  80000184 'rvtest_init+260' f775859b 'addiw   a1,a1,-137'    X 11 'a1' ffffffffff56ff77
+RET  80000188 'rvtest_init+264' 00d59593 'slli    a1,a1,0xd'     X 11 'a1' ffffffeadfeee000
+RET  8000018c 'rvtest_init+268' beb58593 'addi    a1,a1,-1045'   X 11 'a1' ffffffeadfeedbeb
+RET  80000190 'rvtest_init+272' 00c59593 'slli    a1,a1,0xc'     X 11 'a1' fffeadfeedbeb000
+RET  80000194 'rvtest_init+276' dff58593 'addi    a1,a1,-513'    X 11 'a1' fffeadfeedbeadff
+RET  80000198 'rvtest_init+280' 00e59593 'slli    a1,a1,0xe'     X 11 'a1' ab7fbb6fab7fc000
+RET  8000019c 'rvtest_init+284' b6f58593 'addi    a1,a1,-1169'   X 11 'a1' ab7fbb6fab7fbb6f
+RET  800001a0 'rvtest_init+288' ff570637 'lui     a2,0xff570'    X 12 'a2' ffffffffff570000
+RET  800001a4 'rvtest_init+292' f776061b 'addiw   a2,a2,-137'    X 12 'a2' ffffffffff56ff77
+RET  800001a8 'rvtest_init+296' 00d61613 'slli    a2,a2,0xd'     X 12 'a2' ffffffeadfeee000
+RET  800001ac 'rvtest_init+300' beb60613 'addi    a2,a2,-1045'   X 12 'a2' ffffffeadfeedbeb
+RET  800001b0 'rvtest_init+304' 00c61613 'slli    a2,a2,0xc'     X 12 'a2' fffeadfeedbeb000
+RET  800001b4 'rvtest_init+308' dff60613 'addi    a2,a2,-513'    X 12 'a2' fffeadfeedbeadff
+RET  800001b8 'rvtest_init+312' 00d61613 'slli    a2,a2,0xd'     X 12 'a2' d5bfddb7d5bfe000
+RET  800001bc 'rvtest_init+316' db760613 'addi    a2,a2,-585'    X 12 'a2' d5bfddb7d5bfddb7
+RET  800001c0 'rvtest_init+320' ff5706b7 'lui     a3,0xff570'    X 13 'a3' ffffffffff570000
+RET  800001c4 'rvtest_init+324' f776869b 'addiw   a3,a3,-137'    X 13 'a3' ffffffffff56ff77
+RET  800001c8 'rvtest_init+328' 00d69693 'slli    a3,a3,0xd'     X 13 'a3' ffffffeadfeee000
+RET  800001cc 'rvtest_init+332' beb68693 'addi    a3,a3,-1045'   X 13 'a3' ffffffeadfeedbeb
+RET  800001d0 'rvtest_init+336' 00c69693 'slli    a3,a3,0xc'     X 13 'a3' fffeadfeedbeb000
+RET  800001d4 'rvtest_init+340' dff68693 'addi    a3,a3,-513'    X 13 'a3' fffeadfeedbeadff
+RET  800001d8 'rvtest_init+344' 00c69693 'slli    a3,a3,0xc'     X 13 'a3' eadfeedbeadff000
+RET  800001dc 'rvtest_init+348' edb68693 'addi    a3,a3,-293'    X 13 'a3' eadfeedbeadfeedb
+RET  800001e0 'rvtest_init+352' ff570737 'lui     a4,0xff570'    X 14 'a4' ffffffffff570000
+RET  800001e4 'rvtest_init+356' f777071b 'addiw   a4,a4,-137'    X 14 'a4' ffffffffff56ff77
+RET  800001e8 'rvtest_init+360' 00c71713 'slli    a4,a4,0xc'     X 14 'a4' fffffff56ff77000
+RET  800001ec 'rvtest_init+364' df570713 'addi    a4,a4,-523'    X 14 'a4' fffffff56ff76df5
+RET  800001f0 'rvtest_init+368' 00c71713 'slli    a4,a4,0xc'     X 14 'a4' ffff56ff76df5000
+RET  800001f4 'rvtest_init+372' 6ff70713 'addi    a4,a4,1791'    X 14 'a4' ffff56ff76df56ff
+RET  800001f8 'rvtest_init+376' 00c71713 'slli    a4,a4,0xc'     X 14 'a4' f56ff76df56ff000
+RET  800001fc 'rvtest_init+380' 76d70713 'addi    a4,a4,1901'    X 14 'a4' f56ff76df56ff76d
+RET  80000200 'rvtest_init+384' fab807b7 'lui     a5,0xfab80'    X 15 'a5' fffffffffab80000
+RET  80000204 'rvtest_init+388' bb77879b 'addiw   a5,a5,-1097'   X 15 'a5' fffffffffab7fbb7
+RET  80000208 'rvtest_init+392' 00d79793 'slli    a5,a5,0xd'     X 15 'a5' ffffff56ff76e000
+RET  8000020c 'rvtest_init+396' f5778793 'addi    a5,a5,-169'    X 15 'a5' ffffff56ff76df57
+RET  80000210 'rvtest_init+400' 01379793 'slli    a5,a5,0x13'    X 15 'a5' fab7fbb6fab80000
+RET  80000214 'rvtest_init+404' bb678793 'addi    a5,a5,-1098'   X 15 'a5' fab7fbb6fab7fbb6
+RET  80000218 'rvtest_init+408' 00002837 'lui     a6,0x2'        X 16 'a6' 2000
+RET  8000021c 'rvtest_init+412' f578081b 'addiw   a6,a6,-169'    X 16 'a6' 1f57
+RET  80000220 'rvtest_init+416' 01381813 'slli    a6,a6,0x13'    X 16 'a6' fab80000
+RET  80000224 'rvtest_init+420' bb780813 'addi    a6,a6,-1097'   X 16 'a6' fab7fbb7
+RET  80000228 'rvtest_init+424' 00d81813 'slli    a6,a6,0xd'     X 16 'a6' 1f56ff76e000
+RET  8000022c 'rvtest_init+428' f5780813 'addi    a6,a6,-169'    X 16 'a6' 1f56ff76df57
+RET  80000230 'rvtest_init+432' 01281813 'slli    a6,a6,0x12'    X 16 'a6' 7d5bfddb7d5c0000
+RET  80000234 'rvtest_init+436' ddb80813 'addi    a6,a6,-549'    X 16 'a6' 7d5bfddb7d5bfddb
+RET  80000238 'rvtest_init+440' ffffe8b7 'lui     a7,0xffffe'    X 17 'a7' ffffffffffffe000
+RET  8000023c 'rvtest_init+444' f578889b 'addiw   a7,a7,-169'    X 17 'a7' ffffffffffffdf57
+RET  80000240 'rvtest_init+448' 01389893 'slli    a7,a7,0x13'    X 17 'a7' fffffffefab80000
+RET  80000244 'rvtest_init+452' bb788893 'addi    a7,a7,-1097'   X 17 'a7' fffffffefab7fbb7
+RET  80000248 'rvtest_init+456' 00d89893 'slli    a7,a7,0xd'     X 17 'a7' ffffdf56ff76e000
+RET  8000024c 'rvtest_init+460' f5788893 'addi    a7,a7,-169'    X 17 'a7' ffffdf56ff76df57
+RET  80000250 'rvtest_init+464' 01189893 'slli    a7,a7,0x11'    X 17 'a7' beadfeedbeae0000
+RET  80000254 'rvtest_init+468' eed88893 'addi    a7,a7,-275'    X 17 'a7' beadfeedbeadfeed
+RET  80000258 'rvtest_init+472' ffffe937 'lui     s2,0xffffe'    X 18 's2' ffffffffffffe000
+RET  8000025c 'rvtest_init+476' f579091b 'addiw   s2,s2,-169'    X 18 's2' ffffffffffffdf57
+RET  80000260 'rvtest_init+480' 01391913 'slli    s2,s2,0x13'    X 18 's2' fffffffefab80000
+RET  80000264 'rvtest_init+484' bb790913 'addi    s2,s2,-1097'   X 18 's2' fffffffefab7fbb7
+RET  80000268 'rvtest_init+488' 00d91913 'slli    s2,s2,0xd'     X 18 's2' ffffdf56ff76e000
+RET  8000026c 'rvtest_init+492' f5790913 'addi    s2,s2,-169'    X 18 's2' ffffdf56ff76df57
+RET  80000270 'rvtest_init+496' 01091913 'slli    s2,s2,0x10'    X 18 's2' df56ff76df570000
+RET  80000274 'rvtest_init+500' f7690913 'addi    s2,s2,-138'    X 18 's2' df56ff76df56ff76
+RET  80000278 'rvtest_init+504' 0000e9b7 'lui     s3,0xe'        X 19 's3' e000
+RET  8000027c 'rvtest_init+508' f579899b 'addiw   s3,s3,-169'    X 19 's3' df57
+RET  80000280 'rvtest_init+512' 01399993 'slli    s3,s3,0x13'    X 19 's3' 6fab80000
+RET  80000284 'rvtest_init+516' bb798993 'addi    s3,s3,-1097'   X 19 's3' 6fab7fbb7
+RET  80000288 'rvtest_init+520' 00d99993 'slli    s3,s3,0xd'     X 19 's3' df56ff76e000
+RET  8000028c 'rvtest_init+524' f5798993 'addi    s3,s3,-169'    X 19 's3' df56ff76df57
+RET  80000290 'rvtest_init+528' 00f99993 'slli    s3,s3,0xf'     X 19 's3' 6fab7fbb6fab8000
+RET  80000294 'rvtest_init+532' fbb98993 'addi    s3,s3,-69'     X 19 's3' 6fab7fbb6fab7fbb
+RET  80000298 'rvtest_init+536' fffeea37 'lui     s4,0xfffee'    X 20 's4' fffffffffffee000
+RET  8000029c 'rvtest_init+540' f57a0a1b 'addiw   s4,s4,-169'    X 20 's4' fffffffffffedf57
+RET  800002a0 'rvtest_init+544' 013a1a13 'slli    s4,s4,0x13'    X 20 's4' fffffff6fab80000
+RET  800002a4 'rvtest_init+548' bb7a0a13 'addi    s4,s4,-1097'   X 20 's4' fffffff6fab7fbb7
+RET  800002a8 'rvtest_init+552' 00da1a13 'slli    s4,s4,0xd'     X 20 's4' fffedf56ff76e000
+RET  800002ac 'rvtest_init+556' f57a0a13 'addi    s4,s4,-169'    X 20 's4' fffedf56ff76df57
+RET  800002b0 'rvtest_init+560' 00ea1a13 'slli    s4,s4,0xe'     X 20 's4' b7d5bfddb7d5c000
+RET  800002b4 'rvtest_init+564' fdda0a13 'addi    s4,s4,-35'     X 20 's4' b7d5bfddb7d5bfdd
+RET  800002b8 'rvtest_init+568' fffeeab7 'lui     s5,0xfffee'    X 21 's5' fffffffffffee000
+RET  800002bc 'rvtest_init+572' f57a8a9b 'addiw   s5,s5,-169'    X 21 's5' fffffffffffedf57
+RET  800002c0 'rvtest_init+576' 013a9a93 'slli    s5,s5,0x13'    X 21 's5' fffffff6fab80000
+RET  800002c4 'rvtest_init+580' bb7a8a93 'addi    s5,s5,-1097'   X 21 's5' fffffff6fab7fbb7
+RET  800002c8 'rvtest_init+584' 00da9a93 'slli    s5,s5,0xd'     X 21 's5' fffedf56ff76e000
+RET  800002cc 'rvtest_init+588' f57a8a93 'addi    s5,s5,-169'    X 21 's5' fffedf56ff76df57
+RET  800002d0 'rvtest_init+592' 00da9a93 'slli    s5,s5,0xd'     X 21 's5' dbeadfeedbeae000
+RET  800002d4 'rvtest_init+596' feea8a93 'addi    s5,s5,-18'     X 21 's5' dbeadfeedbeadfee
+RET  800002d8 'rvtest_init+600' 0006eb37 'lui     s6,0x6e'       X 22 's6' 6e000
+RET  800002dc 'rvtest_init+604' f57b0b1b 'addiw   s6,s6,-169'    X 22 's6' 6df57
+RET  800002e0 'rvtest_init+608' 013b1b13 'slli    s6,s6,0x13'    X 22 's6' 36fab80000
+RET  800002e4 'rvtest_init+612' bb7b0b13 'addi    s6,s6,-1097'   X 22 's6' 36fab7fbb7
+RET  800002e8 'rvtest_init+616' 00db1b13 'slli    s6,s6,0xd'     X 22 's6' 6df56ff76e000
+RET  800002ec 'rvtest_init+620' f57b0b13 'addi    s6,s6,-169'    X 22 's6' 6df56ff76df57
+RET  800002f0 'rvtest_init+624' 00cb1b13 'slli    s6,s6,0xc'     X 22 's6' 6df56ff76df57000
+RET  800002f4 'rvtest_init+628' ff7b0b13 'addi    s6,s6,-9'      X 22 's6' 6df56ff76df56ff7
+RET  800002f8 'rvtest_init+632' fff6ebb7 'lui     s7,0xfff6e'    X 23 's7' fffffffffff6e000
+RET  800002fc 'rvtest_init+636' f57b8b9b 'addiw   s7,s7,-169'    X 23 's7' fffffffffff6df57
+RET  80000300 'rvtest_init+640' 013b9b93 'slli    s7,s7,0x13'    X 23 's7' ffffffb6fab80000
+RET  80000304 'rvtest_init+644' bb7b8b93 'addi    s7,s7,-1097'   X 23 's7' ffffffb6fab7fbb7
+RET  80000308 'rvtest_init+648' 00cb9b93 'slli    s7,s7,0xc'     X 23 's7' fffb6fab7fbb7000
+RET  8000030c 'rvtest_init+652' fabb8b93 'addi    s7,s7,-85'     X 23 's7' fffb6fab7fbb6fab
+RET  80000310 'rvtest_init+656' 00cb9b93 'slli    s7,s7,0xc'     X 23 's7' b6fab7fbb6fab000
+RET  80000314 'rvtest_init+660' 7fbb8b93 'addi    s7,s7,2043'    X 23 's7' b6fab7fbb6fab7fb
+RET  80000318 'rvtest_init+664' fff6ec37 'lui     s8,0xfff6e'    X 24 's8' fffffffffff6e000
+RET  8000031c 'rvtest_init+668' f57c0c1b 'addiw   s8,s8,-169'    X 24 's8' fffffffffff6df57
+RET  80000320 'rvtest_init+672' 010c1c13 'slli    s8,s8,0x10'    X 24 's8' fffffff6df570000
+RET  80000324 'rvtest_init+676' f77c0c13 'addi    s8,s8,-137'    X 24 's8' fffffff6df56ff77
+RET  80000328 'rvtest_init+680' 00dc1c13 'slli    s8,s8,0xd'     X 24 's8' fffedbeadfeee000
+RET  8000032c 'rvtest_init+684' bebc0c13 'addi    s8,s8,-1045'   X 24 's8' fffedbeadfeedbeb
+RET  80000330 'rvtest_init+688' 00dc1c13 'slli    s8,s8,0xd'     X 24 's8' db7d5bfddb7d6000
+RET  80000334 'rvtest_init+692' bfdc0c13 'addi    s8,s8,-1027'   X 24 's8' db7d5bfddb7d5bfd
+RET  80000338 'rvtest_init+696' fff6ecb7 'lui     s9,0xfff6e'    X 25 's9' fffffffffff6e000
+RET  8000033c 'rvtest_init+700' f57c8c9b 'addiw   s9,s9,-169'    X 25 's9' fffffffffff6df57
+RET  80000340 'rvtest_init+704' 010c9c93 'slli    s9,s9,0x10'    X 25 's9' fffffff6df570000
+RET  80000344 'rvtest_init+708' f77c8c93 'addi    s9,s9,-137'    X 25 's9' fffffff6df56ff77
+RET  80000348 'rvtest_init+712' 00dc9c93 'slli    s9,s9,0xd'     X 25 's9' fffedbeadfeee000
+RET  8000034c 'rvtest_init+716' bebc8c93 'addi    s9,s9,-1045'   X 25 's9' fffedbeadfeedbeb
+RET  80000350 'rvtest_init+720' 00cc9c93 'slli    s9,s9,0xc'     X 25 's9' edbeadfeedbeb000
+RET  80000354 'rvtest_init+724' dfec8c93 'addi    s9,s9,-514'    X 25 's9' edbeadfeedbeadfe
+RET  80000358 'rvtest_init+728' 0076ed37 'lui     s10,0x76e'     X 26 's10' 76e000
+RET  8000035c 'rvtest_init+732' f57d0d1b 'addiw   s10,s10,-169'  X 26 's10' 76df57
+RET  80000360 'rvtest_init+736' 010d1d13 'slli    s10,s10,0x10'  X 26 's10' 76df570000
+RET  80000364 'rvtest_init+740' f77d0d13 'addi    s10,s10,-137'  X 26 's10' 76df56ff77
+RET  80000368 'rvtest_init+744' 00cd1d13 'slli    s10,s10,0xc'   X 26 's10' 76df56ff77000
+RET  8000036c 'rvtest_init+748' df5d0d13 'addi    s10,s10,-523'  X 26 's10' 76df56ff76df5
+RET  80000370 'rvtest_init+752' 00cd1d13 'slli    s10,s10,0xc'   X 26 's10' 76df56ff76df5000
+RET  80000374 'rvtest_init+756' 6ffd0d13 'addi    s10,s10,1791'  X 26 's10' 76df56ff76df56ff
+RET  80000378 'rvtest_init+760' ff76edb7 'lui     s11,0xff76e'   X 27 's11' ffffffffff76e000
+RET  8000037c 'rvtest_init+764' f57d8d9b 'addiw   s11,s11,-169'  X 27 's11' ffffffffff76df57
+RET  80000380 'rvtest_init+768' 00fd9d93 'slli    s11,s11,0xf'   X 27 's11' ffffffbb6fab8000
+RET  80000384 'rvtest_init+772' fbbd8d93 'addi    s11,s11,-69'   X 27 's11' ffffffbb6fab7fbb
+RET  80000388 'rvtest_init+776' 00cd9d93 'slli    s11,s11,0xc'   X 27 's11' fffbb6fab7fbb000
+RET  8000038c 'rvtest_init+780' 6fbd8d93 'addi    s11,s11,1787'  X 27 's11' fffbb6fab7fbb6fb
+RET  80000390 'rvtest_init+784' 00cd9d93 'slli    s11,s11,0xc'   X 27 's11' bb6fab7fbb6fb000
+RET  80000394 'rvtest_init+788' b7fd8d93 'addi    s11,s11,-1153' X 27 's11' bb6fab7fbb6fab7f
+RET  80000398 'rvtest_init+792' ff76ee37 'lui     t3,0xff76e'    X 28 't3' ffffffffff76e000
+RET  8000039c 'rvtest_init+796' f57e0e1b 'addiw   t3,t3,-169'    X 28 't3' ffffffffff76df57
+RET  800003a0 'rvtest_init+800' 00de1e13 'slli    t3,t3,0xd'     X 28 't3' ffffffeedbeae000
+RET  800003a4 'rvtest_init+804' fefe0e13 'addi    t3,t3,-17'     X 28 't3' ffffffeedbeadfef
+RET  800003a8 'rvtest_init+808' 00de1e13 'slli    t3,t3,0xd'     X 28 't3' fffddb7d5bfde000
+RET  800003ac 'rvtest_init+812' b7de0e13 'addi    t3,t3,-1155'   X 28 't3' fffddb7d5bfddb7d
+RET  800003b0 'rvtest_init+816' 00ce1e13 'slli    t3,t3,0xc'     X 28 't3' ddb7d5bfddb7d000
+RET  800003b4 'rvtest_init+820' 5bfe0e13 'addi    t3,t3,1471'    X 28 't3' ddb7d5bfddb7d5bf
+RET  800003b8 'rvtest_init+824' ff76eeb7 'lui     t4,0xff76e'    X 29 't4' ffffffffff76e000
+RET  800003bc 'rvtest_init+828' f57e8e9b 'addiw   t4,t4,-169'    X 29 't4' ffffffffff76df57
+RET  800003c0 'rvtest_init+832' 00de9e93 'slli    t4,t4,0xd'     X 29 't4' ffffffeedbeae000
+RET  800003c4 'rvtest_init+836' fefe8e93 'addi    t4,t4,-17'     X 29 't4' ffffffeedbeadfef
+RET  800003c8 'rvtest_init+840' 00ce9e93 'slli    t4,t4,0xc'     X 29 't4' fffeedbeadfef000
+RET  800003cc 'rvtest_init+844' dbfe8e93 'addi    t4,t4,-577'    X 29 't4' fffeedbeadfeedbf
+RET  800003d0 'rvtest_init+848' 00ce9e93 'slli    t4,t4,0xc'     X 29 't4' eedbeadfeedbf000
+RET  800003d4 'rvtest_init+852' adfe8e93 'addi    t4,t4,-1313'   X 29 't4' eedbeadfeedbeadf
+RET  800003d8 'rvtest_init+856' ff76ef37 'lui     t5,0xff76e'    X 30 't5' ffffffffff76e000
+RET  800003dc 'rvtest_init+860' f57f0f1b 'addiw   t5,t5,-169'    X 30 't5' ffffffffff76df57
+RET  800003e0 'rvtest_init+864' 00cf1f13 'slli    t5,t5,0xc'     X 30 't5' fffffff76df57000
+RET  800003e4 'rvtest_init+868' ff7f0f13 'addi    t5,t5,-9'      X 30 't5' fffffff76df56ff7
+RET  800003e8 'rvtest_init+872' 00cf1f13 'slli    t5,t5,0xc'     X 30 't5' ffff76df56ff7000
+RET  800003ec 'rvtest_init+876' 6dff0f13 'addi    t5,t5,1759'    X 30 't5' ffff76df56ff76df
+RET  800003f0 'rvtest_init+880' 00cf1f13 'slli    t5,t5,0xc'     X 30 't5' f76df56ff76df000
+RET  800003f4 'rvtest_init+884' 56ff0f13 'addi    t5,t5,1391'    X 30 't5' f76df56ff76df56f
+RET  800003f8 'rvtest_init+888' ff76efb7 'lui     t6,0xff76e'    X 31 't6' ffffffffff76e000
+RET  800003fc 'rvtest_init+892' f57f8f9b 'addiw   t6,t6,-169'    X 31 't6' ffffffffff76df57
+RET  80000400 'rvtest_init+896' 013f9f93 'slli    t6,t6,0x13'    X 31 't6' fffffbb6fab80000
+RET  80000404 'rvtest_init+900' bb7f8f93 'addi    t6,t6,-1097'   X 31 't6' fffffbb6fab7fbb7
+RET  80000408 'rvtest_init+904' 010f9f93 'slli    t6,t6,0x10'    X 31 't6' fbb6fab7fbb70000
+RET  8000040c 'rvtest_init+908' ab7f8f93 'addi    t6,t6,-1353'   X 31 't6' fbb6fab7fbb6fab7
+RET  80000410 'rvtest_code_begin+0' 000020b7 'lui     ra,0x2'        X  1 'ra' 2000
+RET  80000414 'rvtest_code_begin+4' 2000809b 'addiw   ra,ra,512'     X  1 'ra' 2200
+RET  80000418 'rvtest_code_begin+8' 3000a073 'csrs    mstatus,ra'    C 300 'mstatus' a00002280 C 100 'sstatus' 200002200
+RET  8000041c 'rvtest_code_begin+12' 00000093 'mv      ra,zero'       X  1 'ra' 0
+RET  80000420 'rvtest_code_begin+16' 00309073 'fssr    ra'            C 300 'mstatus' 8000000a00006280 C 100 'sstatus' 8000000200006200
+RET  80000424 'rvtest_code_begin+20' 00004097 'auipc   ra,0x4'        X  1 'ra' 80004424
+RET  80000428 'rvtest_code_begin+24' 81c08093 'addi    ra,ra,-2020'   X  1 'ra' 80003c40
+RET  8000042c 'rvtest_code_begin+28' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  80000430 'rvtest_code_begin+32' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C 300 'mstatus' 8000000a00006680 C 100 'sstatus' 8000000200006600 C c20 'vl' 40
+RET  80000434 'rvtest_code_begin+36' 00002117 'auipc   sp,0x2'        X  2 'sp' 80002434
+RET  80000438 'rvtest_code_begin+40' ccc10113 'addi    sp,sp,-820'    X  2 'sp' 80002100
+RET  8000043c 'rvtest_code_begin+44' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  80000440 'rvtest_code_begin+48' 02010f87 'vle8.v  v31,(sp)'      V 31 'v31' 0ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa2
+RET  80000444 'rvtest_code_begin+52' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002108
+RET  80000448 'rvtest_code_begin+56' 02010787 'vle8.v  v15,(sp)'      V 15 'v15' 01101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa4
+RET  8000044c 'rvtest_code_begin+60' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002110
+RET  80000450 'rvtest_code_begin+64' 02010007 'vle8.v  v0,(sp)'       V  0 'v0' 03303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa6
+RET  80000454 'rvtest_code_begin+68' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002118
+RET  80000458 'rvtest_code_begin+72' 00000f93 'mv      t6,zero'       X 31 't6' 0
+RET  8000045c 'rvtest_code_begin+76' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000460 'rvtest_code_begin+80' 02f0b057 'vadd.vi v0,v15,1'     
+RET  80000464 'rvtest_code_begin+84' fff00213 'addi    tp,zero,-1'   
+RET  80000468 'rvtest_code_begin+88' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  8000046c 'rvtest_code_begin+92' 02008027 'vse8.v  v0,(ra)'      
+RET  80000470 'rvtest_code_begin+96' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  80000474 'rvtest_code_begin+100' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80004040
+RET  80000478 'rvtest_code_begin+104' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  8000047c 'rvtest_code_begin+108' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  80000480 'rvtest_code_begin+112' 00002117 'auipc   sp,0x2'        X  2 'sp' 80002480
+RET  80000484 'rvtest_code_begin+116' c9810113 'addi    sp,sp,-872'    X  2 'sp' 80002118
+RET  80000488 'rvtest_code_begin+120' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  8000048c 'rvtest_code_begin+124' 02010f07 'vle8.v  v30,(sp)'      V 30 'v30' 05505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa8
+RET  80000490 'rvtest_code_begin+128' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002120
+RET  80000494 'rvtest_code_begin+132' 02010707 'vle8.v  v14,(sp)'      V 14 'v14' 07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa
+RET  80000498 'rvtest_code_begin+136' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002128
+RET  8000049c 'rvtest_code_begin+140' 02010087 'vle8.v  v1,(sp)'       V  1 'v1' 09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac
+RET  800004a0 'rvtest_code_begin+144' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002130
+RET  800004a4 'rvtest_code_begin+148' 00000f13 'mv      t5,zero'       X 30 't5' 0
+RET  800004a8 'rvtest_code_begin+152' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  800004ac 'rvtest_code_begin+156' 02e0b0d7 'vadd.vi v1,v14,1'     
+RET  800004b0 'rvtest_code_begin+160' fff00213 'addi    tp,zero,-1'   
+RET  800004b4 'rvtest_code_begin+164' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  800004b8 'rvtest_code_begin+168' 020080a7 'vse8.v  v1,(ra)'      
+RET  800004bc 'rvtest_code_begin+172' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  800004c0 'rvtest_code_begin+176' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80004440
+RET  800004c4 'rvtest_code_begin+180' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  800004c8 'rvtest_code_begin+184' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  800004cc 'rvtest_code_begin+188' 00002117 'auipc   sp,0x2'        X  2 'sp' 800024cc
+RET  800004d0 'rvtest_code_begin+192' c6410113 'addi    sp,sp,-924'    X  2 'sp' 80002130
+RET  800004d4 'rvtest_code_begin+196' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  800004d8 'rvtest_code_begin+200' 02010e87 'vle8.v  v29,(sp)'      V 29 'v29' 0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae
+RET  800004dc 'rvtest_code_begin+204' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002138
+RET  800004e0 'rvtest_code_begin+208' 02010687 'vle8.v  v13,(sp)'      V 13 'v13' 0dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa1
+RET  800004e4 'rvtest_code_begin+212' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002140
+RET  800004e8 'rvtest_code_begin+216' 02010107 'vle8.v  v2,(sp)'       V  2 'v2' 0ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa2
+RET  800004ec 'rvtest_code_begin+220' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002148
+RET  800004f0 'rvtest_code_begin+224' 00000e93 'mv      t4,zero'       X 29 't4' 0
+RET  800004f4 'rvtest_code_begin+228' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  800004f8 'rvtest_code_begin+232' 02d0b157 'vadd.vi v2,v13,1'     
+RET  800004fc 'rvtest_code_begin+236' fff00213 'addi    tp,zero,-1'   
+RET  80000500 'rvtest_code_begin+240' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  80000504 'rvtest_code_begin+244' 02008127 'vse8.v  v2,(ra)'      
+RET  80000508 'rvtest_code_begin+248' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  8000050c 'rvtest_code_begin+252' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80004840
+RET  80000510 'rvtest_code_begin+256' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  80000514 'rvtest_code_begin+260' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  80000518 'rvtest_code_begin+264' 00002117 'auipc   sp,0x2'        X  2 'sp' 80002518
+RET  8000051c 'rvtest_code_begin+268' c3010113 'addi    sp,sp,-976'    X  2 'sp' 80002148
+RET  80000520 'rvtest_code_begin+272' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  80000524 'rvtest_code_begin+276' 02010e07 'vle8.v  v28,(sp)'      V 28 'v28' 01101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa4
+RET  80000528 'rvtest_code_begin+280' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002150
+RET  8000052c 'rvtest_code_begin+284' 02010607 'vle8.v  v12,(sp)'      V 12 'v12' 03303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa6
+RET  80000530 'rvtest_code_begin+288' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002158
+RET  80000534 'rvtest_code_begin+292' 02010187 'vle8.v  v3,(sp)'       V  3 'v3' 05505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa8
+RET  80000538 'rvtest_code_begin+296' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002160
+RET  8000053c 'rvtest_code_begin+300' 00000e13 'mv      t3,zero'       X 28 't3' 0
+RET  80000540 'rvtest_code_begin+304' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000544 'rvtest_code_begin+308' 02c0b1d7 'vadd.vi v3,v12,1'     
+RET  80000548 'rvtest_code_begin+312' fff00213 'addi    tp,zero,-1'   
+RET  8000054c 'rvtest_code_begin+316' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  80000550 'rvtest_code_begin+320' 020081a7 'vse8.v  v3,(ra)'      
+RET  80000554 'rvtest_code_begin+324' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  80000558 'rvtest_code_begin+328' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80004c40
+RET  8000055c 'rvtest_code_begin+332' 00004097 'auipc   ra,0x4'        X  1 'ra' 8000455c
+RET  80000560 'rvtest_code_begin+336' 6e408093 'addi    ra,ra,1764'    X  1 'ra' 80004c40
+RET  80000564 'rvtest_code_begin+340' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  80000568 'rvtest_code_begin+344' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  8000056c 'rvtest_code_begin+348' 00002117 'auipc   sp,0x2'        X  2 'sp' 8000256c
+RET  80000570 'rvtest_code_begin+352' bf410113 'addi    sp,sp,-1036'   X  2 'sp' 80002160
+RET  80000574 'rvtest_code_begin+356' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  80000578 'rvtest_code_begin+360' 02010d87 'vle8.v  v27,(sp)'      V 27 'v27' 07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa
+RET  8000057c 'rvtest_code_begin+364' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002168
+RET  80000580 'rvtest_code_begin+368' 02010587 'vle8.v  v11,(sp)'      V 11 'v11' 09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac
+RET  80000584 'rvtest_code_begin+372' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002170
+RET  80000588 'rvtest_code_begin+376' 02010207 'vle8.v  v4,(sp)'       V  4 'v4' 0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae
+RET  8000058c 'rvtest_code_begin+380' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002178
+RET  80000590 'rvtest_code_begin+384' 00000d93 'mv      s11,zero'      X 27 's11' 0
+RET  80000594 'rvtest_code_begin+388' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000598 'rvtest_code_begin+392' 02b0b257 'vadd.vi v4,v11,1'     
+RET  8000059c 'rvtest_code_begin+396' fff00213 'addi    tp,zero,-1'   
+RET  800005a0 'rvtest_code_begin+400' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  800005a4 'rvtest_code_begin+404' 02008227 'vse8.v  v4,(ra)'      
+RET  800005a8 'rvtest_code_begin+408' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  800005ac 'rvtest_code_begin+412' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80005040
+RET  800005b0 'rvtest_code_begin+416' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  800005b4 'rvtest_code_begin+420' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  800005b8 'rvtest_code_begin+424' 00002117 'auipc   sp,0x2'        X  2 'sp' 800025b8
+RET  800005bc 'rvtest_code_begin+428' bc010113 'addi    sp,sp,-1088'   X  2 'sp' 80002178
+RET  800005c0 'rvtest_code_begin+432' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  800005c4 'rvtest_code_begin+436' 02010d07 'vle8.v  v26,(sp)'      V 26 'v26' 0dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa1
+RET  800005c8 'rvtest_code_begin+440' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002180
+RET  800005cc 'rvtest_code_begin+444' 02010507 'vle8.v  v10,(sp)'      V 10 'v10' 0ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa2
+RET  800005d0 'rvtest_code_begin+448' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002188
+RET  800005d4 'rvtest_code_begin+452' 02010287 'vle8.v  v5,(sp)'       V  5 'v5' 01101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa4
+RET  800005d8 'rvtest_code_begin+456' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002190
+RET  800005dc 'rvtest_code_begin+460' 00000d13 'mv      s10,zero'      X 26 's10' 0
+RET  800005e0 'rvtest_code_begin+464' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  800005e4 'rvtest_code_begin+468' 02a0b2d7 'vadd.vi v5,v10,1'     
+RET  800005e8 'rvtest_code_begin+472' fff00213 'addi    tp,zero,-1'   
+RET  800005ec 'rvtest_code_begin+476' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  800005f0 'rvtest_code_begin+480' 020082a7 'vse8.v  v5,(ra)'      
+RET  800005f4 'rvtest_code_begin+484' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  800005f8 'rvtest_code_begin+488' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80005440
+RET  800005fc 'rvtest_code_begin+492' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  80000600 'rvtest_code_begin+496' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  80000604 'rvtest_code_begin+500' 00002117 'auipc   sp,0x2'        X  2 'sp' 80002604
+RET  80000608 'rvtest_code_begin+504' b8c10113 'addi    sp,sp,-1140'   X  2 'sp' 80002190
+RET  8000060c 'rvtest_code_begin+508' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  80000610 'rvtest_code_begin+512' 02010c87 'vle8.v  v25,(sp)'      V 25 'v25' 03303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa6
+RET  80000614 'rvtest_code_begin+516' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002198
+RET  80000618 'rvtest_code_begin+520' 02010487 'vle8.v  v9,(sp)'       V  9 'v9' 05505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa8
+RET  8000061c 'rvtest_code_begin+524' 00310133 'add     sp,sp,gp'      X  2 'sp' 800021a0
+RET  80000620 'rvtest_code_begin+528' 02010307 'vle8.v  v6,(sp)'       V  6 'v6' 07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa
+RET  80000624 'rvtest_code_begin+532' 00310133 'add     sp,sp,gp'      X  2 'sp' 800021a8
+RET  80000628 'rvtest_code_begin+536' 00000c93 'mv      s9,zero'       X 25 's9' 0
+RET  8000062c 'rvtest_code_begin+540' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000630 'rvtest_code_begin+544' 0290b357 'vadd.vi v6,v9,1'      
+RET  80000634 'rvtest_code_begin+548' fff00213 'addi    tp,zero,-1'   
+RET  80000638 'rvtest_code_begin+552' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  8000063c 'rvtest_code_begin+556' 02008327 'vse8.v  v6,(ra)'      
+RET  80000640 'rvtest_code_begin+560' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  80000644 'rvtest_code_begin+564' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80005840
+RET  80000648 'rvtest_code_begin+568' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  8000064c 'rvtest_code_begin+572' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  80000650 'rvtest_code_begin+576' 00002117 'auipc   sp,0x2'        X  2 'sp' 80002650
+RET  80000654 'rvtest_code_begin+580' b5810113 'addi    sp,sp,-1192'   X  2 'sp' 800021a8
+RET  80000658 'rvtest_code_begin+584' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  8000065c 'rvtest_code_begin+588' 02010c07 'vle8.v  v24,(sp)'      V 24 'v24' 09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac
+RET  80000660 'rvtest_code_begin+592' 00310133 'add     sp,sp,gp'      X  2 'sp' 800021b0
+RET  80000664 'rvtest_code_begin+596' 02010407 'vle8.v  v8,(sp)'       V  8 'v8' 0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae
+RET  80000668 'rvtest_code_begin+600' 00310133 'add     sp,sp,gp'      X  2 'sp' 800021b8
+RET  8000066c 'rvtest_code_begin+604' 02010387 'vle8.v  v7,(sp)'       V  7 'v7' 0dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa1
+RET  80000670 'rvtest_code_begin+608' 00310133 'add     sp,sp,gp'      X  2 'sp' 800021c0
+RET  80000674 'rvtest_code_begin+612' 00000c13 'mv      s8,zero'       X 24 's8' 0
+RET  80000678 'rvtest_code_begin+616' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  8000067c 'rvtest_code_begin+620' 0280b3d7 'vadd.vi v7,v8,1'      
+RET  80000680 'rvtest_code_begin+624' fff00213 'addi    tp,zero,-1'   
+RET  80000684 'rvtest_code_begin+628' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  80000688 'rvtest_code_begin+632' 020083a7 'vse8.v  v7,(ra)'      
+RET  8000068c 'rvtest_code_begin+636' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  80000690 'rvtest_code_begin+640' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80005c40
+RET  80000694 'rvtest_code_begin+644' 00005097 'auipc   ra,0x5'        X  1 'ra' 80005694
+RET  80000698 'rvtest_code_begin+648' 5ac08093 'addi    ra,ra,1452'    X  1 'ra' 80005c40
+RET  8000069c 'rvtest_code_begin+652' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  800006a0 'rvtest_code_begin+656' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  800006a4 'rvtest_code_begin+660' 00002117 'auipc   sp,0x2'        X  2 'sp' 800026a4
+RET  800006a8 'rvtest_code_begin+664' b1c10113 'addi    sp,sp,-1252'   X  2 'sp' 800021c0
+RET  800006ac 'rvtest_code_begin+668' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  800006b0 'rvtest_code_begin+672' 02010b87 'vle8.v  v23,(sp)'      V 23 'v23' 0ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa2
+RET  800006b4 'rvtest_code_begin+676' 00310133 'add     sp,sp,gp'      X  2 'sp' 800021c8
+RET  800006b8 'rvtest_code_begin+680' 02010387 'vle8.v  v7,(sp)'       V  7 'v7' 01101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa4
+RET  800006bc 'rvtest_code_begin+684' 00310133 'add     sp,sp,gp'      X  2 'sp' 800021d0
+RET  800006c0 'rvtest_code_begin+688' 02010407 'vle8.v  v8,(sp)'       V  8 'v8' 03303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa6
+RET  800006c4 'rvtest_code_begin+692' 00310133 'add     sp,sp,gp'      X  2 'sp' 800021d8
+RET  800006c8 'rvtest_code_begin+696' 00000b93 'mv      s7,zero'       X 23 's7' 0
+RET  800006cc 'rvtest_code_begin+700' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  800006d0 'rvtest_code_begin+704' 0270b457 'vadd.vi v8,v7,1'      
+RET  800006d4 'rvtest_code_begin+708' fff00213 'addi    tp,zero,-1'   
+RET  800006d8 'rvtest_code_begin+712' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  800006dc 'rvtest_code_begin+716' 02008427 'vse8.v  v8,(ra)'      
+RET  800006e0 'rvtest_code_begin+720' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  800006e4 'rvtest_code_begin+724' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80006040
+RET  800006e8 'rvtest_code_begin+728' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  800006ec 'rvtest_code_begin+732' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  800006f0 'rvtest_code_begin+736' 00002117 'auipc   sp,0x2'        X  2 'sp' 800026f0
+RET  800006f4 'rvtest_code_begin+740' ae810113 'addi    sp,sp,-1304'   X  2 'sp' 800021d8
+RET  800006f8 'rvtest_code_begin+744' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  800006fc 'rvtest_code_begin+748' 02010b07 'vle8.v  v22,(sp)'      V 22 'v22' 05505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa8
+RET  80000700 'rvtest_code_begin+752' 00310133 'add     sp,sp,gp'      X  2 'sp' 800021e0
+RET  80000704 'rvtest_code_begin+756' 02010307 'vle8.v  v6,(sp)'      
+RET  80000708 'rvtest_code_begin+760' 00310133 'add     sp,sp,gp'      X  2 'sp' 800021e8
+RET  8000070c 'rvtest_code_begin+764' 02010487 'vle8.v  v9,(sp)'       V  9 'v9' 09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac
+RET  80000710 'rvtest_code_begin+768' 00310133 'add     sp,sp,gp'      X  2 'sp' 800021f0
+RET  80000714 'rvtest_code_begin+772' 00000b13 'mv      s6,zero'       X 22 's6' 0
+RET  80000718 'rvtest_code_begin+776' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  8000071c 'rvtest_code_begin+780' 0260b4d7 'vadd.vi v9,v6,1'      
+RET  80000720 'rvtest_code_begin+784' fff00213 'addi    tp,zero,-1'   
+RET  80000724 'rvtest_code_begin+788' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  80000728 'rvtest_code_begin+792' 020084a7 'vse8.v  v9,(ra)'      
+RET  8000072c 'rvtest_code_begin+796' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  80000730 'rvtest_code_begin+800' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80006440
+RET  80000734 'rvtest_code_begin+804' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  80000738 'rvtest_code_begin+808' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  8000073c 'rvtest_code_begin+812' 00002117 'auipc   sp,0x2'        X  2 'sp' 8000273c
+RET  80000740 'rvtest_code_begin+816' ab410113 'addi    sp,sp,-1356'   X  2 'sp' 800021f0
+RET  80000744 'rvtest_code_begin+820' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  80000748 'rvtest_code_begin+824' 02010a87 'vle8.v  v21,(sp)'      V 21 'v21' 0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae
+RET  8000074c 'rvtest_code_begin+828' 00310133 'add     sp,sp,gp'      X  2 'sp' 800021f8
+RET  80000750 'rvtest_code_begin+832' 02010287 'vle8.v  v5,(sp)'       V  5 'v5' 0dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa1
+RET  80000754 'rvtest_code_begin+836' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002200
+RET  80000758 'rvtest_code_begin+840' 02010507 'vle8.v  v10,(sp)'     
+RET  8000075c 'rvtest_code_begin+844' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002208
+RET  80000760 'rvtest_code_begin+848' 00000a93 'mv      s5,zero'       X 21 's5' 0
+RET  80000764 'rvtest_code_begin+852' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000768 'rvtest_code_begin+856' 0250b557 'vadd.vi v10,v5,1'     
+RET  8000076c 'rvtest_code_begin+860' fff00213 'addi    tp,zero,-1'   
+RET  80000770 'rvtest_code_begin+864' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  80000774 'rvtest_code_begin+868' 02008527 'vse8.v  v10,(ra)'     
+RET  80000778 'rvtest_code_begin+872' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  8000077c 'rvtest_code_begin+876' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80006840
+RET  80000780 'rvtest_code_begin+880' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  80000784 'rvtest_code_begin+884' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  80000788 'rvtest_code_begin+888' 00002117 'auipc   sp,0x2'        X  2 'sp' 80002788
+RET  8000078c 'rvtest_code_begin+892' a8010113 'addi    sp,sp,-1408'   X  2 'sp' 80002208
+RET  80000790 'rvtest_code_begin+896' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  80000794 'rvtest_code_begin+900' 02010a07 'vle8.v  v20,(sp)'      V 20 'v20' 01101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa4
+RET  80000798 'rvtest_code_begin+904' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002210
+RET  8000079c 'rvtest_code_begin+908' 02010207 'vle8.v  v4,(sp)'       V  4 'v4' 03303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa6
+RET  800007a0 'rvtest_code_begin+912' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002218
+RET  800007a4 'rvtest_code_begin+916' 02010587 'vle8.v  v11,(sp)'      V 11 'v11' 05505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa8
+RET  800007a8 'rvtest_code_begin+920' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002220
+RET  800007ac 'rvtest_code_begin+924' 00000a13 'mv      s4,zero'       X 20 's4' 0
+RET  800007b0 'rvtest_code_begin+928' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  800007b4 'rvtest_code_begin+932' 0240b5d7 'vadd.vi v11,v4,1'     
+RET  800007b8 'rvtest_code_begin+936' fff00213 'addi    tp,zero,-1'   
+RET  800007bc 'rvtest_code_begin+940' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  800007c0 'rvtest_code_begin+944' 020085a7 'vse8.v  v11,(ra)'     
+RET  800007c4 'rvtest_code_begin+948' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  800007c8 'rvtest_code_begin+952' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80006c40
+RET  800007cc 'rvtest_code_begin+956' 00006297 'auipc   t0,0x6'        X  5 't0' 800067cc
+RET  800007d0 'rvtest_code_begin+960' 47428293 'addi    t0,t0,1140'    X  5 't0' 80006c40
+RET  800007d4 'rvtest_code_begin+964' fff00413 'addi    s0,zero,-1'    X  8 's0' ffffffffffffffff
+RET  800007d8 'rvtest_code_begin+968' 000473d7 'vsetvli t2,s0,e8,m1,tu,mu' X  7 't2' 40
+RET  800007dc 'rvtest_code_begin+972' 00002317 'auipc   t1,0x2'        X  6 't1' 800027dc
+RET  800007e0 'rvtest_code_begin+976' a4430313 'addi    t1,t1,-1468'   X  6 't1' 80002220
+RET  800007e4 'rvtest_code_begin+980' 00800393 'addi    t2,zero,8'     X  7 't2' 8
+RET  800007e8 'rvtest_code_begin+984' 02030987 'vle8.v  v19,(t1)'      V 19 'v19' 07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa
+RET  800007ec 'rvtest_code_begin+988' 00730333 'add     t1,t1,t2'      X  6 't1' 80002228
+RET  800007f0 'rvtest_code_begin+992' 02030187 'vle8.v  v3,(t1)'       V  3 'v3' 09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac
+RET  800007f4 'rvtest_code_begin+996' 00730333 'add     t1,t1,t2'      X  6 't1' 80002230
+RET  800007f8 'rvtest_code_begin+1000' 02030607 'vle8.v  v12,(t1)'      V 12 'v12' 0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae
+RET  800007fc 'rvtest_code_begin+1004' 00730333 'add     t1,t1,t2'      X  6 't1' 80002238
+RET  80000800 'rvtest_code_begin+1008' 00000993 'mv      s3,zero'       X 19 's3' 0
+RET  80000804 'rvtest_code_begin+1012' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000808 'rvtest_code_begin+1016' 0230b657 'vadd.vi v12,v3,1'     
+RET  8000080c 'rvtest_code_begin+1020' fff00413 'addi    s0,zero,-1'   
+RET  80000810 'rvtest_code_begin+1024' 000473d7 'vsetvli t2,s0,e8,m1,tu,mu' X  7 't2' 40 C c20 'vl' 40
+RET  80000814 'rvtest_code_begin+1028' 02028627 'vse8.v  v12,(t0)'     
+RET  80000818 'rvtest_code_begin+1032' 40000413 'addi    s0,zero,1024'  X  8 's0' 400
+RET  8000081c 'rvtest_code_begin+1036' 008282b3 'add     t0,t0,s0'      X  5 't0' 80007040
+RET  80000820 'rvtest_code_begin+1040' fff00413 'addi    s0,zero,-1'    X  8 's0' ffffffffffffffff
+RET  80000824 'rvtest_code_begin+1044' 000473d7 'vsetvli t2,s0,e8,m1,tu,mu'
+RET  80000828 'rvtest_code_begin+1048' 00002317 'auipc   t1,0x2'        X  6 't1' 80002828
+RET  8000082c 'rvtest_code_begin+1052' a1030313 'addi    t1,t1,-1520'   X  6 't1' 80002238
+RET  80000830 'rvtest_code_begin+1056' 00800393 'addi    t2,zero,8'     X  7 't2' 8
+RET  80000834 'rvtest_code_begin+1060' 02030907 'vle8.v  v18,(t1)'      V 18 'v18' 0dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa1
+RET  80000838 'rvtest_code_begin+1064' 00730333 'add     t1,t1,t2'      X  6 't1' 80002240
+RET  8000083c 'rvtest_code_begin+1068' 02030107 'vle8.v  v2,(t1)'      
+RET  80000840 'rvtest_code_begin+1072' 00730333 'add     t1,t1,t2'      X  6 't1' 80002248
+RET  80000844 'rvtest_code_begin+1076' 02030687 'vle8.v  v13,(t1)'      V 13 'v13' 01101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa4
+RET  80000848 'rvtest_code_begin+1080' 00730333 'add     t1,t1,t2'      X  6 't1' 80002250
+RET  8000084c 'rvtest_code_begin+1084' 00000913 'mv      s2,zero'       X 18 's2' 0
+RET  80000850 'rvtest_code_begin+1088' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000854 'rvtest_code_begin+1092' 0220b6d7 'vadd.vi v13,v2,1'     
+RET  80000858 'rvtest_code_begin+1096' fff00413 'addi    s0,zero,-1'   
+RET  8000085c 'rvtest_code_begin+1100' 000473d7 'vsetvli t2,s0,e8,m1,tu,mu' X  7 't2' 40 C c20 'vl' 40
+RET  80000860 'rvtest_code_begin+1104' 020286a7 'vse8.v  v13,(t0)'     
+RET  80000864 'rvtest_code_begin+1108' 40000413 'addi    s0,zero,1024'  X  8 's0' 400
+RET  80000868 'rvtest_code_begin+1112' 008282b3 'add     t0,t0,s0'      X  5 't0' 80007440
+RET  8000086c 'rvtest_code_begin+1116' fff00413 'addi    s0,zero,-1'    X  8 's0' ffffffffffffffff
+RET  80000870 'rvtest_code_begin+1120' 000473d7 'vsetvli t2,s0,e8,m1,tu,mu'
+RET  80000874 'rvtest_code_begin+1124' 00002317 'auipc   t1,0x2'        X  6 't1' 80002874
+RET  80000878 'rvtest_code_begin+1128' 9dc30313 'addi    t1,t1,-1572'   X  6 't1' 80002250
+RET  8000087c 'rvtest_code_begin+1132' 00800393 'addi    t2,zero,8'     X  7 't2' 8
+RET  80000880 'rvtest_code_begin+1136' 02030887 'vle8.v  v17,(t1)'      V 17 'v17' 03303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa6
+RET  80000884 'rvtest_code_begin+1140' 00730333 'add     t1,t1,t2'      X  6 't1' 80002258
+RET  80000888 'rvtest_code_begin+1144' 02030087 'vle8.v  v1,(t1)'       V  1 'v1' 05505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa8
+RET  8000088c 'rvtest_code_begin+1148' 00730333 'add     t1,t1,t2'      X  6 't1' 80002260
+RET  80000890 'rvtest_code_begin+1152' 02030707 'vle8.v  v14,(t1)'     
+RET  80000894 'rvtest_code_begin+1156' 00730333 'add     t1,t1,t2'      X  6 't1' 80002268
+RET  80000898 'rvtest_code_begin+1160' 00000893 'mv      a7,zero'       X 17 'a7' 0
+RET  8000089c 'rvtest_code_begin+1164' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  800008a0 'rvtest_code_begin+1168' 0210b757 'vadd.vi v14,v1,1'     
+RET  800008a4 'rvtest_code_begin+1172' fff00413 'addi    s0,zero,-1'   
+RET  800008a8 'rvtest_code_begin+1176' 000473d7 'vsetvli t2,s0,e8,m1,tu,mu' X  7 't2' 40 C c20 'vl' 40
+RET  800008ac 'rvtest_code_begin+1180' 02028727 'vse8.v  v14,(t0)'     
+RET  800008b0 'rvtest_code_begin+1184' 40000413 'addi    s0,zero,1024'  X  8 's0' 400
+RET  800008b4 'rvtest_code_begin+1188' 008282b3 'add     t0,t0,s0'      X  5 't0' 80007840
+RET  800008b8 'rvtest_code_begin+1192' fff00413 'addi    s0,zero,-1'    X  8 's0' ffffffffffffffff
+RET  800008bc 'rvtest_code_begin+1196' 000473d7 'vsetvli t2,s0,e8,m1,tu,mu'
+RET  800008c0 'rvtest_code_begin+1200' 00002317 'auipc   t1,0x2'        X  6 't1' 800028c0
+RET  800008c4 'rvtest_code_begin+1204' 9a830313 'addi    t1,t1,-1624'   X  6 't1' 80002268
+RET  800008c8 'rvtest_code_begin+1208' 00800393 'addi    t2,zero,8'     X  7 't2' 8
+RET  800008cc 'rvtest_code_begin+1212' 02030807 'vle8.v  v16,(t1)'      V 16 'v16' 09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac
+RET  800008d0 'rvtest_code_begin+1216' 00730333 'add     t1,t1,t2'      X  6 't1' 80002270
+RET  800008d4 'rvtest_code_begin+1220' 02030007 'vle8.v  v0,(t1)'       V  0 'v0' 0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae
+RET  800008d8 'rvtest_code_begin+1224' 00730333 'add     t1,t1,t2'      X  6 't1' 80002278
+RET  800008dc 'rvtest_code_begin+1228' 02030787 'vle8.v  v15,(t1)'      V 15 'v15' 0dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa1
+RET  800008e0 'rvtest_code_begin+1232' 00730333 'add     t1,t1,t2'      X  6 't1' 80002280
+RET  800008e4 'rvtest_code_begin+1236' 00000813 'mv      a6,zero'       X 16 'a6' 0
+RET  800008e8 'rvtest_code_begin+1240' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  800008ec 'rvtest_code_begin+1244' 0200b7d7 'vadd.vi v15,v0,1'     
+RET  800008f0 'rvtest_code_begin+1248' fff00413 'addi    s0,zero,-1'   
+RET  800008f4 'rvtest_code_begin+1252' 000473d7 'vsetvli t2,s0,e8,m1,tu,mu' X  7 't2' 40 C c20 'vl' 40
+RET  800008f8 'rvtest_code_begin+1256' 020287a7 'vse8.v  v15,(t0)'     
+RET  800008fc 'rvtest_code_begin+1260' 40000413 'addi    s0,zero,1024'  X  8 's0' 400
+RET  80000900 'rvtest_code_begin+1264' 008282b3 'add     t0,t0,s0'      X  5 't0' 80007c40
+RET  80000904 'rvtest_code_begin+1268' 00007097 'auipc   ra,0x7'        X  1 'ra' 80007904
+RET  80000908 'rvtest_code_begin+1272' 33c08093 'addi    ra,ra,828'     X  1 'ra' 80007c40
+RET  8000090c 'rvtest_code_begin+1276' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  80000910 'rvtest_code_begin+1280' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  80000914 'rvtest_code_begin+1284' 00002117 'auipc   sp,0x2'        X  2 'sp' 80002914
+RET  80000918 'rvtest_code_begin+1288' 96c10113 'addi    sp,sp,-1684'   X  2 'sp' 80002280
+RET  8000091c 'rvtest_code_begin+1292' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  80000920 'rvtest_code_begin+1296' 02010787 'vle8.v  v15,(sp)'      V 15 'v15' 0ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa2
+RET  80000924 'rvtest_code_begin+1300' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002288
+RET  80000928 'rvtest_code_begin+1304' 02010f87 'vle8.v  v31,(sp)'      V 31 'v31' 01101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa4
+RET  8000092c 'rvtest_code_begin+1308' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002290
+RET  80000930 'rvtest_code_begin+1312' 02010807 'vle8.v  v16,(sp)'      V 16 'v16' 03303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa6
+RET  80000934 'rvtest_code_begin+1316' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002298
+RET  80000938 'rvtest_code_begin+1320' 00000793 'mv      a5,zero'       X 15 'a5' 0
+RET  8000093c 'rvtest_code_begin+1324' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000940 'rvtest_code_begin+1328' 03f0b857 'vadd.vi v16,v31,1'    
+RET  80000944 'rvtest_code_begin+1332' fff00213 'addi    tp,zero,-1'   
+RET  80000948 'rvtest_code_begin+1336' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  8000094c 'rvtest_code_begin+1340' 02008827 'vse8.v  v16,(ra)'     
+RET  80000950 'rvtest_code_begin+1344' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  80000954 'rvtest_code_begin+1348' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80008040
+RET  80000958 'rvtest_code_begin+1352' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  8000095c 'rvtest_code_begin+1356' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  80000960 'rvtest_code_begin+1360' 00002117 'auipc   sp,0x2'        X  2 'sp' 80002960
+RET  80000964 'rvtest_code_begin+1364' 93810113 'addi    sp,sp,-1736'   X  2 'sp' 80002298
+RET  80000968 'rvtest_code_begin+1368' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  8000096c 'rvtest_code_begin+1372' 02010707 'vle8.v  v14,(sp)'      V 14 'v14' 05505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa8
+RET  80000970 'rvtest_code_begin+1376' 00310133 'add     sp,sp,gp'      X  2 'sp' 800022a0
+RET  80000974 'rvtest_code_begin+1380' 02010f07 'vle8.v  v30,(sp)'      V 30 'v30' 07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa
+RET  80000978 'rvtest_code_begin+1384' 00310133 'add     sp,sp,gp'      X  2 'sp' 800022a8
+RET  8000097c 'rvtest_code_begin+1388' 02010887 'vle8.v  v17,(sp)'      V 17 'v17' 09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac
+RET  80000980 'rvtest_code_begin+1392' 00310133 'add     sp,sp,gp'      X  2 'sp' 800022b0
+RET  80000984 'rvtest_code_begin+1396' 00000713 'mv      a4,zero'       X 14 'a4' 0
+RET  80000988 'rvtest_code_begin+1400' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  8000098c 'rvtest_code_begin+1404' 03e0b8d7 'vadd.vi v17,v30,1'    
+RET  80000990 'rvtest_code_begin+1408' fff00213 'addi    tp,zero,-1'   
+RET  80000994 'rvtest_code_begin+1412' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  80000998 'rvtest_code_begin+1416' 020088a7 'vse8.v  v17,(ra)'     
+RET  8000099c 'rvtest_code_begin+1420' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  800009a0 'rvtest_code_begin+1424' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80008440
+RET  800009a4 'rvtest_code_begin+1428' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  800009a8 'rvtest_code_begin+1432' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  800009ac 'rvtest_code_begin+1436' 00002117 'auipc   sp,0x2'        X  2 'sp' 800029ac
+RET  800009b0 'rvtest_code_begin+1440' 90410113 'addi    sp,sp,-1788'   X  2 'sp' 800022b0
+RET  800009b4 'rvtest_code_begin+1444' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  800009b8 'rvtest_code_begin+1448' 02010687 'vle8.v  v13,(sp)'      V 13 'v13' 0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae
+RET  800009bc 'rvtest_code_begin+1452' 00310133 'add     sp,sp,gp'      X  2 'sp' 800022b8
+RET  800009c0 'rvtest_code_begin+1456' 02010e87 'vle8.v  v29,(sp)'      V 29 'v29' 0dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa1
+RET  800009c4 'rvtest_code_begin+1460' 00310133 'add     sp,sp,gp'      X  2 'sp' 800022c0
+RET  800009c8 'rvtest_code_begin+1464' 02010907 'vle8.v  v18,(sp)'      V 18 'v18' 0ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa2
+RET  800009cc 'rvtest_code_begin+1468' 00310133 'add     sp,sp,gp'      X  2 'sp' 800022c8
+RET  800009d0 'rvtest_code_begin+1472' 00000693 'mv      a3,zero'       X 13 'a3' 0
+RET  800009d4 'rvtest_code_begin+1476' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  800009d8 'rvtest_code_begin+1480' 03d0b957 'vadd.vi v18,v29,1'    
+RET  800009dc 'rvtest_code_begin+1484' fff00213 'addi    tp,zero,-1'   
+RET  800009e0 'rvtest_code_begin+1488' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  800009e4 'rvtest_code_begin+1492' 02008927 'vse8.v  v18,(ra)'     
+RET  800009e8 'rvtest_code_begin+1496' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  800009ec 'rvtest_code_begin+1500' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80008840
+RET  800009f0 'rvtest_code_begin+1504' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  800009f4 'rvtest_code_begin+1508' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  800009f8 'rvtest_code_begin+1512' 00002117 'auipc   sp,0x2'        X  2 'sp' 800029f8
+RET  800009fc 'rvtest_code_begin+1516' 8d010113 'addi    sp,sp,-1840'   X  2 'sp' 800022c8
+RET  80000a00 'rvtest_code_begin+1520' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  80000a04 'rvtest_code_begin+1524' 02010607 'vle8.v  v12,(sp)'      V 12 'v12' 01101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa4
+RET  80000a08 'rvtest_code_begin+1528' 00310133 'add     sp,sp,gp'      X  2 'sp' 800022d0
+RET  80000a0c 'rvtest_code_begin+1532' 02010e07 'vle8.v  v28,(sp)'      V 28 'v28' 03303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa6
+RET  80000a10 'rvtest_code_begin+1536' 00310133 'add     sp,sp,gp'      X  2 'sp' 800022d8
+RET  80000a14 'rvtest_code_begin+1540' 02010987 'vle8.v  v19,(sp)'      V 19 'v19' 05505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa8
+RET  80000a18 'rvtest_code_begin+1544' 00310133 'add     sp,sp,gp'      X  2 'sp' 800022e0
+RET  80000a1c 'rvtest_code_begin+1548' 00000613 'mv      a2,zero'       X 12 'a2' 0
+RET  80000a20 'rvtest_code_begin+1552' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000a24 'rvtest_code_begin+1556' 03c0b9d7 'vadd.vi v19,v28,1'    
+RET  80000a28 'rvtest_code_begin+1560' fff00213 'addi    tp,zero,-1'   
+RET  80000a2c 'rvtest_code_begin+1564' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  80000a30 'rvtest_code_begin+1568' 020089a7 'vse8.v  v19,(ra)'     
+RET  80000a34 'rvtest_code_begin+1572' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  80000a38 'rvtest_code_begin+1576' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80008c40
+RET  80000a3c 'rvtest_code_begin+1580' 00008097 'auipc   ra,0x8'        X  1 'ra' 80008a3c
+RET  80000a40 'rvtest_code_begin+1584' 20408093 'addi    ra,ra,516'     X  1 'ra' 80008c40
+RET  80000a44 'rvtest_code_begin+1588' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  80000a48 'rvtest_code_begin+1592' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  80000a4c 'rvtest_code_begin+1596' 00002117 'auipc   sp,0x2'        X  2 'sp' 80002a4c
+RET  80000a50 'rvtest_code_begin+1600' 89410113 'addi    sp,sp,-1900'   X  2 'sp' 800022e0
+RET  80000a54 'rvtest_code_begin+1604' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  80000a58 'rvtest_code_begin+1608' 02010587 'vle8.v  v11,(sp)'      V 11 'v11' 07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa
+RET  80000a5c 'rvtest_code_begin+1612' 00310133 'add     sp,sp,gp'      X  2 'sp' 800022e8
+RET  80000a60 'rvtest_code_begin+1616' 02010d87 'vle8.v  v27,(sp)'      V 27 'v27' 09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac
+RET  80000a64 'rvtest_code_begin+1620' 00310133 'add     sp,sp,gp'      X  2 'sp' 800022f0
+RET  80000a68 'rvtest_code_begin+1624' 02010a07 'vle8.v  v20,(sp)'      V 20 'v20' 0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae
+RET  80000a6c 'rvtest_code_begin+1628' 00310133 'add     sp,sp,gp'      X  2 'sp' 800022f8
+RET  80000a70 'rvtest_code_begin+1632' 00000593 'mv      a1,zero'       X 11 'a1' 0
+RET  80000a74 'rvtest_code_begin+1636' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000a78 'rvtest_code_begin+1640' 03b0ba57 'vadd.vi v20,v27,1'    
+RET  80000a7c 'rvtest_code_begin+1644' fff00213 'addi    tp,zero,-1'   
+RET  80000a80 'rvtest_code_begin+1648' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  80000a84 'rvtest_code_begin+1652' 02008a27 'vse8.v  v20,(ra)'     
+RET  80000a88 'rvtest_code_begin+1656' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  80000a8c 'rvtest_code_begin+1660' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80009040
+RET  80000a90 'rvtest_code_begin+1664' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  80000a94 'rvtest_code_begin+1668' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  80000a98 'rvtest_code_begin+1672' 00002117 'auipc   sp,0x2'        X  2 'sp' 80002a98
+RET  80000a9c 'rvtest_code_begin+1676' 86010113 'addi    sp,sp,-1952'   X  2 'sp' 800022f8
+RET  80000aa0 'rvtest_code_begin+1680' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  80000aa4 'rvtest_code_begin+1684' 02010507 'vle8.v  v10,(sp)'      V 10 'v10' 0dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa1
+RET  80000aa8 'rvtest_code_begin+1688' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002300
+RET  80000aac 'rvtest_code_begin+1692' 02010d07 'vle8.v  v26,(sp)'      V 26 'v26' 0ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa2
+RET  80000ab0 'rvtest_code_begin+1696' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002308
+RET  80000ab4 'rvtest_code_begin+1700' 02010a87 'vle8.v  v21,(sp)'      V 21 'v21' 01101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa4
+RET  80000ab8 'rvtest_code_begin+1704' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002310
+RET  80000abc 'rvtest_code_begin+1708' 00000513 'mv      a0,zero'       X 10 'a0' 0
+RET  80000ac0 'rvtest_code_begin+1712' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000ac4 'rvtest_code_begin+1716' 03a0bad7 'vadd.vi v21,v26,1'    
+RET  80000ac8 'rvtest_code_begin+1720' fff00213 'addi    tp,zero,-1'   
+RET  80000acc 'rvtest_code_begin+1724' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  80000ad0 'rvtest_code_begin+1728' 02008aa7 'vse8.v  v21,(ra)'     
+RET  80000ad4 'rvtest_code_begin+1732' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  80000ad8 'rvtest_code_begin+1736' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80009440
+RET  80000adc 'rvtest_code_begin+1740' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  80000ae0 'rvtest_code_begin+1744' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  80000ae4 'rvtest_code_begin+1748' 00002117 'auipc   sp,0x2'        X  2 'sp' 80002ae4
+RET  80000ae8 'rvtest_code_begin+1752' 82c10113 'addi    sp,sp,-2004'   X  2 'sp' 80002310
+RET  80000aec 'rvtest_code_begin+1756' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  80000af0 'rvtest_code_begin+1760' 02010487 'vle8.v  v9,(sp)'       V  9 'v9' 03303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa6
+RET  80000af4 'rvtest_code_begin+1764' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002318
+RET  80000af8 'rvtest_code_begin+1768' 02010c87 'vle8.v  v25,(sp)'      V 25 'v25' 05505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa8
+RET  80000afc 'rvtest_code_begin+1772' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002320
+RET  80000b00 'rvtest_code_begin+1776' 02010b07 'vle8.v  v22,(sp)'      V 22 'v22' 07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa
+RET  80000b04 'rvtest_code_begin+1780' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002328
+RET  80000b08 'rvtest_code_begin+1784' 00000493 'mv      s1,zero'       X  9 's1' 0
+RET  80000b0c 'rvtest_code_begin+1788' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000b10 'rvtest_code_begin+1792' 0390bb57 'vadd.vi v22,v25,1'    
+RET  80000b14 'rvtest_code_begin+1796' fff00213 'addi    tp,zero,-1'   
+RET  80000b18 'rvtest_code_begin+1800' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  80000b1c 'rvtest_code_begin+1804' 02008b27 'vse8.v  v22,(ra)'     
+RET  80000b20 'rvtest_code_begin+1808' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  80000b24 'rvtest_code_begin+1812' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80009840
+RET  80000b28 'rvtest_code_begin+1816' fff00213 'addi    tp,zero,-1'    X  4 'tp' ffffffffffffffff
+RET  80000b2c 'rvtest_code_begin+1820' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu'
+RET  80000b30 'rvtest_code_begin+1824' 00001117 'auipc   sp,0x1'        X  2 'sp' 80001b30
+RET  80000b34 'rvtest_code_begin+1828' 7f810113 'addi    sp,sp,2040'    X  2 'sp' 80002328
+RET  80000b38 'rvtest_code_begin+1832' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  80000b3c 'rvtest_code_begin+1836' 02010407 'vle8.v  v8,(sp)'       V  8 'v8' 09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac
+RET  80000b40 'rvtest_code_begin+1840' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002330
+RET  80000b44 'rvtest_code_begin+1844' 02010c07 'vle8.v  v24,(sp)'      V 24 'v24' 0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae
+RET  80000b48 'rvtest_code_begin+1848' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002338
+RET  80000b4c 'rvtest_code_begin+1852' 02010b87 'vle8.v  v23,(sp)'      V 23 'v23' 0dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa1
+RET  80000b50 'rvtest_code_begin+1856' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002340
+RET  80000b54 'rvtest_code_begin+1860' 00000413 'mv      s0,zero'       X  8 's0' 0
+RET  80000b58 'rvtest_code_begin+1864' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000b5c 'rvtest_code_begin+1868' 0380bbd7 'vadd.vi v23,v24,1'    
+RET  80000b60 'rvtest_code_begin+1872' fff00213 'addi    tp,zero,-1'   
+RET  80000b64 'rvtest_code_begin+1876' 000271d7 'vsetvli gp,tp,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  80000b68 'rvtest_code_begin+1880' 02008ba7 'vse8.v  v23,(ra)'     
+RET  80000b6c 'rvtest_code_begin+1884' 40000213 'addi    tp,zero,1024'  X  4 'tp' 400
+RET  80000b70 'rvtest_code_begin+1888' 004080b3 'add     ra,ra,tp'      X  1 'ra' 80009c40
+RET  80000b74 'rvtest_code_begin+1892' 00009097 'auipc   ra,0x9'        X  1 'ra' 80009b74
+RET  80000b78 'rvtest_code_begin+1896' 0cc08093 'addi    ra,ra,204'     X  1 'ra' 80009c40
+RET  80000b7c 'rvtest_code_begin+1900' fff00413 'addi    s0,zero,-1'    X  8 's0' ffffffffffffffff
+RET  80000b80 'rvtest_code_begin+1904' 000471d7 'vsetvli gp,s0,e8,m1,tu,mu'
+RET  80000b84 'rvtest_code_begin+1908' 00001117 'auipc   sp,0x1'        X  2 'sp' 80001b84
+RET  80000b88 'rvtest_code_begin+1912' 7bc10113 'addi    sp,sp,1980'    X  2 'sp' 80002340
+RET  80000b8c 'rvtest_code_begin+1916' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  80000b90 'rvtest_code_begin+1920' 02010387 'vle8.v  v7,(sp)'       V  7 'v7' 0ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa2
+RET  80000b94 'rvtest_code_begin+1924' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002348
+RET  80000b98 'rvtest_code_begin+1928' 02010b87 'vle8.v  v23,(sp)'      V 23 'v23' 01101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa4
+RET  80000b9c 'rvtest_code_begin+1932' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002350
+RET  80000ba0 'rvtest_code_begin+1936' 02010c07 'vle8.v  v24,(sp)'      V 24 'v24' 03303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa6
+RET  80000ba4 'rvtest_code_begin+1940' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002358
+RET  80000ba8 'rvtest_code_begin+1944' 00000393 'mv      t2,zero'       X  7 't2' 0
+RET  80000bac 'rvtest_code_begin+1948' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000bb0 'rvtest_code_begin+1952' 0370bc57 'vadd.vi v24,v23,1'    
+RET  80000bb4 'rvtest_code_begin+1956' fff00413 'addi    s0,zero,-1'   
+RET  80000bb8 'rvtest_code_begin+1960' 000471d7 'vsetvli gp,s0,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  80000bbc 'rvtest_code_begin+1964' 02008c27 'vse8.v  v24,(ra)'     
+RET  80000bc0 'rvtest_code_begin+1968' 40000413 'addi    s0,zero,1024'  X  8 's0' 400
+RET  80000bc4 'rvtest_code_begin+1972' 008080b3 'add     ra,ra,s0'      X  1 'ra' 8000a040
+RET  80000bc8 'rvtest_code_begin+1976' fff00413 'addi    s0,zero,-1'    X  8 's0' ffffffffffffffff
+RET  80000bcc 'rvtest_code_begin+1980' 000471d7 'vsetvli gp,s0,e8,m1,tu,mu'
+RET  80000bd0 'rvtest_code_begin+1984' 00001117 'auipc   sp,0x1'        X  2 'sp' 80001bd0
+RET  80000bd4 'rvtest_code_begin+1988' 78810113 'addi    sp,sp,1928'    X  2 'sp' 80002358
+RET  80000bd8 'rvtest_code_begin+1992' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  80000bdc 'rvtest_code_begin+1996' 02010307 'vle8.v  v6,(sp)'       V  6 'v6' 05505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa8
+RET  80000be0 'rvtest_code_begin+2000' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002360
+RET  80000be4 'rvtest_code_begin+2004' 02010b07 'vle8.v  v22,(sp)'     
+RET  80000be8 'rvtest_code_begin+2008' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002368
+RET  80000bec 'rvtest_code_begin+2012' 02010c87 'vle8.v  v25,(sp)'      V 25 'v25' 09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac
+RET  80000bf0 'rvtest_code_begin+2016' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002370
+RET  80000bf4 'rvtest_code_begin+2020' 00000313 'mv      t1,zero'       X  6 't1' 0
+RET  80000bf8 'rvtest_code_begin+2024' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000bfc 'rvtest_code_begin+2028' 0360bcd7 'vadd.vi v25,v22,1'    
+RET  80000c00 'rvtest_code_begin+2032' fff00413 'addi    s0,zero,-1'   
+RET  80000c04 'rvtest_code_begin+2036' 000471d7 'vsetvli gp,s0,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  80000c08 'rvtest_code_begin+2040' 02008ca7 'vse8.v  v25,(ra)'     
+RET  80000c0c 'rvtest_code_begin+2044' 40000413 'addi    s0,zero,1024'  X  8 's0' 400
+RET  80000c10 'rvtest_code_begin+2048' 008080b3 'add     ra,ra,s0'      X  1 'ra' 8000a440
+RET  80000c14 'rvtest_code_begin+2052' fff00413 'addi    s0,zero,-1'    X  8 's0' ffffffffffffffff
+RET  80000c18 'rvtest_code_begin+2056' 000471d7 'vsetvli gp,s0,e8,m1,tu,mu'
+RET  80000c1c 'rvtest_code_begin+2060' 00001117 'auipc   sp,0x1'        X  2 'sp' 80001c1c
+RET  80000c20 'rvtest_code_begin+2064' 75410113 'addi    sp,sp,1876'    X  2 'sp' 80002370
+RET  80000c24 'rvtest_code_begin+2068' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  80000c28 'rvtest_code_begin+2072' 02010287 'vle8.v  v5,(sp)'       V  5 'v5' 0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae
+RET  80000c2c 'rvtest_code_begin+2076' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002378
+RET  80000c30 'rvtest_code_begin+2080' 02010a87 'vle8.v  v21,(sp)'      V 21 'v21' 0dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa1
+RET  80000c34 'rvtest_code_begin+2084' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002380
+RET  80000c38 'rvtest_code_begin+2088' 02010d07 'vle8.v  v26,(sp)'     
+RET  80000c3c 'rvtest_code_begin+2092' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002388
+RET  80000c40 'rvtest_code_begin+2096' 00000293 'mv      t0,zero'       X  5 't0' 0
+RET  80000c44 'rvtest_code_begin+2100' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000c48 'rvtest_code_begin+2104' 0350bd57 'vadd.vi v26,v21,1'    
+RET  80000c4c 'rvtest_code_begin+2108' fff00413 'addi    s0,zero,-1'   
+RET  80000c50 'rvtest_code_begin+2112' 000471d7 'vsetvli gp,s0,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  80000c54 'rvtest_code_begin+2116' 02008d27 'vse8.v  v26,(ra)'     
+RET  80000c58 'rvtest_code_begin+2120' 40000413 'addi    s0,zero,1024'  X  8 's0' 400
+RET  80000c5c 'rvtest_code_begin+2124' 008080b3 'add     ra,ra,s0'      X  1 'ra' 8000a840
+RET  80000c60 'rvtest_code_begin+2128' fff00413 'addi    s0,zero,-1'    X  8 's0' ffffffffffffffff
+RET  80000c64 'rvtest_code_begin+2132' 000471d7 'vsetvli gp,s0,e8,m1,tu,mu'
+RET  80000c68 'rvtest_code_begin+2136' 00001117 'auipc   sp,0x1'        X  2 'sp' 80001c68
+RET  80000c6c 'rvtest_code_begin+2140' 72010113 'addi    sp,sp,1824'    X  2 'sp' 80002388
+RET  80000c70 'rvtest_code_begin+2144' 00800193 'addi    gp,zero,8'     X  3 'gp' 8
+RET  80000c74 'rvtest_code_begin+2148' 02010207 'vle8.v  v4,(sp)'       V  4 'v4' 01101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa4
+RET  80000c78 'rvtest_code_begin+2152' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002390
+RET  80000c7c 'rvtest_code_begin+2156' 02010a07 'vle8.v  v20,(sp)'      V 20 'v20' 03303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa6
+RET  80000c80 'rvtest_code_begin+2160' 00310133 'add     sp,sp,gp'      X  2 'sp' 80002398
+RET  80000c84 'rvtest_code_begin+2164' 02010d87 'vle8.v  v27,(sp)'      V 27 'v27' 05505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa8
+RET  80000c88 'rvtest_code_begin+2168' 00310133 'add     sp,sp,gp'      X  2 'sp' 800023a0
+RET  80000c8c 'rvtest_code_begin+2172' 00000213 'mv      tp,zero'       X  4 'tp' 0
+RET  80000c90 'rvtest_code_begin+2176' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000c94 'rvtest_code_begin+2180' 0340bdd7 'vadd.vi v27,v20,1'    
+RET  80000c98 'rvtest_code_begin+2184' fff00413 'addi    s0,zero,-1'   
+RET  80000c9c 'rvtest_code_begin+2188' 000471d7 'vsetvli gp,s0,e8,m1,tu,mu' X  3 'gp' 40 C c20 'vl' 40
+RET  80000ca0 'rvtest_code_begin+2192' 02008da7 'vse8.v  v27,(ra)'     
+RET  80000ca4 'rvtest_code_begin+2196' 40000413 'addi    s0,zero,1024'  X  8 's0' 400
+RET  80000ca8 'rvtest_code_begin+2200' 008080b3 'add     ra,ra,s0'      X  1 'ra' 8000ac40
+RET  80000cac 'rvtest_code_begin+2204' 0000a217 'auipc   tp,0xa'        X  4 'tp' 8000acac
+RET  80000cb0 'rvtest_code_begin+2208' f9420213 'addi    tp,tp,-108'    X  4 'tp' 8000ac40
+RET  80000cb4 'rvtest_code_begin+2212' fff00393 'addi    t2,zero,-1'    X  7 't2' ffffffffffffffff
+RET  80000cb8 'rvtest_code_begin+2216' 0003f357 'vsetvli t1,t2,e8,m1,tu,mu' X  6 't1' 40
+RET  80000cbc 'rvtest_code_begin+2220' 00001297 'auipc   t0,0x1'        X  5 't0' 80001cbc
+RET  80000cc0 'rvtest_code_begin+2224' 6e428293 'addi    t0,t0,1764'    X  5 't0' 800023a0
+RET  80000cc4 'rvtest_code_begin+2228' 00800313 'addi    t1,zero,8'     X  6 't1' 8
+RET  80000cc8 'rvtest_code_begin+2232' 02028187 'vle8.v  v3,(t0)'       V  3 'v3' 07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa
+RET  80000ccc 'rvtest_code_begin+2236' 006282b3 'add     t0,t0,t1'      X  5 't0' 800023a8
+RET  80000cd0 'rvtest_code_begin+2240' 02028987 'vle8.v  v19,(t0)'      V 19 'v19' 09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac
+RET  80000cd4 'rvtest_code_begin+2244' 006282b3 'add     t0,t0,t1'      X  5 't0' 800023b0
+RET  80000cd8 'rvtest_code_begin+2248' 02028e07 'vle8.v  v28,(t0)'      V 28 'v28' 0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae
+RET  80000cdc 'rvtest_code_begin+2252' 006282b3 'add     t0,t0,t1'      X  5 't0' 800023b8
+RET  80000ce0 'rvtest_code_begin+2256' 00000193 'mv      gp,zero'       X  3 'gp' 0
+RET  80000ce4 'rvtest_code_begin+2260' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000ce8 'rvtest_code_begin+2264' 0330be57 'vadd.vi v28,v19,1'    
+RET  80000cec 'rvtest_code_begin+2268' fff00393 'addi    t2,zero,-1'   
+RET  80000cf0 'rvtest_code_begin+2272' 0003f357 'vsetvli t1,t2,e8,m1,tu,mu' X  6 't1' 40 C c20 'vl' 40
+RET  80000cf4 'rvtest_code_begin+2276' 02020e27 'vse8.v  v28,(tp)'     
+RET  80000cf8 'rvtest_code_begin+2280' 40000393 'addi    t2,zero,1024'  X  7 't2' 400
+RET  80000cfc 'rvtest_code_begin+2284' 00720233 'add     tp,tp,t2'      X  4 'tp' 8000b040
+RET  80000d00 'rvtest_code_begin+2288' fff00393 'addi    t2,zero,-1'    X  7 't2' ffffffffffffffff
+RET  80000d04 'rvtest_code_begin+2292' 0003f357 'vsetvli t1,t2,e8,m1,tu,mu'
+RET  80000d08 'rvtest_code_begin+2296' 00001297 'auipc   t0,0x1'        X  5 't0' 80001d08
+RET  80000d0c 'rvtest_code_begin+2300' 6b028293 'addi    t0,t0,1712'    X  5 't0' 800023b8
+RET  80000d10 'rvtest_code_begin+2304' 00800313 'addi    t1,zero,8'     X  6 't1' 8
+RET  80000d14 'rvtest_code_begin+2308' 02028107 'vle8.v  v2,(t0)'       V  2 'v2' 0dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa1
+RET  80000d18 'rvtest_code_begin+2312' 006282b3 'add     t0,t0,t1'      X  5 't0' 800023c0
+RET  80000d1c 'rvtest_code_begin+2316' 02028907 'vle8.v  v18,(t0)'     
+RET  80000d20 'rvtest_code_begin+2320' 006282b3 'add     t0,t0,t1'      X  5 't0' 800023c8
+RET  80000d24 'rvtest_code_begin+2324' 02028e87 'vle8.v  v29,(t0)'      V 29 'v29' 01101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa4
+RET  80000d28 'rvtest_code_begin+2328' 006282b3 'add     t0,t0,t1'      X  5 't0' 800023d0
+RET  80000d2c 'rvtest_code_begin+2332' 00000113 'mv      sp,zero'       X  2 'sp' 0
+RET  80000d30 'rvtest_code_begin+2336' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000d34 'rvtest_code_begin+2340' 0320bed7 'vadd.vi v29,v18,1'    
+RET  80000d38 'rvtest_code_begin+2344' fff00393 'addi    t2,zero,-1'   
+RET  80000d3c 'rvtest_code_begin+2348' 0003f357 'vsetvli t1,t2,e8,m1,tu,mu' X  6 't1' 40 C c20 'vl' 40
+RET  80000d40 'rvtest_code_begin+2352' 02020ea7 'vse8.v  v29,(tp)'     
+RET  80000d44 'rvtest_code_begin+2356' 40000393 'addi    t2,zero,1024'  X  7 't2' 400
+RET  80000d48 'rvtest_code_begin+2360' 00720233 'add     tp,tp,t2'      X  4 'tp' 8000b440
+RET  80000d4c 'rvtest_code_begin+2364' fff00393 'addi    t2,zero,-1'    X  7 't2' ffffffffffffffff
+RET  80000d50 'rvtest_code_begin+2368' 0003f357 'vsetvli t1,t2,e8,m1,tu,mu'
+RET  80000d54 'rvtest_code_begin+2372' 00001297 'auipc   t0,0x1'        X  5 't0' 80001d54
+RET  80000d58 'rvtest_code_begin+2376' 67c28293 'addi    t0,t0,1660'    X  5 't0' 800023d0
+RET  80000d5c 'rvtest_code_begin+2380' 00800313 'addi    t1,zero,8'     X  6 't1' 8
+RET  80000d60 'rvtest_code_begin+2384' 02028087 'vle8.v  v1,(t0)'       V  1 'v1' 03303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa6
+RET  80000d64 'rvtest_code_begin+2388' 006282b3 'add     t0,t0,t1'      X  5 't0' 800023d8
+RET  80000d68 'rvtest_code_begin+2392' 02028887 'vle8.v  v17,(t0)'      V 17 'v17' 05505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa8
+RET  80000d6c 'rvtest_code_begin+2396' 006282b3 'add     t0,t0,t1'      X  5 't0' 800023e0
+RET  80000d70 'rvtest_code_begin+2400' 02028f07 'vle8.v  v30,(t0)'     
+RET  80000d74 'rvtest_code_begin+2404' 006282b3 'add     t0,t0,t1'      X  5 't0' 800023e8
+RET  80000d78 'rvtest_code_begin+2408' 00000093 'mv      ra,zero'       X  1 'ra' 0
+RET  80000d7c 'rvtest_code_begin+2412' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000d80 'rvtest_code_begin+2416' 0310bf57 'vadd.vi v30,v17,1'    
+RET  80000d84 'rvtest_code_begin+2420' fff00393 'addi    t2,zero,-1'   
+RET  80000d88 'rvtest_code_begin+2424' 0003f357 'vsetvli t1,t2,e8,m1,tu,mu' X  6 't1' 40 C c20 'vl' 40
+RET  80000d8c 'rvtest_code_begin+2428' 02020f27 'vse8.v  v30,(tp)'     
+RET  80000d90 'rvtest_code_begin+2432' 40000393 'addi    t2,zero,1024'  X  7 't2' 400
+RET  80000d94 'rvtest_code_begin+2436' 00720233 'add     tp,tp,t2'      X  4 'tp' 8000b840
+RET  80000d98 'rvtest_code_begin+2440' fff00393 'addi    t2,zero,-1'    X  7 't2' ffffffffffffffff
+RET  80000d9c 'rvtest_code_begin+2444' 0003f357 'vsetvli t1,t2,e8,m1,tu,mu'
+RET  80000da0 'rvtest_code_begin+2448' 00001297 'auipc   t0,0x1'        X  5 't0' 80001da0
+RET  80000da4 'rvtest_code_begin+2452' 64828293 'addi    t0,t0,1608'    X  5 't0' 800023e8
+RET  80000da8 'rvtest_code_begin+2456' 00800313 'addi    t1,zero,8'     X  6 't1' 8
+RET  80000dac 'rvtest_code_begin+2460' 02028007 'vle8.v  v0,(t0)'       V  0 'v0' 09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae0bb0baab0cc0caac
+RET  80000db0 'rvtest_code_begin+2464' 006282b3 'add     t0,t0,t1'      X  5 't0' 800023f0
+RET  80000db4 'rvtest_code_begin+2468' 02028807 'vle8.v  v16,(t0)'      V 16 'v16' 0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa10dd0daad0ee0eaae
+RET  80000db8 'rvtest_code_begin+2472' 006282b3 'add     t0,t0,t1'      X  5 't0' 800023f8
+RET  80000dbc 'rvtest_code_begin+2476' 02028f87 'vle8.v  v31,(t0)'      V 31 'v31' 0dd0daad0ee0eaae0bb0baab0cc0caac09909aa90aa0aaaa07707aa708808aa805505aa506606aa603303aa304404aa401101aa102202aa20ff0faaf01101aa1
+RET  80000dc0 'rvtest_code_begin+2480' 006282b3 'add     t0,t0,t1'      X  5 't0' 80002400
+RET  80000dc4 'rvtest_code_begin+2484' 00000f93 'mv      t6,zero'      
+RET  80000dc8 'rvtest_code_begin+2488' c0007057 'vsetivli zero,0,e8,m1,tu,mu' C c20 'vl' 0
+RET  80000dcc 'rvtest_code_begin+2492' 0300bfd7 'vadd.vi v31,v16,1'    
+RET  80000dd0 'rvtest_code_begin+2496' fff00393 'addi    t2,zero,-1'   
+RET  80000dd4 'rvtest_code_begin+2500' 0003f357 'vsetvli t1,t2,e8,m1,tu,mu' X  6 't1' 40 C c20 'vl' 40
+RET  80000dd8 'rvtest_code_begin+2504' 02020fa7 'vse8.v  v31,(tp)'     
+RET  80000ddc 'rvtest_code_begin+2508' 40000393 'addi    t2,zero,1024'  X  7 't2' 400
+RET  80000de0 'rvtest_code_begin+2512' 00720233 'add     tp,tp,t2'      X  4 'tp' 8000bc40

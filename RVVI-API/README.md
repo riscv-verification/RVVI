@@ -15,11 +15,6 @@ which can be found in the following locations:
 - [/source/host/rvvi/rvviApiPkg.sv](../source/host/rvvi/rvviApiPkg.sv)
   SystemVerilog.
 
-The associated Doxygen documentation for the `rvviApi.h` header file can be
-browsed here:
-- [www.riscv-verification.org/docs/rvvi/doxygen](
-  https://www.riscv-verification.org/docs/rvvi/doxygen).
-
 There are two general approaches for driving the RVVI-API interface:
 - Directly from a test bench via DPI calls.
 - Indirectly by a SystemVerilog module which monitors the `rvviTrace` interface

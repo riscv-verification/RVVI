@@ -42,7 +42,7 @@ Currently there are 3 different areas that RVVI addresses:
 -----
 ## The core (Device Under Test) RTL Trace interface - RVVI-TRACE
 
-Version 1.5
+Version 1.6
 
 First is the interface to the internals of the RTL of the core's
 micro-architecture to provide values, state, and events related to the internal

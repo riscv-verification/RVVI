@@ -1,6 +1,6 @@
 # RVVI-TRACE RISC-V Verification Interface
 
-Version 1.5
+Version 1.6
 
 This is a work in progress
 
@@ -80,7 +80,33 @@ When this signal is true, it indicates that this retired instruction is the
 first instruction which is part of a trap handler.
 
 ### `mode`
-This signal indicates the operating mode (Machine, Supervisor, User).
+
+The `mode` signal combined with the `mode_virt` signal indicates the operating
+mode of the processor during the current RVVI event.
+
+If the RISC-V Hypervisor Extension is absent then `mode_virt` should be set to 0
+and `mode` is interpreted as follows:
+
+| name       | `mode`  |
+|------------|---------|
+| USER       | 0       |
+| SUPERVISOR | 1       |
+| MACHINE    | 3       |
+
+If the RISC-V Hypervisor Extension is present then the following table applies:
+
+| name                                  | `mode`  | `mode_virt` |
+|---------------------------------------|---------|-------------|
+| USER                                  | 0       | 0           |
+| HYPERVISOR-EXTENDED SUPERVISOR        | 1       | 0           |
+| MACHINE                               | 3       | 0           |
+| VIRTUAL USER                          | 0       | 1           |
+| VIRTUAL SUPERVISOR                    | 1       | 1           |
+
+All other combinations are currently undefined within the RVVI specification.
+
+### `mode_virt`
+See description for `mode`.
 
 ### `ixl`
 This signal indicates the current `XLEN` for the given privilege mode of

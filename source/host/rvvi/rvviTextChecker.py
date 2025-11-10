@@ -116,7 +116,7 @@ def check_PARAMS(state, tokens):
     if state.nharts <= 0:
         raise AssertionError(f"NHARTS must be a positive integer, got {state.nharts}.")
     if state.nretire <= 0:
-        raise AssertionError(f"NRETIRE must be a positive integer, got {state.nretire}.")
+        raise AssertionError(f"RETIRE must be a positive integer, got {state.nretire}.")
 
     # now we can init the order array
     state.order = [0] * state.nharts

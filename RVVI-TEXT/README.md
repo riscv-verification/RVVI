@@ -108,7 +108,7 @@ XLEN    <int>
 FLEN    <int>
 VLEN    <int>
 NHART   <int>
-NRETIRE <int>
+RETIRE <int>
 ```
 
 For RVVI-TRACE file producers, it is recommended that the PARAMS element be

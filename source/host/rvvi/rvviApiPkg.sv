@@ -27,7 +27,7 @@ import uvm_pkg::*;
 `endif
 
 parameter RVVI_API_VERSION_MAJOR = 1;
-parameter RVVI_API_VERSION_MINOR = 34;
+parameter RVVI_API_VERSION_MINOR = 35;
 parameter RVVI_TRUE = 1;
 parameter RVVI_FALSE = 0;
 parameter RVVI_INVALID_INDEX = -1;
@@ -293,6 +293,21 @@ import "DPI-C" context function void rvviRefVrSet(
     input int data);
 
 import "DPI-C" context function void setContextExtMemory(input string func);
+
+import "DPI-C" context function longint rvviRefConnIndexGet(
+    input string name);
+
+import "DPI-C" context function byte rvviRefConnSetEmpty(
+    input longint connIndex);
+
+import "DPI-C" context function byte rvviRefConnSetFull(
+    input longint connIndex);
+
+import "DPI-C" context function byte rvviRefConnData(
+    input longint connIndex,
+    input int offset,
+    input longint value,
+    input byte commit);
 
 endpackage: rvviApiPkg
 

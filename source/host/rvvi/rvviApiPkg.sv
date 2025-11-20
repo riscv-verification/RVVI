@@ -27,7 +27,7 @@ import uvm_pkg::*;
 `endif
 
 parameter RVVI_API_VERSION_MAJOR = 1;
-parameter RVVI_API_VERSION_MINOR = 35;
+parameter RVVI_API_VERSION_MINOR = 36;
 parameter RVVI_TRUE = 1;
 parameter RVVI_FALSE = 0;
 parameter RVVI_INVALID_INDEX = -1;
@@ -308,6 +308,11 @@ import "DPI-C" context function byte rvviRefConnData(
     input int offset,
     input longint value,
     input byte commit);
+
+import "DPI-C" context function void rvviRefCsrSetOneWayCompare(
+    input int hartId,
+    input int csrIndex,
+    input byte enable);
 
 endpackage: rvviApiPkg
 

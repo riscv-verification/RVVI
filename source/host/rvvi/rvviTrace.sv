@@ -31,12 +31,12 @@
  */
 interface dm
 #(
-    parameter int ILEN   = 32,  // Instruction length in bits
-    parameter int XLEN   = 32,  // GPR length in bits
-    parameter int FLEN   = 32,  // FPR length in bits
-    parameter int VLEN   = 256, // Vector register size in bits
-    parameter int NHART  = 1,   // Number of harts reported
-    parameter int RETIRE = 1    // Number of instructions that can retire during valid event
+    parameter int ILEN    = 32,  // Instruction length in bits
+    parameter int XLEN    = 32,  // GPR length in bits
+    parameter int FLEN    = 32,  // FPR length in bits
+    parameter int VLEN    = 256, // Vector register size in bits
+    parameter int NHART   = 1,   // Number of harts reported
+    parameter int RETIRE  = 1    // Number of instructions that can retire during valid event
 );
     //
     // RISCV DM signals
@@ -53,12 +53,13 @@ endinterface
 
 interface rvviTrace
 #(
-    parameter int ILEN   = 32,  // Instruction length in bits
-    parameter int XLEN   = 32,  // GPR length in bits
-    parameter int FLEN   = 32,  // FPR length in bits
-    parameter int VLEN   = 256, // Vector register size in bits
-    parameter int NHART  = 1,   // Number of harts reported
-    parameter int RETIRE = 1    // Number of instructions that can retire during valid event
+    parameter int ILEN    = 32,  // Instruction length in bits
+    parameter int XLEN    = 32,  // GPR length in bits
+    parameter int FLEN    = 32,  // FPR length in bits
+    parameter int VLEN    = 256, // Vector register size in bits
+    parameter int NHART   = 1,   // Number of harts reported
+    parameter int RETIRE  = 1,   // Number of instructions that can retire during valid event    
+    parameter int CLIENTS = 5    // number of RVVI clients
 );
     //
     // RISCV output signals
@@ -116,28 +117,45 @@ interface rvviTrace
         vslot <= vslot + 1;
     end
 
-    string           name[$];
-    longint unsigned value[$];
-    longint unsigned tslot[$];
-    longint unsigned nets[string];
+    string           name [CLIENTS][$];
+    longint unsigned value[CLIENTS][$];
+    longint unsigned tslot[CLIENTS][$];
+    longint unsigned nets [CLIENTS][string];
+    int client_id_next = 0;
 
-    function automatic void net_push(input string pname, input longint unsigned pvalue);
-        name.push_front(pname);
-        value.push_front(pvalue);
-        tslot.push_front(vslot);
+    function automatic int client_register();
+        int out;
+        out = client_id_next;
+        if (client_id_next >= CLIENTS) begin
+            $fatal(1, "%m: Maximum RVVI-TRACE client count reached");
+        end
+        ++client_id_next;
+        return out;
     endfunction
 
-    function automatic int net_pop(output string pname, output longint unsigned pvalue, output longint unsigned pslot);
-        int  ok;
+    function automatic void net_push(input string pname, input longint unsigned pvalue);
+
+        // push net change to all clients queues
+        int i;
+        for (i=0; i<client_id_next; ++i) begin
+            name [i].push_front(pname);
+            value[i].push_front(pvalue);
+            tslot[i].push_front(vslot);
+        end
+
+    endfunction
+
+    function automatic int net_pop(input int client, output string pname, output longint unsigned pvalue, output longint unsigned pslot);
+        int    ok;
         string msg;
-        if (name.size() > 0) begin
-            pname       = name.pop_back();
-            pvalue      = value.pop_back();
-            pslot       = tslot.pop_back();
-            nets[pname] = pvalue;
-            ok = 1;
+        if (name[client].size() > 0) begin
+            pname       = name [client].pop_back();     // net name
+            pvalue      = value[client].pop_back();     // net value
+            pslot       = tslot[client].pop_back();     // net slot
+            nets[client][pname] = pvalue;               // save current 'popped' net state
+            ok = 1;                                     // success
         end else begin
-            ok = 0;
+            ok = 0;                                     // empty
         end
         return ok;
     endfunction

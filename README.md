@@ -79,7 +79,7 @@ Specification: [RVVI-TEXT specification](RVVI-TEXT/README.md)
 -----
 ## The reference model DV subsystem interface - RVVI-API
 
-Version 1.35
+Version 1.36
 
 To verify a RISC-V core requires comparison of the Device Under Test (DUT)
 against a reference model. This is not as simple as just running programs on the

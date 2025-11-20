@@ -30,7 +30,7 @@ Each line in a trace log is made up of zero or more elements that populate the
 RVVI-Trace interface with data. Each element typically comprises a key followed by
 one or more associated values. The following elements are defined:
 ```
-- VENDOR  <name> <version>
+- VENDOR  <name> <major> <minor>
 - VERSION <major> <minor>
 - PARAMS  <count> [ <key> <value> ... ]
 - HART    <hartId>
@@ -345,7 +345,7 @@ COMMENT    = "'", { PRINTABLE - "'" }, "'" ;
 NAME       = { ALPHA | DIGIT | "_" }- ;
 WS         = { " " | "\t" | "\r" | COMMENT }- ;
 
-VENDOR     = "VENDOR",  WS, NAME, WS, HEX ;
+VENDOR     = "VENDOR",  WS, NAME, WS, INT, WS, INT ;
 VERSION    = "VERSION", WS, INT, WS, INT ;
 PARAMS     = "PARAMS",  WS, INT, { WS, NAME, WS, (NAME | INT | HEX) } ;
 HART       = "HART",    WS, INT ;

@@ -136,10 +136,10 @@ be thought of as a superset of RVFI.
 --------------
 ## Implementations and usage
 
-[Imperas](https://www.imperas.com/imperasdv) provides examples of use of RVVI
-with its ImperasDV product with C/C++ for Verilator designs and SystemVerilog
-for use with Xcelium, VCS, Questa from Cadence, Synopsys, Siemens EDA
-respectively.
+[Synopsys](https://www.synopsys.com/verification/imperasdv.html) provides
+examples of use of RVVI with the ImperasDV product with C/C++ for Verilator
+designs and SystemVerilog for use with Xcelium, VCS, Questa from Cadence,
+Synopsys, Siemens EDA respectively.
 
 [OpenHW](https://www.openhwgroup.org/) are using RVVI in its
 [CV32E40X](https://github.com/openhwgroup/core-v-verif/tree/master/cv32e40x)

@@ -1,6 +1,6 @@
 # RVVI-TEXT RISC-V Text trace format
 
-Version 0.1 draft
+Version 0.1
 
 ## Introduction
 

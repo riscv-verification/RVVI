@@ -31,6 +31,7 @@ class CheckState(object):
     hart            = 0
     retire_slot     = 0
     retire_auto_inc = False
+    elm_index       = 0
 
 def _strip_comments(tokens):
     out = []
@@ -74,6 +75,8 @@ def check_VENDOR(state, tokens):
 def check_VERSION(state, tokens):
     check_INT   (tokens[1])    # major version
     check_INT   (tokens[2])    # minor version
+    if state.elm_index != 0:
+        raise AssertionError("VERSION must be the first line in the trace file.")
     return tokens[3:]
 
 def check_PARAMS(state, tokens):
@@ -321,6 +324,12 @@ def check_line(state, tokens):
         if len(tokens) < size + 1:
             raise AssertionError(f"Not enough tokens for '{key}'. Expected {size + 1}.")
         tokens = delegate(state, tokens)
+
+        if state.elm_index == 0:
+            if key != 'VERSION':
+                raise AssertionError("VERSION must be the first element in the trace file.")
+
+        state.elm_index += 1
 
 
 def check_file(state, file):

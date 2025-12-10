@@ -30,8 +30,8 @@ Each line in a trace log is made up of zero or more elements that populate the
 RVVI-Trace interface with data. Each element typically comprises a key followed by
 one or more associated values. The following elements are defined:
 ```
-- VENDOR  <name> <major> <minor>
 - VERSION <major> <minor>
+- VENDOR  <name> <major> <minor>
 - PARAMS  <count> [ <key> <value> ... ]
 - HART    <hartId>
 - ISSUE   <retireslot>
@@ -55,8 +55,8 @@ one or more associated values. The following elements are defined:
 The following format specifiers should be used when emitting or consuming
 elements via any SystemVerilog format string functions.
 ```
-VENDOR  %s %d %d             // vendor field         <name> <major> <minor>
 VERSION %d %d                // version field        <major> <minor>
+VENDOR  %s %d %d             // vendor field         <name> <major> <minor>
 PARAMS  %d [ %s %s/%h/%d ]   // params field
 HART    %d                   // latch Hart           <hartId>
 ISSUE   %d                   // retire slot          <retire slot>
@@ -78,18 +78,20 @@ META    %d [ %s/%h/%d ]      // META element         <count> [ count tokens ... 
 > (leftmost). This aligns with the SystemVerilog %h format specifier byte
 > ordering.
 
+### VERSION
+
+The `VERSION` element provides the major and minor version number of the
+RVVI-TEXT spec that this trace file adheres to. This element can be used for
+checking trace file compatibility or enabling backwards compatibility.
+This element is mandatory and must be the first element present in a valid
+RVVI-TEXT file.
+
 ### VENDOR
 
 A `VENDOR` element provides a string identifying the software that produced of
 the trace file as well as the software version. Typically this will be one of
 the first elements in a trace file. This information can be used to decide how
 to handle any `META` elements, which are defined bellow.
-
-### VERSION
-
-The `VERSION` element provides the major and minor version number of the
-RVVI-TEXT spec that this trace file adheres to. This element can be used for
-checking trace file compatibility or enabling backwards compatibility.
 
 ### PARAMS
 
@@ -345,8 +347,8 @@ COMMENT    = "'", { PRINTABLE - "'" }, "'" ;
 NAME       = { ALPHA | DIGIT | "_" }- ;
 WS         = { " " | "\t" | "\r" | COMMENT }- ;
 
-VENDOR     = "VENDOR",  WS, NAME, WS, INT, WS, INT ;
 VERSION    = "VERSION", WS, INT, WS, INT ;
+VENDOR     = "VENDOR",  WS, NAME, WS, INT, WS, INT ;
 PARAMS     = "PARAMS",  WS, INT, { WS, NAME, WS, (NAME | INT | HEX) } ;
 HART       = "HART",    WS, INT ;
 ISSUE      = "ISSUE",   WS, INT ;
@@ -363,8 +365,8 @@ DM         = "DM",      WS, INT ;
 META       = "META",    WS, HEX, { WS, (NAME | INT | HEX) } ;
 NET        = "NET",     WS, NAME, WS, HEX ;
 
-ELEMENT    = VENDOR
-           | VERSION
+ELEMENT    = VERSION
+           | VENDOR
            | PARAMS
            | HART
            | ISSUE

@@ -236,7 +236,10 @@ with human-readable information, such as disassembly, symbol names, etc. The
 content and placement of all comment elements is intentionally unspecified.
 Comments are entirely optional and trace log producers are not obliged to
 produce them.
-A single comment may not span multiple lines.
+A single comment may not span multiple lines. Large comments may be broken up
+into multiple single line comments so that they can span multiple lines.
+A backslash character `\` can be included in a comment, but it should not
+be interpreted as a line continuation.
 
 ### Line Breaks
 
@@ -343,9 +346,16 @@ This overrides the algorithm used by RVVI-TEXT to predict its next value.
 > Online viewer: https://matthijsgroen.github.io/ebnf2railroad/try-yourself.html
 
 ```
+(* PRINTABLE is any Ascii character between 0x20 and 0x7e inclusive *)
+(* ALPHA is an Ascii character between 'a' to 'z' or 'A' to 'Z' inclusive *)
+(* DIGIT is any Ascii character between '0' and '9' inclusive *)
+(* EOF is end-of-file *)
+
 COMMENT    = "'", { PRINTABLE - "'" }, "'" ;
 NAME       = { ALPHA | DIGIT | "_" }- ;
 WS         = { " " | "\t" | "\r" | COMMENT }- ;
+INT        = { DIGIT }- ;
+HEX        = { DIGIT | 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' }- ;
 
 VERSION    = "VERSION", WS, INT, WS, INT ;
 VENDOR     = "VENDOR",  WS, NAME, WS, INT, WS, INT ;

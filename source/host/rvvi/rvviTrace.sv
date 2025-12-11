@@ -102,7 +102,7 @@ interface rvviTrace
     wire                      halt       [(NHART-1):0][(RETIRE-1):0];   // Halted  instruction
     wire [1:0]                ixl        [(NHART-1):0][(RETIRE-1):0];   // XLEN mode 32/64 bit
     wire [1:0]                mode       [(NHART-1):0][(RETIRE-1):0];   // Privilege mode of operation
-    wire                      mode_virt  [(NHART-1):0][(RETIRE-1):0];   // Virtual mode
+    wire                      mode_virt;                                // Virtual mode
 
     //
     // Optional DMI Interface

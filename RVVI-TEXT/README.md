@@ -30,8 +30,8 @@ Each line in a trace log is made up of zero or more elements that populate the
 RVVI-Trace interface with data. Each element typically comprises a key followed by
 one or more associated values. The following elements are defined:
 ```
-- VERSION <major> <minor>
 - VENDOR  <name> <major> <minor>
+- VERSION <major> <minor>
 - PARAMS  <count> [ <key> <value> ... ]
 - HART    <hartId>
 - ISSUE   <retireslot>
@@ -55,8 +55,8 @@ one or more associated values. The following elements are defined:
 The following format specifiers should be used when emitting or consuming
 elements via any SystemVerilog format string functions.
 ```
-VERSION %d %d                // version field        <major> <minor>
 VENDOR  %s %d %d             // vendor field         <name> <major> <minor>
+VERSION %d %d                // version field        <major> <minor>
 PARAMS  %d [ %s %s/%h/%d ]   // params field
 HART    %d                   // latch Hart           <hartId>
 ISSUE   %d                   // retire slot          <retire slot>
@@ -78,20 +78,18 @@ META    %d [ %s/%h/%d ]      // META element         <count> [ count tokens ... 
 > (leftmost). This aligns with the SystemVerilog %h format specifier byte
 > ordering.
 
-### VERSION
-
-The `VERSION` element provides the major and minor version number of the
-RVVI-TEXT spec that this trace file adheres to. This element can be used for
-checking trace file compatibility or enabling backwards compatibility.
-This element is mandatory and must be the first element present in a valid
-RVVI-TEXT file.
-
 ### VENDOR
 
 A `VENDOR` element provides a string identifying the software that produced of
 the trace file as well as the software version. Typically this will be one of
 the first elements in a trace file. This information can be used to decide how
 to handle any `META` elements, which are defined bellow.
+
+### VERSION
+
+The `VERSION` element provides the major and minor version number of the
+RVVI-TEXT spec that this trace file adheres to. This element can be used for
+checking trace file compatibility or enabling backwards compatibility.
 
 ### PARAMS
 
@@ -236,10 +234,7 @@ with human-readable information, such as disassembly, symbol names, etc. The
 content and placement of all comment elements is intentionally unspecified.
 Comments are entirely optional and trace log producers are not obliged to
 produce them.
-A single comment may not span multiple lines. Large comments may be broken up
-into multiple single line comments so that they can span multiple lines.
-A backslash character `\` can be included in a comment, but it should not
-be interpreted as a line continuation.
+A single comment may not span multiple lines.
 
 ### Line Breaks
 
@@ -346,19 +341,12 @@ This overrides the algorithm used by RVVI-TEXT to predict its next value.
 > Online viewer: https://matthijsgroen.github.io/ebnf2railroad/try-yourself.html
 
 ```
-(* PRINTABLE is any Ascii character between 0x20 and 0x7e inclusive *)
-(* ALPHA is an Ascii character between 'a' to 'z' or 'A' to 'Z' inclusive *)
-(* DIGIT is any Ascii character between '0' and '9' inclusive *)
-(* EOF is end-of-file *)
-
 COMMENT    = "'", { PRINTABLE - "'" }, "'" ;
 NAME       = { ALPHA | DIGIT | "_" }- ;
 WS         = { " " | "\t" | "\r" | COMMENT }- ;
-INT        = { DIGIT }- ;
-HEX        = { DIGIT | 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' }- ;
 
-VERSION    = "VERSION", WS, INT, WS, INT ;
 VENDOR     = "VENDOR",  WS, NAME, WS, INT, WS, INT ;
+VERSION    = "VERSION", WS, INT, WS, INT ;
 PARAMS     = "PARAMS",  WS, INT, { WS, NAME, WS, (NAME | INT | HEX) } ;
 HART       = "HART",    WS, INT ;
 ISSUE      = "ISSUE",   WS, INT ;
@@ -375,8 +363,8 @@ DM         = "DM",      WS, INT ;
 META       = "META",    WS, HEX, { WS, (NAME | INT | HEX) } ;
 NET        = "NET",     WS, NAME, WS, HEX ;
 
-ELEMENT    = VERSION
-           | VENDOR
+ELEMENT    = VENDOR
+           | VERSION
            | PARAMS
            | HART
            | ISSUE

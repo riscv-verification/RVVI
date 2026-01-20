@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2024-2026 Synopsys, Inc. All rights reserved.
  * Copyright (c) 2005-2024 Imperas Software Ltd., www.imperas.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

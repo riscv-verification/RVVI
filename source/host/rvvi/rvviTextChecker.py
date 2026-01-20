@@ -84,6 +84,13 @@ def check_PARAMS(state, tokens):
     count = check_INT(tokens[1])
     tokens = tokens[2:]
 
+    state.ilen      = 'not specified'
+    state.xlen      = 'not specified'
+    state.vlen      = 'not specified'
+    state.nharts    = 'not specified'
+    state.nretire   = 'not specified'
+    state.timescale = 'ps'
+
     for i in range(count):
 
         key = check_STRING(tokens[0])
@@ -107,6 +114,8 @@ def check_PARAMS(state, tokens):
             state.nharts = check_INT(value)
         elif key == 'RETIRE':
             state.nretire = check_INT(value)
+        elif key == 'TIMESCALE':
+            state.timescale = check_STRING(value)
         else:
             raise AssertionError(f"Unknown PARAMS key '{key}' encountered.")
 
@@ -121,10 +130,15 @@ def check_PARAMS(state, tokens):
     if state.nretire <= 0:
         raise AssertionError(f"RETIRE must be a positive integer, got {state.nretire}.")
 
+    timescales = ['s', 'ms', 'us', 'ns', 'ps', 'fs']
+    if state.timescale not in timescales:
+        raise AssertionError(f"TIMESCALE must be one of '{timescales}', got '{state.timescale}'.")
+
     # now we can init the order array
     state.order = [0] * state.nharts
 
-    return tokens[7:]
+    pop_count = count * 2 + 1
+    return tokens[ pop_count :]
 
 def check_HART(state, tokens):
     state.hart = check_INT(tokens[1])
@@ -291,11 +305,21 @@ def check_DM(state, tokens):
         raise AssertionError(f"DM ENABLE value {enable} is invalid (must be 0 or 1).")
     return tokens[2:]
 
+def check_TIME(state, tokens):
+    time_delta = check_INT(tokens[1])
+    # TODO: check time_delta is not negative
+    return tokens[2:]
+
+def check_CYCLE(state, tokens):
+    cycle_delta = check_INT(tokens[1])
+    # TODO: check cycle_delta is not negative
+    return tokens[2:]
+
 def check_line(state, tokens):
     info = {
         'VENDOR':   (check_VENDOR,  3),
         'VERSION':  (check_VERSION, 2),
-        'PARAMS':   (check_PARAMS,  6),
+        'PARAMS':   (check_PARAMS,  6), # note: variable size
         'HART':     (check_HART,    1),
         'ISSUE':    (check_ISSUE,   1),
         'ORDER':    (check_ORDER,   1),
@@ -310,6 +334,8 @@ def check_line(state, tokens):
         'VIRT':     (check_VIRT,    1),
         'DM':       (check_DM,      1),
         'META':     (check_META,    1), # note: variable size
+        'TIME':     (check_TIME,    1),
+        'CYCLE':    (check_CYCLE,   1),
     }
 
     # valid events always start with retire_slot 0

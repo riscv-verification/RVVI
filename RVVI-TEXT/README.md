@@ -1,6 +1,6 @@
 # RVVI-TEXT RISC-V Text trace format
 
-Version 0.1
+Version 0.2
 
 ## Introduction
 
@@ -15,7 +15,6 @@ processes.
 > Note: This specification assumes that the reader is familiar with the
 > RVVI-TRACE specification. Please familiarize yourself with that specification
 > first as most concepts are tightly coupled.
-
 
 ## Description
 
@@ -47,8 +46,9 @@ one or more associated values. The following elements are defined:
 - DM      <value>
 - NET     <name> <value>
 - META    <count> [ <tokens> ... ]
+- CYCLE   <value>
+- TIME    <value>
 ```
-
 
 ## Sscanf style element types
 
@@ -72,6 +72,8 @@ DM      %h                   // debug mode           <value>
 MODE    %h                   // privilege mode       <value>
 VIRT    %d                   // virtual element      <enable>
 META    %d [ %s/%h/%d ]      // META element         <count> [ count tokens ... ]
+CYCLE   %d                   // clock cycle delta    <delta>
+TIME    %d                   // time delta           <delta>
 ```
 
 > Note: Hexadecimal values must be interpreted most-significant-byte (MSB) first
@@ -105,16 +107,29 @@ The first value supplied to `PARAMS` is a count, which represents the number of
 key-value pairs that will follow. Key is alway a string type and value is
 dependent on the key. The currently defined legal key-value pairs are:
 ```
-ILEN    <int>
-XLEN    <int>
-FLEN    <int>
-VLEN    <int>
-NHART   <int>
-RETIRE <int>
+ILEN      <int>
+XLEN      <int>
+FLEN      <int>
+VLEN      <int>
+NHART     <int>
+RETIRE    <int>
+TIMESCALE <string>
 ```
 
 For RVVI-TRACE file producers, it is recommended that the PARAMS element be
-emitted to the trace file before any processor execution traces.
+placed in the trace file before any processor execution traces.
+
+The `TIMESCALE` parameter is optional but when present should be one of the following:
+```
+'s'   - seconds
+'ms'  - milliseconds
+'us'  - microseconds
+'ns'  - nanoseconds
+'ps'  - picoseconds
+'fs'  - femtoseconds
+```
+
+`TIMESCALE` defaults to `ps` and specifies the unit for `TIME` elements.
 
 ### HART
 
@@ -226,6 +241,22 @@ following which are part of the meta element. Consumers of the trace file can
 check the information specified by the VENDOR element to decide how to parse
 `META` elements. `META` elements can be skipped over by ignoring all tokens
 following the `count` value.
+
+### CYCLE
+
+`CYCLE` elements are the mechanism by which the number of clock cycles executed
+by the processor core can be communicated. The value provided by this element
+is a delta, recording the number of cycles elapsed since the previous `CYCLE`
+element was issued. At the start of tracing the cycle accumulator starts with
+a zero value.
+
+### TIME
+
+`TIME` elements are the mechanism by which real simulation/execution time can be 
+communicated. Like the `CYCLE` element, the value provided by this element is
+a delta, and records the time elapsed since the previous `TIME` element was
+issued. The associated time value is specified in units of `TIMESCALE`.
+The time accumulator starts with a zero value.
 
 ### Comments
 
@@ -373,6 +404,8 @@ MODE       = "MODE",    WS, INT ;
 VIRT       = "VIRT",    WS, INT ;
 DM         = "DM",      WS, INT ;
 META       = "META",    WS, HEX, { WS, (NAME | INT | HEX) } ;
+CYCLE      = "CYCLE",   WS, INT ;
+TIME       = "TIME",    WS, INT ;
 NET        = "NET",     WS, NAME, WS, HEX ;
 
 ELEMENT    = VERSION
@@ -391,6 +424,8 @@ ELEMENT    = VERSION
            | VIRT
            | DM
            | META
+           | CYCLE
+           | TIME
            | NET ;
 
 ELEMENT_LIST = ELEMENT, WS, ELEMENT_LIST
@@ -399,7 +434,6 @@ ELEMENT_LIST = ELEMENT, WS, ELEMENT_LIST
 LINE       = [ WS ], [ ELEMENT_LIST ], [ WS ], [ "\\" ], "\n" ;
 TRACE      = { LINE }, [ WS ], EOF ;
 ```
-
 
 ## Railroad (ISO/IEC 14977)
 

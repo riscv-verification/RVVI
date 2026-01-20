@@ -34,11 +34,10 @@ module top();
   longint insn;
   longint order;
   integer hart;
-  integer index;
-  longint value;
   bit     valid;
-  logic   [`VLEN-1:0] valueVr;
   string  vendor;
+  longint cycle_acc;
+  longint time_acc;
 
   integer retire;
   bit     retireAutoInc;
@@ -62,7 +61,6 @@ module top();
     $display("----------------------------------------------------------------");
     $display("START");
     $display("----------------------------------------------------------------");
-
   end
 
   //---------------------------------------------------------------------------
@@ -79,6 +77,9 @@ module top();
     string  tokens[$];  // token list
     string  key;        // element key
     string  net;        // net name
+    longint value;      // parsed integer value
+    integer index;      // parsed integer index
+    logic   [`VLEN-1:0] valueVr;
     bit     done;
 
     tokens.delete();
@@ -213,6 +214,16 @@ module top();
           while (value--) begin
             tokens.pop_front();
           end
+        end
+        "CYCLE" : begin
+          res = $sscanf(tokens.pop_front(), "%d", value);
+          cycle_acc += value;
+          $display("CYCLE %0d (%0d)", value, cycle_acc);
+        end
+        "TIME" : begin
+          res = $sscanf(tokens.pop_front(), "%d", value);
+          time_acc += value;
+          $display("TIME %0d (%0d)", value, time_acc);
         end
         "\\": begin
           done = 0;

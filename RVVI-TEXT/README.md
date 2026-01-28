@@ -1,6 +1,6 @@
 # RVVI-TEXT RISC-V Text trace format
 
-Version 0.2
+Version 0.3
 
 ## Introduction
 
@@ -55,30 +55,35 @@ one or more associated values. The following elements are defined:
 The following format specifiers should be used when emitting or consuming
 elements via any SystemVerilog format string functions.
 ```
-VERSION %d %d                // version field        <major> <minor>
-VENDOR  %s %d %d             // vendor field         <name> <major> <minor>
-PARAMS  %d [ %s %s/%h/%d ]   // params field
-HART    %d                   // latch Hart           <hartId>
-ISSUE   %d                   // retire slot          <retire slot>
-ORDER   %d                   // order field          <order>
-RET     %h %h                // retirement event     <pc> <instBin>
-TRAP    %h %h                // trap event           <pc> <instBin>
-X       %d %h                // GPR change           <register> <value>
-F       %d %h                // FPR change           <register> <value>
-V       %h %h                // VR change            <register> <value>
-C       %h %h                // CSR change           <register> <value>
-NET     %s %h                // NET change           <name> <value>
-DM      %h                   // debug mode           <value>
-MODE    %h                   // privilege mode       <value>
-VIRT    %d                   // virtual element      <enable>
-META    %d [ %s/%h/%d ]      // META element         <count> [ count tokens ... ]
-CYCLE   %d                   // clock cycle delta    <delta>
-TIME    %d                   // time delta           <delta>
+VERSION %d %d                     // version field        <major> <minor>
+VENDOR  "%s" %d %d                // vendor field         <name> <major> <minor>
+PARAMS  %d [ "%s" "%s"/0x%h/%d ]  // params field
+HART    %d                        // latch Hart           <hartId>
+ISSUE   %d                        // retire slot          <retire slot>
+ORDER   %d                        // order field          <order>
+RET     0x%h 0x%h                 // retirement event     <pc> <instBin>
+TRAP    0x%h 0x%h                 // trap event           <pc> <instBin>
+X       %d   0x%h                 // GPR change           <register> <value>
+F       %d   0x%h                 // FPR change           <register> <value>
+V       0x%h 0x%h                 // VR change            <register> <value>
+C       0x%h 0x%h                 // CSR change           <register> <value>
+NET     "%s" 0x%h                 // NET change           <name> <value>
+DM      0x%h                      // debug mode           <value>
+MODE    0x%h                      // privilege mode       <value>
+VIRT    %d                        // virtual element      <enable>
+META    %d [ "%s"/0x%h/%d ]       // META element         <count> [ count tokens ... ]
+CYCLE   %d                        // clock cycle delta    <delta>
+TIME    %d                        // time delta           <delta>
 ```
 
 > Note: Hexadecimal values must be interpreted most-significant-byte (MSB) first
 > (leftmost). This aligns with the SystemVerilog %h format specifier byte
 > ordering.
+
+> Note: Name-type values may be optionally enclosed in double quotes. This
+>       allows for the inclusion of space characters within the name, 
+>       enhancing readability and flexibility in naming conventions.
+>       Quoted names may not span multiple lines.
 
 ### VERSION
 
@@ -113,7 +118,7 @@ FLEN      <int>
 VLEN      <int>
 NHART     <int>
 RETIRE    <int>
-TIMESCALE <string>
+TIMESCALE <name>
 ```
 
 For RVVI-TRACE file producers, it is recommended that the PARAMS element be
@@ -178,7 +183,7 @@ An example is provided below.
 An `ORDER` element sets the current `order` signal for the currently latched
 hart and retirement slot.
 
-The `order` field updates in a predictable manner and so RVVI-TEXT uses an
+The `ORDER` field updates in a predictable manner and so RVVI-TEXT uses an
 algorithm to predict its value to reduce occurrences of `ORDER` elements in a
 trace file.
 
@@ -383,10 +388,11 @@ This overrides the algorithm used by RVVI-TEXT to predict its next value.
 (* EOF is end-of-file *)
 
 COMMENT    = "'", { PRINTABLE - "'" }, "'" ;
-NAME       = { ALPHA | DIGIT | "_" }- ;
+NAME       = { ALPHA | DIGIT | "_" }- |
+             '"', { ALPHA | DIGIT | "_" | " " }, '"' ;
 WS         = { " " | "\t" | "\r" | COMMENT }- ;
 INT        = { DIGIT }- ;
-HEX        = { DIGIT | 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' }- ;
+HEX        = "0x", { DIGIT | 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' }- ;
 
 VERSION    = "VERSION", WS, INT, WS, INT ;
 VENDOR     = "VENDOR",  WS, NAME, WS, INT, WS, INT ;

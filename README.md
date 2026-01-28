@@ -64,7 +64,7 @@ Specification: [RVVI-TRACE Verilog](RVVI-TRACE/README.md)
 -----
 ## The RVVI-TEXT text trace file format
 
-Version 0.2
+Version 0.3
 
 The RVVI-TEXT format is designed to provide a standardized way to represent
 RVVI-TRACE verification traces. This format facilitates the exchange of trace

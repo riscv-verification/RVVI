@@ -33,23 +33,12 @@ class CheckState(object):
     retire_auto_inc = False
     elm_index       = 0
 
-def _strip_comments(tokens):
-    out = []
-    in_comment = False
-    for t in tokens:
-        if t.startswith("'"):
-            in_comment = True
-        if not in_comment:
-            out.append(t)
-        if t.endswith("'"):
-            in_comment = False
-    return out
 
 def check_STRING(token):
     if not token[0].isalpha():
         raise AssertionError(f"Token '{token}' is not a valid string (must start with an alphabetic character).")
     for c in token:
-        if c.isalnum() or c == '_':
+        if c.isalnum() or c == '_' or c == ' ':
             continue
         raise AssertionError(f"Token '{token}' is not a valid string (must contain only alphanumeric characters or underscores).")
     return token
@@ -62,9 +51,11 @@ def check_INT(token):
 
 def check_HEX(token):
     try:
-        return int(token, 16)
+        if (token.startswith('0x') or token.startswith('0X')):
+            return int(token[2:], 16)
     except ValueError:
-        raise AssertionError(f"Token '{token}' is not a valid hexadecimal number.")
+        pass
+    raise AssertionError(f"Token '{token}' is not a valid hexadecimal number.")
 
 def check_VENDOR(state, tokens):
     check_STRING(tokens[1])    # vendor name
@@ -358,6 +349,41 @@ def check_line(state, tokens):
         state.elm_index += 1
 
 
+def tokenize_line(line):
+
+    out = ['']
+    inComment = False
+    inString  = False
+    for ch in line.strip():
+
+        if ch == "'":
+            if inComment:
+                inComment = False
+                continue
+            else:
+                inComment = True
+                continue
+
+        if ch == '"':
+            if inString:
+                inString = False
+                continue
+            else:
+                inString = True
+                continue
+
+        if not inComment:
+            if not inString and (ch == ' ' or ch == '\t'):
+                if out[-1] != '':
+                    out.append('')
+            else:
+                out[-1] += ch
+
+    if out[-1] == '':
+        out.pop()
+
+    return out
+
 def check_file(state, file):
     tokens = []
     line_num = 0
@@ -365,7 +391,7 @@ def check_file(state, file):
     try:
         for line in file:
             line_num  += 1
-            tokens += _strip_comments( t.strip() for t in line.split() )
+            tokens += tokenize_line(line)
             if tokens:
                 if tokens[-1] == '\\':
                     tokens.pop()

@@ -65,7 +65,7 @@ RET     0x%h 0x%h                 // retirement event     <pc> <instBin>
 TRAP    0x%h 0x%h                 // trap event           <pc> <instBin>
 X       %d   0x%h                 // GPR change           <register> <value>
 F       %d   0x%h                 // FPR change           <register> <value>
-V       0x%h 0x%h                 // VR change            <register> <value>
+V       %d   0x%h                 // VR change            <register> <value>
 C       0x%h 0x%h                 // CSR change           <register> <value>
 NET     "%s" 0x%h                 // NET change           <name> <value>
 DM      0x%h                      // debug mode           <value>

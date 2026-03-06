@@ -1,6 +1,6 @@
 # RVVI-TRACE RISC-V Verification Interface
 
-Version 1.6
+Version 1.7
 
 This is a work in progress
 
@@ -162,21 +162,109 @@ takes place when the processor is operating in debug mode. This signal should be
 driven false otherwise. This is an optional signal, and should be tied to false
 when unused.
 
+### `state`
+
+The `state` associative array is per-hart and can be used to communicate hart
+specific state that doesn't otherwise have a dedicated means of conveyance.
+State information is provided as a key value pair, allowing arbitrary data to
+be encoded. Both key and value have string type for maximum flexibility without
+data length restrictions. Value data inside the string should typically be
+encoded in hexadecimal format where possible, and zero padded to the source
+data width.
+
+It is expected that such state information will be somewhat implementation
+specific and so rvviTrace clients should not attempt to parse any `state`
+entries that they do not recognize.
+
+The `state` array can be used to track shadowed or multiplexed CSRs such as
+the trigger `tdata` registers (debug extension) or `mireg` registers
+(Smcsrind/Sscrind extension). 
+
+#### Trigger registers
+
+In the case of the trigger registers, the following key naming scheme should be used:
+`csr_tdataX_tselectY` where X is the _tdata_ number, and Y is the trigger number in _tselect_.
+i.e. `csr_tdata1_tselect0`, `csr_tdata2_tselect2`.
+
+#### Indirect registers
+
+In the case of the `mireg` registers the following naming scheme should be used:
+`csr_miregX_miselectY` where X is the _mireg_ number, and Y is the value in `miselect`.
+
+> Note: when X has a value of 1 it should be omitted however to match the `Smcsrind/Sscrind`
+extension naming convention. e.g. `csr_mireg_miselect1`.
+
+The same naming convention should be applied equally to the _sireg_ and _vsreg_ registers.
+
 ----
 ## rvviTrace Interface functions
 
+### `client_register(logic recv_nets, logic recv_memory)`
+A RVVI client can be registered using the `client_register` function. The maximum
+number of clients can be set via the `CLIENTS_MAX` `rvviTrace` parameter.
+the `recv_nets` and `recv_memory` parameters specify if the client should receive
+net event and memory event information respectively.
+The `client_register` call will return a unique client that must be provided when
+making calls to `net_pop` and `mem_access_pop`.
+Each client gets its own FIFO for net and memory events so that multiple clients
+can operate independently.
+
 ### `net_push()`
 The `net_push` function is used to submit the status of a processor net to the
-`rvviTrace` interface. Nets are formed as a key/value pair, consisting of the
-net name `vname` and the net value `vvalue`. Calls to this function will push
-these key value pairs into a fifo, which will be emptied by an RVVI interface
-consumer.
+`rvviTrace` interface. Net changes are formed as a key/value pair, consisting of
+the net name `vname` and the net value `vvalue`. Calls to this function broadcast
+net changes to all of the clients registered to receive net changes.
+Net events should typically be submitted as soon as a net change on the periphery
+of the DUT core.
 
 ### `net_pop()`
-The `net_pop` function is used by a consumer of the RVVI interface to receive
-any net status updates. Net changes are popped in the order that they have been
+The `net_pop` function is used by a client of the RVVI interface to receive
+any net change events. Net events are popped in the order that they have been
 pushed (FIFO). This function returns 1 when a net change has been popped
 successfully, or 0 if there was no net change to pop.
+`net_pop` should only be called by clients that have registered to receive
+net changes by setting `recv_nets` when registered.
+
+### `mem_access_push()`
+The `mem_access_push` function is used to broadcast a memory access event to
+all of the rvviTrace clients registered to receive memory events.
+Any memory access events should be pushed by the DUT tracer prior to asserting the
+`valid` bit in rvviTrace. All pushed memory events will be associated with the
+currently retiring/trapping instruction when the `valid` bit of rvviTrace is set.
+Multiple memory access events can be submitted as required by the currently
+retiring 
+
+### `mem_access_pop()`
+the `mem_access_pop` function is called by clients of rvviTrace that have
+registered to receive memory events by setting `recv_memory`.
+A value of 1 will be returned when a memory event has been returned via the
+`access` output argument.
+
+----
+## Memory access records
+
+Memory access tracing is an optional part of rvviTrace and is not required to
+be implemented.
+
+Memory access events are encapsulated in `rvvi_mem_access_t` structures.
+As the DUT executes instructions that touch memory the DUT tracer can push
+`rvvi_mem_access_t` structures to describe the accesses as they are made.
+
+Multiple non-contiguous accesses can be described by pushing multiple
+mem access structures for each of the partial accesses performed.
+
+In the case that a large architectural access is broken into smaller accesses
+by the DUT, each smaller access can be pushed individually.
+This may occur for a number of reasons such as a unaligned load being split
+into smaller aligned loads, or larger loads that straddle page / cache line
+boundaries.
+
+- How a DUT breaks up accesses (if required) is left up to the implementation.
+- There is no ordering requirement, multiple accesses can be pushed in any order.
+- There should not be any overlap between the access records pushed.
+- Partial memory access records can be submitted for instructions that do not complete.
+- All page information should be set to 0 if paging is not currently enabled.
+- `gaddr` should be set to 0 when a guest address is not produced.
 
 ----
 ## Example waveform diagrams

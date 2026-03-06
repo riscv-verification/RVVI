@@ -308,6 +308,37 @@ def check_CYCLE(state, tokens):
         raise AssertionError(f"CYCLE delta {cycle_delta} is invalid (must be a non-negative integer).")
     return tokens[2:]
 
+def check_MEM(state, tokens):
+    bus = check_STRING(tokens[1])
+    if bus not in ['I', 'D']:
+        raise AssertionError(f"Memory bus '{bus}' is invalid (must be 'I' or 'D').")
+
+    bytes = check_INT(tokens[2])
+    if bytes <= 0:
+        raise AssertionError(f"Memory access byte count {bytes} is invalid (must be a positive integer).")
+
+    vaddr = check_HEX(tokens[3])
+    paddr = check_HEX(tokens[4])
+    count = check_INT(tokens[5])
+    if count < 0:
+        raise AssertionError(f"Memory access count {count} is invalid (must be a non-negative integer).")
+
+    tokens = tokens[6:]
+
+    for i in range(count):
+        if len(tokens) < 2:
+            raise AssertionError("Not enough tokens for MEM data (expected key-value pairs).")
+        key    = check_STRING(tokens[0])
+        value  = check_STRING(tokens[1])
+        tokens = tokens[2:]
+
+    return tokens
+
+def check_STATE(state, tokens):
+    state_name  = check_STRING(tokens[1])
+    state_value = check_STRING(tokens[2])
+    return tokens[3:]
+
 def check_line(state, tokens):
     info = {
         'VENDOR':   (check_VENDOR,  3),
@@ -329,6 +360,8 @@ def check_line(state, tokens):
         'CYCLE':    (check_CYCLE,   1),
         'TIME':     (check_TIME,    1),
         'NET':      (check_NET,     2),
+        'MEM':      (check_MEM,     1), # note: variable size
+        'STATE':    (check_STATE,   2),
     }
 
     # valid events always start with retire_slot 0

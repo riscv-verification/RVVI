@@ -2,5 +2,6 @@
 // Files for RVVI inclusion
 ///////////////////////////////////////////////////////////////////////////////
 
++incdir+${IMPERAS_HOME}/ImpPublic/source/host/rvvi
 ${IMPERAS_HOME}/ImpPublic/source/host/rvvi/rvviApiPkg.sv
 ${IMPERAS_HOME}/ImpPublic/source/host/rvvi/rvviTrace.sv

@@ -1,6 +1,6 @@
 # RVVI-TEXT RISC-V Text trace format
 
-Version 0.3
+Version 0.4
 
 ## Introduction
 
@@ -48,6 +48,8 @@ one or more associated values. The following elements are defined:
 - CYCLE   <value>
 - TIME    <value>
 - NET     <name> <value>
+- MEM     <bus> <bytes> <vaddr> <paddr> <count> [ <key> <value> ... ]
+- STATE   <name> <value>
 ```
 
 ## Sscanf style element types
@@ -74,6 +76,8 @@ META    %d [ "%s"/0x%h/%d ]                       // META element           <cou
 CYCLE   %d                                        // clock cycle delta      <delta>
 TIME    %d                                        // time delta             <delta>
 NET     "%s" 0x%h                                 // NET change             <name> <value>
+MEM     "%s" %d 0x%h 0x%h %d [ %s "%s"/0x%h/%d ]  // memory access          <bus> <bytes> <vaddr> <paddr> <count> [ count key/value pairs ... ]
+STATE   "%s" "%s"                                 // additional state       <key> <value>
 ```
 
 > Note: Hexadecimal values must be interpreted most-significant-byte (MSB) first
@@ -263,6 +267,88 @@ a delta, and records the time elapsed since the previous `TIME` element was
 issued. The associated time value is specified in units of `TIMESCALE`.
 The time accumulator starts with a zero value.
 
+### MEM
+
+Mem access records are optional and are not required to be output in an RVVI-TEXT trace.
+
+`MEM` elements describe memory accesses performed as part of the currently
+retired or trapping instruction.
+The `bus` value should be `I` for instruction or `D` for data bus accesses
+respectively. `bytes` should be set to the width of the access (in bytes)
+being described by this `MEM` element.
+`vaddr` is set to the starting virtual address of this access.
+`paddr` is set to the physical address that `vaddr` maps to given the current
+processor state. The `count` field specifies the number of key value pairs that
+immediately follow it making up the remainder of the `MEM` element.
+
+This specification defines a number of keys, but a parser should skip all
+keys that it does not recognize. The predefined keys are listed below:
+
+| Key    | Value  | Meaning                                               |
+|--------|--------|-------------------------------------------------------|
+| PTE    | hex    | Page table entry (VS-stage when Hypervisor is active) |
+| GPTE   | hex    | Page table entry (G-stage when Hypervisor is active)  |
+| PT     | string | page type (VS-stage when hypervisor is active)        |
+| GPT    | string | page type (G-stage when hypervisor is inactive)       |
+| GPADDR | hex    | Guest physical address (when Hypervisor is active)    |
+
+The `pt` and `gpt` field should be set to one of the following:
+
+| Value | Meaning  |
+|-------|----------|
+| K     | Kilopage |
+| M     | Megapage |
+| G     | Gigapage |
+| T     | Terapage |
+| P     | Petapage |
+
+There is no requirement placed on the number or order of MEM elements associated with a
+retirement or trap.
+
+Larger accesses may be broken up into a number of smaller MEM elements as required.
+This may happen for example as a core handles unaligned loads and store or for
+accesses that straddle cache lines.
+
+Trapping instructions (raising a synchronous exception) may also result in an incomplete
+number of MEM elements being reported.
+
+Accesses that cross one or more page boundaries may be split into multiple MEM elements for
+each of the separate pages touched.
+
+Instructions that perform non-contiguous accesses may also result in multiple MEM elements
+for each of the separate contiguous accesses performed.
+
+### STATE
+
+The `STATE` element can be used to communicate hart specific state that doesn't otherwise
+have a dedicated means of conveyance.
+State information is provided as a key value pair, allowing arbitrary data to be encoded.
+Both key and value have string type for maximum flexibility without data length restrictions.
+Value data inside the string should typically be encoded in hexadecimal format where possible,
+and zero padded to the source data width.
+
+It is expected that such state information will be somewhat implementation specific and
+so RVVI-TRACE consumers should skip `STATE` elements that they do not recognize.
+
+The `STATE` element can be used to track shadowed or multiplexed CSRs such as the trigger
+`tdata` registers (debug extension) or `mireg` registers (Smcsrind/Sscrind extension). 
+
+#### Trigger registers
+
+In the case of the trigger registers, the following key naming scheme should be used:
+`csr_tdataX_tselectY` where X is the _tdata_ number, and Y is the trigger number in _tselect_.
+i.e. `csr_tdata1_tselect0`, `csr_tdata2_tselect2`.
+
+#### Indirect registers
+
+In the case of the `mireg` registers the following naming scheme should be used:
+`csr_miregX_miselectY` where X is the _mireg_ number, and Y is the value in `miselect`.
+
+> Note: when X has a value of 1 it should be omitted however to match the `Smcsrind/Sscrind`
+extension naming convention. e.g. `csr_mireg_miselect1`.
+
+The same naming convention should be applied equally to the _sireg_ and _vsreg_ registers.
+
 ### Comments
 
 Comments can be inserted between any valid tokens and are enclosed in single
@@ -377,6 +463,34 @@ HART 0 \
 ```
 This overrides the algorithm used by RVVI-TEXT to predict its next value.
 
+This example shows a machine mode memory access with paging disabled.
+Virtual addresses directly map to physical addresses.
+A data bus transaction of 4 bytes to the address 0x10000 is recorded as a
+result of the `sw` instruction.
+```
+HART 0 \
+    RET 0x80 0x00032023 'sw zero,0(t1)' MEM D 4 0x10000 0x10000 0
+```
+
+The following example demonstrates the `STATE` element in action. As the _tselect_ register
+changes we can see the visible state of the _tdata1_ register also change as the register view
+shifts. It looks like the _tdata1_ register is always changing value, but in actual fact only
+the visible state shifts, the underlying trigger data persists but is otherwise not visible.
+The underlying trigger state is provided using the `STATE` element as it changes. These
+registers are now cleanly separated because of their unique key.
+In _RVVI-TRACE_ these key value pairs are entered into the associative array `state` for later access.
+```
+HART 0 \
+   RET  0x0 0x0000f2b7 'lui   t0,0xf'      X 5 0xF000
+   RET  0x4 0x00d2829b 'addiw t0,t0,13'    x 5 0xF00D
+   RET  0x8 0x7a005073 'csrwi tselect,0'   C 0x7A0 0 C 0x7A1 0xFACE
+   RET  0xc 0x7a129073 'csrw  tdata1,t0'   C 0x7A1 0xF00D STATE "csr_tdata1_tselect0" "0xF00D"
+   RET 0x10 0x0000d337 'lui   t1,0xd'      X 5 0xD000
+   RET 0x14 0xafe3031b 'addiw t1,t1,-1282' x 5 0xCAFE
+   REG 0x18 0x7a00d073 'csrw  tselect,1'   C 0x7A0 1 C 0x7A1 0xC0FFEE
+   REG 0x1C 0x7a131073 'csrw  tdata1,t1'   C 0x7A1 0xCAFE STATE "csr_tdata1_tselect1" "0xCAFE"
+```
+
 ## eBNF (ISO/IEC 14977 EBNF notation)
 
 > Online viewer: https://matthijsgroen.github.io/ebnf2railroad/try-yourself.html
@@ -413,6 +527,8 @@ META       = "META",    WS, INT, { WS, (NAME | INT | HEX) } ;
 CYCLE      = "CYCLE",   WS, INT ;
 TIME       = "TIME",    WS, INT ;
 NET        = "NET",     WS, NAME, WS, HEX ;
+MEM        = "MEM",     WS, NAME, WS, INT, WS, HEX, WS, HEX, WS, INT, { WS, NAME, WS, (NAME | INT | HEX) } ;
+STATE      = "STATE",   WS, NAME, WS, NAME, WS ;
 
 ELEMENT    = VERSION
            | VENDOR
@@ -432,7 +548,9 @@ ELEMENT    = VERSION
            | META
            | CYCLE
            | TIME
-           | NET ;
+           | NET
+           | MEM
+           | STATE ;
 
 ELEMENT_LIST = ELEMENT, WS, ELEMENT_LIST
              | ELEMENT ;

@@ -42,7 +42,7 @@ Currently there are 3 different areas that RVVI addresses:
 -----
 ## The core (Device Under Test) RTL Trace interface - RVVI-TRACE
 
-Version 1.6
+Version 1.7
 
 First is the interface to the internals of the RTL of the core's
 micro-architecture to provide values, state, and events related to the internal
@@ -64,7 +64,7 @@ Specification: [RVVI-TRACE Verilog](RVVI-TRACE/README.md)
 -----
 ## The RVVI-TEXT text trace file format
 
-Version 0.3
+Version 0.4
 
 The RVVI-TEXT format is designed to provide a standardized way to represent
 RVVI-TRACE verification traces. This format facilitates the exchange of trace
@@ -79,7 +79,7 @@ Specification: [RVVI-TEXT specification](RVVI-TEXT/README.md)
 -----
 ## The reference model DV subsystem interface - RVVI-API
 
-Version 1.36
+Version 1.37
 
 To verify a RISC-V core requires comparison of the Device Under Test (DUT)
 against a reference model. This is not as simple as just running programs on the

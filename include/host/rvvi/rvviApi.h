@@ -29,7 +29,7 @@
 typedef int8_t bool_t;
 
 #define RVVI_API_VERSION_MAJOR 1
-#define RVVI_API_VERSION_MINOR 36
+#define RVVI_API_VERSION_MINOR 37
 #define RVVI_TRUE 1
 #define RVVI_FALSE 0
 #define RVVI_INVALID_INDEX -1
@@ -638,6 +638,21 @@ extern bool_t rvviRefCsrSetOneWayCompare(
     uint32_t hartId,
     uint32_t csrIndex,
     bool_t enable);
+
+/*! \brief Specify a CSR bitmask to suppress compares if specific bits change in the reference mode.
+ *
+ *  \param hartId The hart that will have its CSR one-way comparison mask adjusted.
+ *  \param csrIndex Index of the CSR register to have its one-way comparison mask modified (0x0 to 0xfff).
+ *  \param csrMask Bitmask specifying which bits should be compared when one-way comparison is enabled, set bits will be compared, clear bits are not
+ *
+ *  \return Returns RVVI_TRUE if operation was successful else RVVI_FALSE.
+ 
+ *  \note DUT reported CSR changes will always trigger a CSR compare.
+**/
+extern bool_t rvviRefCsrSetOneWayCompareMask(
+    uint32_t hartId,
+    uint32_t csrIndex,
+    uint64_t csrMask);
 
 /*! \brief Pass the current testbench cycle count to the RVVI implementation.
  *

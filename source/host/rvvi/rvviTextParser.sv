@@ -86,6 +86,10 @@ module top();
     logic   [`VLEN-1:0] valueVr;
     bit     done;
 
+    int     memBytes;
+    longint memPAddr;
+    longint memVAddr;
+
     tokens.delete();
     res = $fgets(line, traceFileHandle);
     tokenize(line, tokens);
@@ -231,6 +235,24 @@ module top();
           res = $sscanf(tokens.pop_front(), `FMT_DEC, valueInt);
           time_acc += valueInt;
           $display("TIME %0d (%0d)", valueInt, time_acc);
+        end
+        "MEM": begin
+          valueStr = tokens.pop_front();                          // bus
+          res = $sscanf(tokens.pop_front(), `FMT_DEC, memBytes);  // bytes
+          res = $sscanf(tokens.pop_front(), `FMT_HEX, memVAddr);  // vaddr
+          res = $sscanf(tokens.pop_front(), `FMT_HEX, memPAddr);  // paddr
+          res = $sscanf(tokens.pop_front(), `FMT_DEC, valueInt);  // count
+          $display("MEM %s %d %0x %0x %d", valueStr, memBytes, memVAddr, memPAddr, valueInt);
+          while (valueInt--) begin
+            key      = tokens.pop_front();                        // key
+            valueStr = tokens.pop_front();                        // value
+            $display("%s %s", key, valueStr);
+          end
+        end
+        "STATE": begin
+          key = tokens.pop_front();                               // key
+          valueStr = tokens.pop_front();                          // value
+          $display("STATE %s %s", key, valueStr);
         end
         "\\": begin
           done = 0;

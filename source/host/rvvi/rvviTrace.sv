@@ -22,7 +22,9 @@
 `define NUM_CSRS 4096
 
 `define RVVI_TRACE_VERSION_MAJOR 1
-`define RVVI_TRACE_VERSION_MINOR 6
+`define RVVI_TRACE_VERSION_MINOR 7
+
+`include "rvviTraceTypes.svh"
 
 /*
  * A single DTM (Debug Transport Module), connects
@@ -54,13 +56,13 @@ endinterface
 
 interface rvviTrace
 #(
-    parameter int ILEN    = 32,  // Instruction length in bits
-    parameter int XLEN    = 32,  // GPR length in bits
-    parameter int FLEN    = 32,  // FPR length in bits
-    parameter int VLEN    = 256, // Vector register size in bits
-    parameter int NHART   = 1,   // Number of harts reported
-    parameter int RETIRE  = 1,   // Number of instructions that can retire during valid event    
-    parameter int CLIENTS = 5    // number of RVVI clients
+    parameter int ILEN        = 32,   // Instruction length in bits
+    parameter int XLEN        = 32,   // GPR length in bits
+    parameter int FLEN        = 32,   // FPR length in bits
+    parameter int VLEN        = 256,  // Vector register size in bits
+    parameter int NHART       = 1,    // Number of harts reported
+    parameter int RETIRE      = 1,    // Number of instructions that can retire during valid event    
+    parameter int CLIENTS_MAX = 5     // number of RVVI clients
 );
     //
     // RISCV output signals
@@ -96,6 +98,12 @@ interface rvviTrace
     wire                      lrsc_cancel[(NHART-1):0][(RETIRE-1):0];   // Implementation defined cancel
 
     //
+    // Optional sideband state
+    //
+
+    string state[(NHART-1):0][string];
+
+    //
     // Optional
     //
     wire [(XLEN-1):0]         pc_wdata   [(NHART-1):0][(RETIRE-1):0];   // PC of next instruction
@@ -111,39 +119,60 @@ interface rvviTrace
     dm dm();
 
     //
+    // Optional memory interface
+    //
+
+    rvvi_mem_access_t mem_accesses[CLIENTS_MAX][(NHART-1):0][$];
+
+    //
     // Synchronization of NETs
     //
+
     longint vslot;
     always @(posedge clk) begin
         vslot <= vslot + 1;
     end
 
-    string           name [CLIENTS][$];
-    longint unsigned value[CLIENTS][$];
-    longint unsigned tslot[CLIENTS][$];
-    longint unsigned nets [CLIENTS][string];
-    int client_id_next = 0;
+    string           name [CLIENTS_MAX][$];
+    longint unsigned value[CLIENTS_MAX][$];
+    longint unsigned tslot[CLIENTS_MAX][$];
+    longint unsigned nets [CLIENTS_MAX][string];
 
-    function automatic int client_register();
+    //
+    // rvvi-trace clients
+    //
+
+    int client_id_next = 0;
+    logic client_recv_nets  [CLIENTS_MAX];
+    logic client_recv_memory[CLIENTS_MAX];
+
+    function automatic int client_register(logic recv_nets, logic recv_memory);
+
+        // reserve new client slot ID
         int out;
         out = client_id_next;
-        if (client_id_next >= CLIENTS) begin
+        if (client_id_next >= CLIENTS_MAX) begin
             $fatal(1, "%m: Maximum RVVI-TRACE client count reached");
         end
         ++client_id_next;
+
+        // set observer state
+        client_recv_nets  [out] = recv_nets;
+        client_recv_memory[out] = recv_memory;
+
         return out;
     endfunction
 
     function automatic void net_push(input string pname, input longint unsigned pvalue);
-
         // push net change to all clients queues
         int i;
         for (i=0; i<client_id_next; ++i) begin
-            name [i].push_front(pname);
-            value[i].push_front(pvalue);
-            tslot[i].push_front(vslot);
+            if (client_recv_nets[i]) begin
+                name [i].push_front(pname);
+                value[i].push_front(pvalue);
+                tslot[i].push_front(vslot);
+            end
         end
-
     endfunction
 
     function automatic int net_pop(input int client, output string pname, output longint unsigned pvalue, output longint unsigned pslot);
@@ -159,6 +188,23 @@ interface rvviTrace
             ok = 0;                                     // empty
         end
         return ok;
+    endfunction
+
+    function automatic void mem_access_push(int hart, input rvvi_mem_access_t access);
+        int i;
+        for (i=0; i<client_id_next; ++i) begin
+            if (client_recv_memory[i]) begin
+                mem_accesses[i][hart].push_front(access);
+            end
+        end
+    endfunction
+
+    function automatic int mem_access_pop(input int client, int hart, output rvvi_mem_access_t access);
+        if (mem_accesses[client][hart].size() == 0) begin
+            return 0;  // empty
+        end
+        access = mem_accesses[client][hart].pop_back();
+        return 1;  // ok
     endfunction
 
 endinterface

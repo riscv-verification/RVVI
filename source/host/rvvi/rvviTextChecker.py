@@ -249,7 +249,7 @@ def check_V(state, tokens):
     if index >= 32:
         raise AssertionError(f"Vector register index {index} out of range (must be less than 32).")
 
-    value = check_HEX(tokens[2])   
+    value = check_HEX(tokens[2])
     if value >= (1 << state.vlen):
         raise AssertionError(f"V{index} register value {value:#x} exceeds VLEN limit ({state.vlen} bits).")
     return tokens[3:]
@@ -298,12 +298,14 @@ def check_DM(state, tokens):
 
 def check_TIME(state, tokens):
     time_delta = check_INT(tokens[1])
-    # TODO: check time_delta is not negative
+    if time_delta < 0:
+        raise AssertionError(f"TIME delta {time_delta} is invalid (must be a non-negative integer).")
     return tokens[2:]
 
 def check_CYCLE(state, tokens):
     cycle_delta = check_INT(tokens[1])
-    # TODO: check cycle_delta is not negative
+    if cycle_delta < 0:
+        raise AssertionError(f"CYCLE delta {cycle_delta} is invalid (must be a non-negative integer).")
     return tokens[2:]
 
 def check_line(state, tokens):
@@ -320,13 +322,13 @@ def check_line(state, tokens):
         'F':        (check_F,       2),
         'V':        (check_V,       2),
         'C':        (check_C,       2),
-        'NET':      (check_NET,     2),
         'MODE':     (check_MODE,    1),
         'VIRT':     (check_VIRT,    1),
         'DM':       (check_DM,      1),
         'META':     (check_META,    1), # note: variable size
-        'TIME':     (check_TIME,    1),
         'CYCLE':    (check_CYCLE,   1),
+        'TIME':     (check_TIME,    1),
+        'NET':      (check_NET,     2),
     }
 
     # valid events always start with retire_slot 0

@@ -44,10 +44,10 @@ one or more associated values. The following elements are defined:
 - MODE    <code>
 - VIRT    <enable>
 - DM      <value>
-- NET     <name> <value>
 - META    <count> [ <tokens> ... ]
 - CYCLE   <value>
 - TIME    <value>
+- NET     <name> <value>
 ```
 
 ## Sscanf style element types
@@ -55,25 +55,25 @@ one or more associated values. The following elements are defined:
 The following format specifiers should be used when emitting or consuming
 elements via any SystemVerilog format string functions.
 ```
-VERSION %d %d                     // version field        <major> <minor>
-VENDOR  "%s" %d %d                // vendor field         <name> <major> <minor>
-PARAMS  %d [ "%s" "%s"/0x%h/%d ]  // params field
-HART    %d                        // latch Hart           <hartId>
-ISSUE   %d                        // retire slot          <retire slot>
-ORDER   %d                        // order field          <order>
-RET     0x%h 0x%h                 // retirement event     <pc> <instBin>
-TRAP    0x%h 0x%h                 // trap event           <pc> <instBin>
-X       %d   0x%h                 // GPR change           <register> <value>
-F       %d   0x%h                 // FPR change           <register> <value>
-V       %d   0x%h                 // VR change            <register> <value>
-C       0x%h 0x%h                 // CSR change           <register> <value>
-NET     "%s" 0x%h                 // NET change           <name> <value>
-DM      0x%h                      // debug mode           <value>
-MODE    0x%h                      // privilege mode       <value>
-VIRT    %d                        // virtual element      <enable>
-META    %d [ "%s"/0x%h/%d ]       // META element         <count> [ count tokens ... ]
-CYCLE   %d                        // clock cycle delta    <delta>
-TIME    %d                        // time delta           <delta>
+VERSION %d %d                                     // version field          <major> <minor>
+VENDOR  "%s" %d %d                                // vendor field           <name> <major> <minor>
+PARAMS  %d [ "%s" "%s"/0x%h/%d ]                  // params field
+HART    %d                                        // latch Hart             <hartId>
+ISSUE   %d                                        // retire slot            <retire slot>
+ORDER   %d                                        // order field            <order>
+RET     0x%h 0x%h                                 // retirement event       <pc> <instBin>
+TRAP    0x%h 0x%h                                 // trap event             <pc> <instBin>
+X       %d   0x%h                                 // GPR change             <register> <value>
+F       %d   0x%h                                 // FPR change             <register> <value>
+V       %d   0x%h                                 // VR change              <register> <value>
+C       0x%h 0x%h                                 // CSR change             <register> <value>
+MODE    0x%h                                      // privilege mode         <value>
+VIRT    0x%h                                      // virtual element        <enable>
+DM      0x%h                                      // debug mode             <value>
+META    %d [ "%s"/0x%h/%d ]                       // META element           <count> [ count tokens ... ]
+CYCLE   %d                                        // clock cycle delta      <delta>
+TIME    %d                                        // time delta             <delta>
+NET     "%s" 0x%h                                 // NET change             <name> <value>
 ```
 
 > Note: Hexadecimal values must be interpreted most-significant-byte (MSB) first
@@ -266,7 +266,7 @@ The time accumulator starts with a zero value.
 ### Comments
 
 Comments can be inserted between any valid tokens and are enclosed in single
-quote "'" characters. These comments are entirely ignored when using the RVVI
+quote `'` characters. These comments are entirely ignored when using the RVVI
 Trace Log as a machine-readable format and are intended only to annotate the log
 with human-readable information, such as disassembly, symbol names, etc. The
 content and placement of all comment elements is intentionally unspecified.
@@ -369,7 +369,7 @@ Using the auto-increment rules this can also be encoded as follows:
 HART 0 RET 80 00000093 'li ra,0' RET 84 00000113 'li sp,0'
 ```
 
-The `RVVI-TRACE` `order` can be manually specified when required:
+The `RVVI-TRACE` `ORDER` can be manually specified when required:
 ```
 HART 0 \
     ISSUE 1 ORDER 1 RET 80 00000093 'li ra,0' \
@@ -405,11 +405,11 @@ TRAP       = "TRAP",    WS, HEX, WS, HEX ;
 GPR        = "X",       WS, INT, WS, HEX ;
 FPR        = "F",       WS, INT, WS, HEX ;
 VR         = "V",       WS, INT, WS, HEX ;
-CSR        = "C",       WS, INT, WS, HEX ;
-MODE       = "MODE",    WS, INT ;
-VIRT       = "VIRT",    WS, INT ;
-DM         = "DM",      WS, INT ;
-META       = "META",    WS, HEX, { WS, (NAME | INT | HEX) } ;
+CSR        = "C",       WS, HEX, WS, HEX ;
+MODE       = "MODE",    WS, HEX ;
+VIRT       = "VIRT",    WS, HEX ;
+DM         = "DM",      WS, HEX ;
+META       = "META",    WS, INT, { WS, (NAME | INT | HEX) } ;
 CYCLE      = "CYCLE",   WS, INT ;
 TIME       = "TIME",    WS, INT ;
 NET        = "NET",     WS, NAME, WS, HEX ;

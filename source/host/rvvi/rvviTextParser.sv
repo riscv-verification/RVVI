@@ -217,17 +217,17 @@ module top();
           $display("DM 0x%1h", valueInt);
         end
         "META": begin
-          res = $sscanf(tokens.pop_front(), `FMT_HEX, valueInt);
+          res = $sscanf(tokens.pop_front(), `FMT_DEC, valueInt);
           while (valueInt--) begin
             tokens.pop_front();
           end
         end
-        "CYCLE" : begin
+        "CYCLE": begin
           res = $sscanf(tokens.pop_front(), `FMT_DEC, valueInt);
           cycle_acc += valueInt;
           $display("CYCLE %0d (%0d)", valueInt, cycle_acc);
         end
-        "TIME" : begin
+        "TIME": begin
           res = $sscanf(tokens.pop_front(), `FMT_DEC, valueInt);
           time_acc += valueInt;
           $display("TIME %0d (%0d)", valueInt, time_acc);
@@ -302,6 +302,7 @@ module top();
         inString = !inString;
         j = i;
         tokens.push_back(token);
+        token = "";
         continue;
       end
       // entering a string

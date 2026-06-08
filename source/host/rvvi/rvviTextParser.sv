@@ -208,6 +208,10 @@ module top();
           res = $sscanf(tokens.pop_front(), `FMT_HEX, valueInt);
           $display("NET %s 0x%1h", net, valueInt);
         end
+        "CANCEL": begin
+          net = tokens.pop_front();
+          $display("CANCEL %s", net);
+        end
         "MODE": begin
           res = $sscanf(tokens.pop_front(), `FMT_HEX, valueInt);
           $display("MODE 0x%1h", valueInt);

@@ -137,23 +137,23 @@ def check_HART(state, tokens):
     if state.hart >= state.nharts:
         raise AssertionError(f"HART ID {state.hart} exceeds maximum HARTS ({state.nharts}).")
 
-    state.retire_slot = 0;
-    state.retire_auto_inc = False;
+    state.retire_slot = 0
+    state.retire_auto_inc = False
 
     return tokens[2:]
 
 def check_ISSUE(state, tokens):
     issue = check_INT(tokens[1])
 
-    state.retire_slot = issue;
-    state.retire_auto_inc = False;
+    state.retire_slot = issue
+    state.retire_auto_inc = False
 
     return tokens[2:]
 
 def check_ORDER(state, tokens):
     order = check_INT(tokens[1])
 
-    state.order[ state.hart ] = order;
+    state.order[ state.hart ] = order
 
     # todo: check order is monotonically increasing...
 
@@ -274,9 +274,13 @@ def check_META(state, tokens):
     return tokens[2+count:]
 
 def check_NET(state, tokens):
-    name  = check_STRING(tokens[1])
-    value = check_HEX   (tokens[2])
+    check_STRING(tokens[1])  # name
+    check_HEX   (tokens[2])  # value
     return tokens[3:]
+
+def check_CANCEL(state, tokens):
+    check_STRING(tokens[1])  # name
+    return tokens[2:]
 
 def check_MODE(state, tokens):
     mode = check_HEX(tokens[1])
@@ -317,8 +321,8 @@ def check_MEM(state, tokens):
     if bytes <= 0:
         raise AssertionError(f"Memory access byte count {bytes} is invalid (must be a positive integer).")
 
-    vaddr = check_HEX(tokens[3])
-    paddr = check_HEX(tokens[4])
+    check_HEX(tokens[3])  # vaddr
+    check_HEX(tokens[4])  # paddr
     count = check_INT(tokens[5])
     if count < 0:
         raise AssertionError(f"Memory access count {count} is invalid (must be a non-negative integer).")
@@ -328,15 +332,15 @@ def check_MEM(state, tokens):
     for i in range(count):
         if len(tokens) < 2:
             raise AssertionError("Not enough tokens for MEM data (expected key-value pairs).")
-        key    = check_STRING(tokens[0])
-        value  = check_STRING(tokens[1])
+        check_STRING(tokens[0])  # key
+        check_STRING(tokens[1])  # value
         tokens = tokens[2:]
 
     return tokens
 
 def check_STATE(state, tokens):
-    state_name  = check_STRING(tokens[1])
-    state_value = check_STRING(tokens[2])
+    check_STRING(tokens[1])  # state_name
+    check_STRING(tokens[2])  # state_value
     return tokens[3:]
 
 def check_line(state, tokens):
@@ -362,11 +366,12 @@ def check_line(state, tokens):
         'NET':      (check_NET,     2),
         'MEM':      (check_MEM,     1), # note: variable size
         'STATE':    (check_STATE,   2),
+        'CANCEL':   (check_CANCEL,  1),
     }
 
     # valid events always start with retire_slot 0
     state.retire_slot = 0
-    state.retire_auto_inc = False;
+    state.retire_auto_inc = False
 
     while tokens:
         key = tokens[0]

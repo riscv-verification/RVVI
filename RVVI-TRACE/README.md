@@ -225,6 +225,24 @@ successfully, or 0 if there was no net change to pop.
 `net_pop` should only be called by clients that have registered to receive
 net changes by setting `recv_nets` when registered.
 
+### `net_cancel_push()`
+The `net_cancel_push` function submits a cancellation notification for a previously
+submitted net change (via `net_push`). A net change can be canceled when its pending
+status has been cleared under software control. An example would be when a pending
+edge triggered interrupt is canceled when a CSR instruction clears the clicintip bit.
+
+Note: net cancellations must be pushed just _prior_ to reporting retirement of
+the instruction that caused the cancellation. This ensures that RVVI-TRACE are
+aware of the cancellation at the time of retirement.
+
+### `net_cancel_pop()`
+The `net_cancel_pop` function is used by a client of the RVVI interface to receive
+net cancelation information. Cancelation events are popped in the order that they have
+been pushed (FIFO). This function returns 1 when a net change has been popped
+successfully, or 0 if there was no net cancel to pop.
+`net_cancel_pop` should only be called by clients that have registered to receive
+net changes by setting `recv_nets` when registered.
+
 ### `mem_access_push()`
 The `mem_access_push` function is used to broadcast a memory access event to
 all of the rvviTrace clients registered to receive memory events.

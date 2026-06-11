@@ -320,6 +320,9 @@ import "DPI-C" context function byte rvviRefCsrSetOneWayCompareMask(
     input int csrIndex,
     input longint mask);
 
+import "DPI-C" context function void rvviRefNetCancel(
+    input longint netIndex);
+
 endpackage: rvviApiPkg
 
 `endif  // _RVVI_API_PKG__

@@ -278,6 +278,10 @@ def check_NET(state, tokens):
     check_HEX   (tokens[2])  # value
     return tokens[3:]
 
+def check_CANCEL(state, tokens):
+    check_STRING(tokens[1])  # name
+    return tokens[2:]
+
 def check_MODE(state, tokens):
     mode = check_HEX(tokens[1])
     if mode not in [ 0, 1, 3 ]:
@@ -362,6 +366,7 @@ def check_line(state, tokens):
         'NET':      (check_NET,     2),
         'MEM':      (check_MEM,     1), # note: variable size
         'STATE':    (check_STATE,   2),
+        'CANCEL':   (check_CANCEL,  1),
     }
 
     # valid events always start with retire_slot 0

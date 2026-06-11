@@ -133,10 +133,11 @@ interface rvviTrace
         vslot <= vslot + 1;
     end
 
-    string           name [CLIENTS_MAX][$];
-    longint unsigned value[CLIENTS_MAX][$];
-    longint unsigned tslot[CLIENTS_MAX][$];
-    longint unsigned nets [CLIENTS_MAX][string];
+    string           name  [CLIENTS_MAX][$];
+    longint unsigned value [CLIENTS_MAX][$];
+    longint unsigned tslot [CLIENTS_MAX][$];
+    longint unsigned nets  [CLIENTS_MAX][string];
+    string           cancel[CLIENTS_MAX][$];
 
     //
     // rvvi-trace clients
@@ -176,16 +177,36 @@ interface rvviTrace
     endfunction
 
     function automatic int net_pop(input int client, output string pname, output longint unsigned pvalue, output longint unsigned pslot);
-        int    ok;
-        string msg;
+        int ok;
         if (name[client].size() > 0) begin
-            pname       = name [client].pop_back();     // net name
-            pvalue      = value[client].pop_back();     // net value
-            pslot       = tslot[client].pop_back();     // net slot
-            nets[client][pname] = pvalue;               // save current 'popped' net state
-            ok = 1;                                     // success
+            pname  = name [client].pop_back(); // net name
+            pvalue = value[client].pop_back(); // net value
+            pslot  = tslot[client].pop_back(); // net slot
+            nets[client][pname] = pvalue; // save current 'popped' net state
+            ok = 1; // success
         end else begin
-            ok = 0;                                     // empty
+            ok = 0; // empty
+        end
+        return ok;
+    endfunction
+
+    function automatic void net_cancel_push(input string pname);
+        // push net cancel to all clients
+        int i;
+        for (i=0; i<client_id_next; ++i) begin
+            if (client_recv_nets[i]) begin
+                cancel[i].push_front(pname);
+            end
+        end
+    endfunction
+
+    function automatic int net_cancel_pop(input int client, output string pname);
+        int ok;
+        if (cancel[client].size() > 0) begin
+            pname = cancel[client].pop_back(); // net name
+            ok = 1; // success
+        end else begin
+            ok = 0; // empty
         end
         return ok;
     endfunction

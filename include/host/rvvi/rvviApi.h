@@ -766,6 +766,15 @@ extern bool_t rvviRefConnData(
     uint64_t value,
     bool_t commit);
 
+/*! \brief Inform the reference model that a pending net change has been canceled.
+ *
+ *  \param netIndex The net index returned prior by rvviRefNetIndexGet().
+ *
+ *  \note This can occur when the DUT manually writes to clicintip register to cancel an pending edge triggered interrupt.
+**/
+extern void rvviRefNetCancel(
+    uint64_t netIndex);
+
 #ifdef __cplusplus
 }  // extern "C"
 #endif

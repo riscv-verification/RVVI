@@ -1,6 +1,6 @@
 # RVVI-TEXT RISC-V Text trace format
 
-Version 0.4
+Version 0.5
 
 ## Introduction
 
@@ -48,6 +48,7 @@ one or more associated values. The following elements are defined:
 - CYCLE   <value>
 - TIME    <value>
 - NET     <name> <value>
+- CANCEL  <name>
 - MEM     <bus> <bytes> <vaddr> <paddr> <count> [ <key> <value> ... ]
 - STATE   <name> <value>
 ```
@@ -76,6 +77,7 @@ META    %d [ "%s"/0x%h/%d ]                       // META element           <cou
 CYCLE   %d                                        // clock cycle delta      <delta>
 TIME    %d                                        // time delta             <delta>
 NET     "%s" 0x%h                                 // NET change             <name> <value>
+CANCEL  "%s"                                      // NET cancellation       <name>
 MEM     "%s" %d 0x%h 0x%h %d [ %s "%s"/0x%h/%d ]  // memory access          <bus> <bytes> <vaddr> <paddr> <count> [ count key/value pairs ... ]
 STATE   "%s" "%s"                                 // additional state       <key> <value>
 ```
@@ -225,6 +227,13 @@ or 128bit binary encoded values in hexadecimal format.
 
 `NET` events communicate net changes on the periphery of the core being traced.
 The net name is implementation defined, along with the associated value.
+
+### CANCEL
+`CANCEL` events communicate that a pending net change has been cleared under
+software control by the DUT. The net name, like the `NET` element, is
+implementation defined. This event would be used for example when a pending
+edge triggered CLIC interrupt has been cleared due to a CSR write to a
+clicintip bit.
 
 ### MODE
 

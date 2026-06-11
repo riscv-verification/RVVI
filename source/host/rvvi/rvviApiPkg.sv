@@ -310,12 +310,12 @@ import "DPI-C" context function byte rvviRefConnData(
     input longint value,
     input byte commit);
 
-import "DPI-C" context function void rvviRefCsrSetOneWayCompare(
+import "DPI-C" context function byte rvviRefCsrSetOneWayCompare(
     input int hartId,
     input int csrIndex,
     input byte enable);
 
-import "DPI-C" context function void rvviRefCsrSetOneWayCompareMask(
+import "DPI-C" context function byte rvviRefCsrSetOneWayCompareMask(
     input int hartId,
     input int csrIndex,
     input longint mask);

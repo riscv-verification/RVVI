@@ -405,35 +405,35 @@ PARAMS 6 ILEN 32 XLEN 32 FLEN 64 VLEN 256 NHART 1 RETIRE 1
 The following trace extract shows two RVVI-Trace events, where a single hart
 retires two instructions:
 ```
-HART 0 RET 80000b20 40000213 X 4 0000000000000400
-HART 0 RET 80000b24 004080b3 X 1 0000000080009840
+HART 0 RET 0x80000b20 0x40000213 X 4 0x0000000000000400
+HART 0 RET 0x80000b24 0x004080b3 X 1 0x0000000080009840
 ```
 
 The following example shows a single valid RVVI-Trace event, where two harts
 each retire different instructions:
 ```
-HART 0 RET 80 3e800093 HART 1 RET 10080 7d008113
+HART 0 RET 0x80 0x3e800093 HART 1 RET 0x10080 0x7d008113
 ```
 
 The above can be split over multiple lines for readability if desired:
 ```
-HART 0 RET    80 3e800093 \
-HART 1 RET 10080 7d008113
+HART 0 RET    0x80 0x3e800093 \
+HART 1 RET 0x10080 0x7d008113
 ```
 
 Comments can be inserted as shown below to provide readers with additional
 information. The `HART` element can also be omitted if it is known to be the
 currently latched destination hart.
 ```
-RET 80 '_start' 3e800093 'li ra, 1000' X 1 3E8
+RET 0x80 '_start' 0x3e800093 'li ra, 1000' X 1 0x3E8
 ```
 
 The sequence below shows a trap event, generated due to an unaligned load with
 CSR register updates:
 ```
-RET  1012 '_start+18'       07228293 'addi    t0,t0,114'     X  5 't0' 00001080
-TRAP 1016 '_start+22'       0012a303 'lw      t1,1(t0)'      C 300 'mstatus' 00003800 C 341 'mepc' 00001016 C 342 'mcause' 00000004 C 343 'mtval' 00001081
-RET  1040 'trap_handler+0'  34029073 'csrw    mscratch,t0'   C 340 'mscratch' 00001080
+RET  0x1012 '_start+18'      0x07228293 'addi    t0,t0,114'   X 5 't0' 0x00001080
+TRAP 0x1016 '_start+22'      0x0012a303 'lw      t1,1(t0)'    C 0x300 'mstatus' 0x00003800 C 0x341 'mepc' 0x00001016 C 0x342 'mcause' 0x00000004 C 0x343 'mtval' 0x00001081
+RET  0x1040 'trap_handler+0' 0x34029073 'csrw    mscratch,t0' C 0x340 'mscratch' 0x00001080
 ```
 
 Meta elements can be used to encapsulate data that may be relevant to a
@@ -441,11 +441,11 @@ particular trace file vendor and their processor design and workflow. In the
 example below, a hypothetical `META` event is shown which annotates store
 instructions with a virtual address and data contents.
 ```
-RET  101a '_start+26'       00000297 'auipc   t0,0x0'        X  5 't0' 0000101a
-RET  101e '_start+30'       06628293 'addi    t0,t0,102'     X  5 't0' 00001080
-RET  1022 '_start+34'       deafd337 'lui     t1,0xdeafd'    X  6 't1' deafd000
-RET  1026 '_start+38'       afe30313 'addi    t1,t1,-1282'   X  6 't1' deafcafe
-RET  102a '_start+42'       0062a1a3 'sw      t1,3(t0)'      META 4 VMEM 1083 4 deafcafe
+RET 0x101a '_start+26' 0x00000297 'auipc   t0,0x0'        X 5 't0' 0x0000101a
+RET 0x101e '_start+30' 0x06628293 'addi    t0,t0,102'     X 5 't0' 0x00001080
+RET 0x1022 '_start+34' 0xdeafd337 'lui     t1,0xdeafd'    X 6 't1' 0xdeafd000
+RET 0x1026 '_start+38' 0xafe30313 'addi    t1,t1,-1282'   X 6 't1' 0xdeafcafe
+RET 0x102a '_start+42' 0x0062a1a3 'sw      t1,3(t0)'      META 4 VMEM 0x1083 0x4 0xdeafcafe
 ```
 
 The following example shows a single hart retiring multiple instructions within
@@ -455,20 +455,20 @@ retirement event. Each retirement slot has its own ORDER counter that auto
 increments after each retirement event as described above.
 ```
 HART 0 \
-    ISSUE 0 RET 80 00000093 'li ra,0' \
-    ISSUE 1 RET 84 00000113 'li sp,0'
+    ISSUE 0 RET 0x80 0x00000093 'li ra,0' \
+    ISSUE 1 RET 0x84 0x00000113 'li sp,0'
 ```
 
 Using the auto-increment rules this can also be encoded as follows:
 ```
-HART 0 RET 80 00000093 'li ra,0' RET 84 00000113 'li sp,0'
+HART 0 RET 0x80 0x00000093 'li ra,0' RET 0x84 0x00000113 'li sp,0'
 ```
 
 The `RVVI-TRACE` `ORDER` can be manually specified when required:
 ```
 HART 0 \
-    ISSUE 1 ORDER 1 RET 80 00000093 'li ra,0' \
-    ISSUE 0 ORDER 0 RET 84 00000113 'li sp,0'
+    ISSUE 1 ORDER 1 RET 0x80 0x00000093 'li ra,0' \
+    ISSUE 0 ORDER 0 RET 0x84 0x00000113 'li sp,0'
 ```
 This overrides the algorithm used by RVVI-TEXT to predict its next value.
 
@@ -478,7 +478,7 @@ A data bus transaction of 4 bytes to the address 0x10000 is recorded as a
 result of the `sw` instruction.
 ```
 HART 0 \
-    RET 0x80 0x00032023 'sw zero,0(t1)' MEM D 4 0x10000 0x10000 0
+    RET 0x80 0x00032023 'sw zero,0(t1)' MEM "D" 4 0x10000 0x10000 0
 ```
 
 The following example demonstrates the `STATE` element in action. As the _tselect_ register
@@ -491,12 +491,12 @@ In _RVVI-TRACE_ these key value pairs are entered into the associative array `st
 ```
 HART 0 \
    RET  0x0 0x0000f2b7 'lui   t0,0xf'      X 5 0xF000
-   RET  0x4 0x00d2829b 'addiw t0,t0,13'    x 5 0xF00D
-   RET  0x8 0x7a005073 'csrwi tselect,0'   C 0x7A0 0 C 0x7A1 0xFACE
+   RET  0x4 0x00d2829b 'addiw t0,t0,13'    X 5 0xF00D
+   RET  0x8 0x7a005073 'csrwi tselect,0'   C 0x7A0 0x0 C 0x7A1 0xFACE
    RET  0xc 0x7a129073 'csrw  tdata1,t0'   C 0x7A1 0xF00D STATE "csr_tdata1_tselect0" "0xF00D"
    RET 0x10 0x0000d337 'lui   t1,0xd'      X 5 0xD000
-   RET 0x14 0xafe3031b 'addiw t1,t1,-1282' x 5 0xCAFE
-   REG 0x18 0x7a00d073 'csrw  tselect,1'   C 0x7A0 1 C 0x7A1 0xC0FFEE
+   RET 0x14 0xafe3031b 'addiw t1,t1,-1282' X 5 0xCAFE
+   REG 0x18 0x7a00d073 'csrw  tselect,1'   C 0x7A0 0x1 C 0x7A1 0xC0FFEE
    REG 0x1C 0x7a131073 'csrw  tdata1,t1'   C 0x7A1 0xCAFE STATE "csr_tdata1_tselect1" "0xCAFE"
 ```
 

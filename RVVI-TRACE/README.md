@@ -56,7 +56,7 @@ indicated by the pc_rdata variable.
 
 ### `order`
 This signal contains the event count for the event being reported during a retirement or 
-trap event. The value of order should monotonically repeat with no gaps or repeats
+trap event. The value of order should be strictly increasing and continuous.
 
 ### `insn`
 This signal contains the instruction word which is at the trap or retirement

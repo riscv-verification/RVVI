@@ -2,8 +2,6 @@
 
 Version 1.7
 
-This is a work in progress
-
 ----
 ## Overview
 
@@ -197,7 +195,19 @@ extension naming convention. e.g. `csr_mireg_miselect1`.
 The same naming convention should be applied equally to the _sireg_ and _vsreg_ registers.
 
 ----
-## rvviTrace Interface functions
+## rvviTrace multiple retirements
+
+Multiple instruction retirements can be asserted by the rvvi-trace interface at the same time.
+The `RETIRE` parameter sets the maximum number of retirement slots in the rvvi-trace interface.
+By looking at the `valid` signal for each retirement slot, an rvvi-trace client can determine
+how many instruction have retired on each clock. Each instruction retired must have a unique
+`order` value, allowing rvvi-trace clients to sort and process all retirements in program order.
+
+Since all `order` values must be strictly increasing and continuous, its sufficient to sort the
+retirement slots by their `order` field each clock to process all events in-order.
+
+----
+## rvviTrace interface functions
 
 ### `client_register(logic recv_nets, logic recv_memory)`
 A RVVI client can be registered using the `client_register` function. The maximum

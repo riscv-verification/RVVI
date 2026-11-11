@@ -38,7 +38,6 @@ generators, functional coverage, and other testing methodologies.
 
 Currently there are 3 different areas that RVVI addresses:
 
-
 -----
 ## The core (Device Under Test) RTL Trace interface - RVVI-TRACE
 
@@ -96,26 +95,6 @@ test benches.
 
 Specification: [RVVI-API reference model subsystem API](RVVI-API/README.md)
 
-
------
-## The Virtual Verification Peripherals used in the test bench - RVVI-VVP
-
-Version 0.0
-
-When testing a processor there are components needed in the test bench to
-interact with the processor - for example a virtual UART to print information
-from the program operation, and timers to generate asynchronous interrupts.
-
-These components are being defined so that they can be used in C/C++,
-SystemVerilog, test benches, and also in some cases within ISS - to allow ease
-of test creation.
-
-This RVVI-VVP is currently a work in progress and is looking cover: timers,
-interrupts, debug, random event generators, and printer/log/UART capabilities.
-
-Specification: [RVVI-VVP Virtual Verification Peripheral](RVVI-VVP/README.md)
-
-
 -------
 ## History
 
@@ -131,7 +110,6 @@ is executing on the core (i.e. the basic tracer functionality) - but for quality
 RISC-V processor DV more is needed. Hence the need for RVVI. The RVVI-TRACE
 interface has some parts very similar to the RVFI formal interface and RVVI can
 be thought of as a superset of RVFI.
-
 
 --------------
 ## Implementations and usage
